@@ -1,0 +1,477 @@
+c1_category,c2_category,leaf_category
+Repair / Spare Parts,CPU Board,CPU board For-FX3U-16M
+Repair / Spare Parts,CPU Board,CPU board For-FX3U-32M
+Repair / Spare Parts,CPU Board,CPU board ForFX3U-48M
+Repair / Spare Parts,CPU Board,CPU board ForFX3U-64M
+Repair / Spare Parts,CPU Board,CPU board For- FX3U-80M
+Repair / Spare Parts,CPU Board,CPU board ForFX3U-128M
+Repair / Spare Parts,CPU Board,CPU board For-FX3G-14M
+Repair / Spare Parts,CPU Board,CPU board For-FX3G-24M
+Repair / Spare Parts,CPU Board,CPU board For-FX3G-40M
+Repair / Spare Parts,CPU Board,CPU board For-FX3G-60M
+Repair / Spare Parts,CPU Board,CPU board For-FX3S-20M
+Repair / Spare Parts,CPU Board,CPU board For-FX3S-10M
+Repair / Spare Parts,CPU Board,CPU board For-FX3S-14M
+Repair / Spare Parts,CPU Board,CPU board For-FX3S-30M
+Repair / Spare Parts,CPU Board,CPU board For-FX3GE-24M
+Repair / Spare Parts,CPU Board,CPU board For-FX3GE-40M
+Repair / Spare Parts,CPU Board,CPU board For-FX3U-64CCL
+Repair / Spare Parts,CPU Board,CPU board For- FX3S-30MT/ESS-2AD
+Repair / Spare Parts,CPU Board,CPU board For-INTERFACE CARD FX3U
+Repair / Spare Parts,CPU Board,CPU board For-POWER I/O FX3U-4AD
+Repair / Spare Parts,CPU Board,CPU board For-POWER I/O FX3U-4DA
+Repair / Spare Parts,PCB Board,PCB Board For- FX3U-485-BD
+Repair / Spare Parts,PCB Board,PCB Board For- FX3U-232-BD
+Repair / Spare Parts,PCB Board,PCB Board For- FX3U-422-BD
+Repair / Spare Parts,PCB Board,PCB Board For-FX3U-4DA-ADP
+Repair / Spare Parts,PCB Board,PCB Board For- FX3U-4AD-TC-ADP
+Repair / Spare Parts,PCB Board,PCB Board For- FX3U-4AD-PT-ADP
+Repair / Spare Parts,PCB Board,PCB Board For- FX3U-4AD-ADP
+Repair / Spare Parts,PCB Board,PCB Board For- FX3U-ENET FBUS (communication card)
+Repair / Spare Parts,PCB Board,PCB Board For- FX3G-232-BD
+Repair / Spare Parts,PCB Board,PCB Board For- FX3G-422-BD
+Repair / Spare Parts,PCB Board,PCB Board For- FX3U-USB-BD
+Repair / Spare Parts,PCB Board,PCB Board For- FX3G-2AD-BD
+Repair / Spare Parts,PCB Board,PCB Board For- FX3G-485-BD
+Repair / Spare Parts,PCB Board,PCB Board For- FX3G-EEPROM-32L
+Repair / Spare Parts,PCB Board,PCB Board For- FX3U-FLROM-64L
+Repair / Spare Parts,PCB Board,PCB Board For- FX3G-CNV-ADP-BD
+Repair / Spare Parts,PCB Board,PCB Board For- FX3G-CNV-ADP-BD
+Repair / Spare Parts,PCB Board,PCB Board For- FX3U-CNV-BD
+Repair / Spare Parts,PCB Board,PCB Board For- FX3U-485ADP
+Repair / Spare Parts,PCB Board,PCB Board For- FX3G-1DA-BD
+Repair / Spare Parts,PCB Board,PCB Board For- FX3U-232ADP
+Repair / Spare Parts,PCB Board,PCB Board For- FX3U-3A-ADP
+Repair / Spare Parts,PCB Board,PCB Board For- PCB FX3S-CNV-ADP
+Repair / Spare Parts,PCB Board,PCB Board For- FX3G-485-BD-RJ
+Repair / Spare Parts,PCB Board,PCB Board For- FX3U-ENET-ADP
+Repair / Spare Parts,PCB Board,PCB Board For- FX3UC-32MT/D MAIN BOARD
+Repair / Spare Parts,PCB Board,PCB Board For- FX3UC-96MT/D MAIN BOARD (CPU+pw)
+Repair / Spare Parts,PCB Board,PCB Board For- FX3UC-16MR/DS-T MAIN BOARD
+Repair / Spare Parts,PCB Board,PCB Board For- FX3UC-32MT-LT CPU+IN-POW+OUT-CCLT
+Repair / Spare Parts,PCB Board,PCB Board For- FX3UC-4AD PRINTED CIRCUIT BOARD
+Repair / Spare Parts,PCB Board,PCB Board For- FX3UC-16MT/D MAIN BOARD
+Repair / Spare Parts,PCB Board,PCB Board For- FX3UC-32MT-LT-2 CPU FX3UC-32MT-LT-2
+Repair / Spare Parts,PCB Board,PCB Board For- FX3UC-16MR/D-T MAIN BOARD
+Repair / Spare Parts,PCB Board,PCB Board For- FX3UC-16MT/DSS DSS MAIN pcb set
+Repair / Spare Parts,I/O Card,I/O Card For- FX3U-16MT/ES
+Repair / Spare Parts,I/O Card,I/O Card For- FX3U-32MT/ESS
+Repair / Spare Parts,I/O Card,I/O Card For- FX3U-48MR
+Repair / Spare Parts,I/O Card,I/O Card For- FX3U-48MT/ES
+Repair / Spare Parts,I/O Card,I/O Card For- FX3U-64MR
+Repair / Spare Parts,I/O Card,I/O Card For- FX3U-64MT/ES
+Repair / Spare Parts,I/O Card,I/O Card For- FX3U-80MT/ES
+Repair / Spare Parts,I/O Card,I/O Card For- FX3U-128MT/ES
+Repair / Spare Parts,I/O Card,I/O Card For- FX3U-128MR
+Repair / Spare Parts,I/O Card,I/O Card For- FX3G-14MR
+Repair / Spare Parts,I/O Card,I/O Card For- FX3G-14MT/ESS
+Repair / Spare Parts,I/O Card,I/O Card For- FX3G-24MR
+Repair / Spare Parts,I/O Card,I/O Card For- FX3G-40MR
+Repair / Spare Parts,I/O Card,I/O Card For- FX3G-40MT/ESS
+Repair / Spare Parts,I/O Card,I/O Card For- FX3G-60MR
+Repair / Spare Parts,I/O Card,I/O Card For- FX3G-60MT/ESS
+Repair / Spare Parts,I/O Card,I/O Card For- FX3G-24MT/ESS
+Repair / Spare Parts,I/O Card,I/O Card For- FX3U-80MT/ESS
+Repair / Spare Parts,I/O Card,I/O Card For- FX3G-24MT/ESS
+Repair / Spare Parts,I/O Card,I/O Card For- FX3G-40MT-ES(Stored in extra location)
+Repair / Spare Parts,I/O Card,I/O Card For- FX3U-32MR/ES
+Repair / Spare Parts,I/O Card,I/O Card For- FX3U-128MT-ESS
+Repair / Spare Parts,I/O Card,I/O Card For- FX3U-64MT-ESS
+Repair / Spare Parts,I/O Card,I/O Card For- FX3U-48MT-ESS
+Repair / Spare Parts,I/O Card,I/O Card For- FX3U-16MT-ESS
+Repair / Spare Parts,I/O Card,I/O Card For- FX3U-16MR-DS
+Repair / Spare Parts,I/O Card,I/O Card For- FX3S-30MT/DSS
+Repair / Spare Parts,I/O Card,I/O Card For- FX3GE-24MTESS
+Repair / Spare Parts,I/O Card,I/O Card For- FX3GE-40MRES
+Repair / Spare Parts,I/O Card,I/O Card For- FX3GE-40MTESS
+Repair / Spare Parts,I/O Card,I/O Card For- FX3GE-24MRES
+Repair / Spare Parts,I/O Card,I/O Card For- FX3S-14MT/ESS
+Repair / Spare Parts,I/O Card,I/O Card For- FX3S-20MT/ESS
+Repair / Spare Parts,I/O Card,I/O Card For- FX3U-80MR/ES
+Repair / Spare Parts,I/O Card,I/O Card For- FX3S-30MT/ESS
+Repair / Spare Parts,I/O Card,I/O Card For- FX3S-20MR/ES
+Repair / Spare Parts,I/O Card,I/O Card For- FX3G-60MT/ESS
+Repair / Spare Parts,I/O Card,I/O Card For- FX3S-30MR/ES
+Repair / Spare Parts,I/O Card,I/O Card For- FX3G-14MT/ESS
+Repair / Spare Parts,I/O Card,I/O Card For- FX3S-14MR/ES
+Repair / Spare Parts,I/O Card,I/O Card For- FX3S-14MR/DS
+Repair / Spare Parts,I/O Card,I/O Card For- FX3S-10MR/ES
+Repair / Spare Parts,I/O Card,I/O Card For- FX3S-20MT/ESS
+Repair / Spare Parts,I/O Card,I/O Card For- FX3S-14MT/ESS
+Repair / Spare Parts,I/O Card,I/O Card For- FX3S-10MT/DS
+Repair / Spare Parts,I/O Card,I/O Card For- FX3S-30MT/ESS
+Repair / Spare Parts,I/O Card,I/O Card For- FX3S-30MR/DS
+Repair / Spare Parts,I/O Card,I/O Card For- FX3U-32MT/ESS
+Repair / Spare Parts,I/O Card,I/O Card For- FX3S-20MT/DS
+Repair / Spare Parts,I/O Card,I/O Card For- FX3S-10MT/ES
+Repair / Spare Parts,I/O Card,I/O Card For- FX3S-30MT/DSS
+Repair / Spare Parts,I/O Card,I/O Card For- FX3S-10MT/ESS
+Repair / Spare Parts,I/O Card,I/O Card For- FX3S-10MR/DS
+Repair / Spare Parts,I/O Card,I/O Card For- FX3S-10MT/DSS
+Repair / Spare Parts,I/O Card,I/O Card For- FX3S-14MT/DS
+Repair / Spare Parts,I/O Card,I/O Card For- FX3S-14MT/DSS
+Repair / Spare Parts,I/O Card,I/O Card For- FX3S-20MR/DS
+Repair / Spare Parts,I/O Card,I/O Card For- FX3S-20MT/DSS
+Repair / Spare Parts,I/O Card,I/O Card For- FX3GE-40MTESS
+Repair / Spare Parts,I/O Card,I/O Card For- FX3GE-24MTESS
+Repair / Spare Parts,Control PCB,Control PCB Board For-MR-J4-A
+Repair / Spare Parts,Control PCB,Control PCB Board For-MR-J4-B
+Repair / Spare Parts,Power PCB,Power PCB Board For-MR-J4-20A/B
+Repair / Spare Parts,Power PCB,Power PCB Board For-MR-J4-40A/B
+Repair / Spare Parts,Power PCB,Power PCB Board For-MR-J4-60A/B
+Repair / Spare Parts,Power PCB,Power PCB Board For-MR-J4-70A/B
+Repair / Spare Parts,Power PCB,Power PCB Board For-MR-J4-100A/B
+Repair / Spare Parts,Power PCB,Power PCB Board For-MR-J4-200A/B
+Repair / Spare Parts,Power PCB,Power PCB Board For-MR-J4-350A/B
+Repair / Spare Parts,PCB Board,Power PCB Board For-MR-J4-350A/B
+Repair / Spare Parts,Fan Card,"Fan Card For-MR-J4W2-77/1010B, 700A/B (200/400)"
+Repair / Spare Parts,Fan Card,Fan Card For-MR-J4W2-44B
+Repair / Spare Parts,Flat Cable,Flat Cable Board For-MR-J4- 70/100/700A/B
+Repair / Spare Parts,Flat Cable,Flat Cable Board For-MR-J4- 200/500A/B
+Repair / Spare Parts,Connector Card,Connector Board For-MR-J4 -A/B
+Repair / Spare Parts,Connector Card,Connector Card For-MR-J4-10A/B to 100A/B
+Repair / Spare Parts,Connector Card,Connector Card For-MR-J4-10A/B to 100A/B
+Repair / Spare Parts,Connector Card,Connector Card For-MR-J4-10 A/B to 350A/B
+Repair / Spare Parts,Connector Card,"Connector Card For-MR-J4-200A/B, 350A/B"
+Repair / Spare Parts,Connector Card,"Connector Card For-MR-J4-200A/B, 350A/B"
+Repair / Spare Parts,Controller Card,Controller Card For-J3-A amplifiers
+Repair / Spare Parts,Controller Card,Controller Card For-J3-B amplifiers
+Repair / Spare Parts,Power Card,Power Board For-MR-J3-350B
+Repair / Spare Parts,Fan Card,Fan Card For-MR-J3-350B
+Repair / Spare Parts,Connector Card,Connector Card For-MR-JE-10 to 100A
+Repair / Spare Parts,Connector Card,Connector Card For-MR-JE-200/ 300
+Repair / Spare Parts,Connector Card,Connector Card For-MR-JE-200/300
+Repair / Spare Parts,Control PCB,Connector Card PCB For-MR-JE-200/350 (A type)
+Repair / Spare Parts,Control PCB,Connector Card PCB For-MR-JE-200/350 (B type)
+Repair / Spare Parts,PCB Board,PCB Board For-MR-JE-100A
+Repair / Spare Parts,PCB Board,PCB Board For-MR-JE-40A
+Repair / Spare Parts,PCB Board,PCB Board For-MR-JE-70A
+Repair / Spare Parts,Encoder Card,Encoder Card For-HF-SP202
+Repair / Spare Parts,Encoder Card,Encoder Card For-HG-SR352
+Repair / Spare Parts,Encoder Card,Encoder Card For-HG-SR1024K
+Repair / Spare Parts,Encoder Card,Encoder Card For-HG-JR5034BK
+Repair / Spare Parts,Encoder Card,Encoder Card For-HG-SR702BG1H
+Repair / Spare Parts,Encoder Card,Encoder Card For-HF-SP702B
+Repair / Spare Parts,Power Connector,Power Connector Card For-HF-SP202 & HF-SE202
+Repair / Spare Parts,Power Connector,Power Connector Card For-HF-SP702
+Repair / Spare Parts,CA Board,CA Board For-0.4K-280K
+Repair / Spare Parts,CABLE/ MA-CA Board,CABLE/ MA-CA Board For-5.5K-7.5K
+Repair / Spare Parts,CABLE/ MA-CA Board,CABLE/ MA-CA Board For-11K-15K
+Repair / Spare Parts,CABLE/ MA-CA Board,CABLE/ MA-CA Board For-18.5K-22K
+Repair / Spare Parts,CABLE/ MA-CA Board,CABLE1/ MA-CA Board For-A840(30K-500K)
+Repair / Spare Parts,CABLE/ MA-CA Board,CABLE2 Board For-A840(0.4K-500K)
+Repair / Spare Parts,CABLE/ MA-CA Board,CABLE3 Board For-A840(0.4K-500K)
+Repair / Spare Parts,Capacitor Board,Capacitor Board For-A840(7.5K)
+Repair / Spare Parts,Capacitor Board,Capacitor Board For-A840(11K)
+Repair / Spare Parts,Capacitor Board,Capacitor Board For-A840(15K)
+Repair / Spare Parts,Capacitor Board,Capacitor Board For-A840(18.5K)
+Repair / Spare Parts,Capacitor Board,Capacitor Board For-A840(22K)
+Repair / Spare Parts,Capacitor Board,Capacitor Board For-A840(30K)
+Repair / Spare Parts,Capacitor Board,Capacitor Board For-A840(37K)
+Repair / Spare Parts,Capacitor Board,Capacitor Board For-A840(45K)
+Repair / Spare Parts,Capacitor Board,Capacitor Board For-A840(55K)
+Repair / Spare Parts,CT Board,CT Board For-A840(18.5K)
+Repair / Spare Parts,CT Board,CT Board For-A840(22K)
+Repair / Spare Parts,CT Board,CT Board For-A840(30K)
+Repair / Spare Parts,CT Board,CT Board For-A840(37K)
+Repair / Spare Parts,CT Board,CT Board For-A840(45K)
+Repair / Spare Parts,CT Board,CT Board For- A840(55K)
+Repair / Spare Parts,CT Board,CT Board For- A840(75K)
+Repair / Spare Parts,CT Board,CT Board For-A840(90K)
+Repair / Spare Parts,CT Board,CT Board For-A840(110K)
+Repair / Spare Parts,CT Board,CT Board For-A840(132K)
+Repair / Spare Parts,CT Board,CT Board For-A840(160K)
+Repair / Spare Parts,CT Board,CT Board For-A840(185K)
+Repair / Spare Parts,CT Board,CT Board For-A840(220K)
+Repair / Spare Parts,CT Board,CT Board For-A840(250K)
+Repair / Spare Parts,CT Board,CT Board For-A840(280K)
+Repair / Spare Parts,Diode Module Card,Diode Module Card For-37K-55K
+Repair / Spare Parts,Diode Module Card,Diode Module Card For-75K
+Repair / Spare Parts,Diode Module Card,Diode Module Card For-90K
+Repair / Spare Parts,Diode Module Card,Diode Module Card For-110K-280K
+Repair / Spare Parts,Display Unit Card,Display Unit Card For-0.4K-500K
+Repair / Spare Parts,Filter Board,Filter Board For-0.75K
+Repair / Spare Parts,Filter Board,Filter Board For-1.5K
+Repair / Spare Parts,Filter Board,Filter Board For-2.2K
+Repair / Spare Parts,Filter Board,Filter Board For-3.7K
+Repair / Spare Parts,Filter Board,Filter Board For-22K
+Repair / Spare Parts,Filter Board,Filter Board For-30K
+Repair / Spare Parts,Filter Board,Filter Board For-55K
+Repair / Spare Parts,Filter Board,Filter Board For-90K
+Repair / Spare Parts,Filter Board,Filter Board For-500K
+Repair / Spare Parts,Fuse Board,Fuse Board For-160K-220K (690V/315A)
+Repair / Spare Parts,Fuse Board,Fuse Board For-160K-280K
+Repair / Spare Parts,Fuse Board,Fuse Board For-160K-280K
+Repair / Spare Parts,Fuse Board,Fuse Board For-250K-280K (500V/400A)
+Repair / Spare Parts,GA Board,GA Board For-11K
+Repair / Spare Parts,GA Board,GA Board For-15K
+Repair / Spare Parts,GA Board,"GA Board For-18.5K-22K, 30K"
+Repair / Spare Parts,GA Board,GA Board For-75K-90K
+Repair / Spare Parts,IGBT/ TRM Board,IGBT/ TRM (Break Transistor) For-37K-55K
+Repair / Spare Parts,IGBT/ TRM Board,IGBT/ TRM Board for-37K-45K
+Repair / Spare Parts,IGBT/ TRM Board,IGBT/ TRM Board for-55K
+Repair / Spare Parts,IGBT/ TRM Board,IGBT/ TRM Board for-110K-280K-500K
+Repair / Spare Parts,PMC Board,PMC Board For-A840(30K)
+Repair / Spare Parts,PMC Board,PMC Board For-A840(30K)
+Repair / Spare Parts,PMC Board,PMC Board For-A840(30K)
+Repair / Spare Parts,PMC Board,PMC Board For-(A840-2.2K-3.7K)
+Repair / Spare Parts,PMC Board,PMC Board For-(A840-5.5K-7.5K)
+Repair / Spare Parts,PMC Board,PMC Board For-(A840-11K-15K)
+Repair / Spare Parts,PMC Board,PMC Board For-(A840-18.5K-22K)
+Repair / Spare Parts,PMC Board,PMC Board For-(A840-30K)
+Repair / Spare Parts,PMC Board,PMC Board For-(A840-37K-55K)
+Repair / Spare Parts,PMC Board,PMC Board For-(A840-75K-132K)
+Repair / Spare Parts,PMC Board,PMC Board For-5.5K-7.5K
+Repair / Spare Parts,PMC Board,PMC Board For-5.5K-7.5K
+Repair / Spare Parts,PMC Board,PMC Board For-5.5K-15K
+Repair / Spare Parts,PMC Board,PMC Board For-5.5K-7.5K
+Repair / Spare Parts,PMC Board,PMC Board For-11K-15K
+Repair / Spare Parts,PMC Board,PMC Board For-11K-15K
+Repair / Spare Parts,PMC Board,PMC Board For-18.5K-22K
+Repair / Spare Parts,PMC Board,PMC Board For-18.5K-22K
+Repair / Spare Parts,PMC Board,PMC Board For-18.5K-22K
+Repair / Spare Parts,PMC Board,PMC Board For-18.5K-22K
+Repair / Spare Parts,PMC Board,PMC Board For-A840(37K-280K)
+Repair / Spare Parts,PMC Board,PMC Board For-A840(37K-280K)
+Repair / Spare Parts,PMC Board,PMC Board For-0.4-3.7K
+Repair / Spare Parts,PMC Board,PMC Board For-0.4-3.7K
+Repair / Spare Parts,PMC Board,PMC Board For-0.4-3.7K
+Repair / Spare Parts,PMC Board,PMC Board For-0.4-3.7K
+Repair / Spare Parts,PMC Board,PMC Board For-A840(11K-15K)
+Repair / Spare Parts,PMC Board,PMC Board For-A840(5.5K-7.5K)
+Repair / Spare Parts,PMC Board,PMC Board For-A840(11K-15K)
+Repair / Spare Parts,PMC Board,PMC Board For-A840(18.5K-22K)
+Repair / Spare Parts,PWBA Board,PWBA Board For-0.75K
+Repair / Spare Parts,PWBA Board,PWBA Board For-1.5K
+Repair / Spare Parts,PWBA Board,PWBA Board For-2.2K
+Repair / Spare Parts,PWBA Board,PWBA Board For-3.7K
+Repair / Spare Parts,PWBA Board,PWBA Board For-5.5K
+Repair / Spare Parts,PWBA Board,PWBA Board For-7.5K
+Repair / Spare Parts,PWBA Board,PWBA Board For-15K
+Repair / Spare Parts,PWBA Board,PWBA Board For-22K
+Repair / Spare Parts,PWBA Board,PWBA Board For-30K
+Repair / Spare Parts,PWBA Board,PWBA Board For-45K
+Repair / Spare Parts,PWBA Board,PWBA Board For-55K
+Repair / Spare Parts,PWBA Board,PWBA Board For-90K
+Repair / Spare Parts,PWBA Board,PWBA Board For-90K
+Repair / Spare Parts,PWBA Board,PWBA Board For-132K
+Repair / Spare Parts,PWBA Board,PWBA Board For-280K
+Repair / Spare Parts,PWBA Board,PWBA Board For-500K
+Repair / Spare Parts,PWBA Board,PWBA Board For-132K
+Repair / Spare Parts,PWBA Board,PWBA Board For-500K
+Repair / Spare Parts,Resistor Board,Resistor Board For-A840(5.5K-7.5K)
+Repair / Spare Parts,Resistor Board,Resistor Board For-A840(18.5K-22K)
+Repair / Spare Parts,Resistor Board,Resistor Board For-A840(11K-15K)
+Repair / Spare Parts,Resistor Board,Resistor Board For-A840-30K
+Repair / Spare Parts,Resistor Board,Resistor Board For-'A840(37K-55K)
+Repair / Spare Parts,Resistor Board,Resistor Board For-A840(75K-90K)
+Repair / Spare Parts,Resistor Board,Resistor Board For-A840(110K-132K)
+Repair / Spare Parts,Resistor Board,Resistor Board For-A840(160K-185K)
+Repair / Spare Parts,Resistor Board,Resistor Board For-A840(220K-280K)
+Repair / Spare Parts,CPU Board,CPU Board For-GT1020-LBL
+Repair / Spare Parts,CPU Board,"CPU+ PSU GT1050-QBBD,GT1055-QSBD"
+Repair / Spare Parts,CPU Board,CPU Board For-GT1020-LBD2
+Repair / Spare Parts,CPU Board,CPU Borad For-GT1575/GT1572-VNBA
+Repair / Spare Parts,CPU Board,CPU Board For-GT1155-QSBD
+Repair / Spare Parts,CPU Board,CPU Board For-GT1665-IF-(VGA)
+Repair / Spare Parts,CPU Board,CPU Board For-GT1150-QLBD
+Repair / Spare Parts,CPU Board,CPU Board For-GT1685M-STBA
+Repair / Spare Parts,CPU Board,GT1685-IF BOARD
+Repair / Spare Parts,CPU Board,CPU+I/F GT1455-QTBD
+Repair / Spare Parts,CPU Board,"GT1050-QBBD I/F,USB CARD"
+Repair / Spare Parts,CPU Board,GT1695-IF PCB
+Repair / Spare Parts,CPU Board,GT1675/2-VN-CONTROL BOARD
+Repair / Spare Parts,CPU Board,GT1695-CONTROL PCB
+Repair / Spare Parts,CPU Board,CPU Board For-GT1675M-STB/VTB
+Repair / Spare Parts,CPU Board,GT1665-IF BOARD(SVGA)
+Repair / Spare Parts,CPU Board,GT16CONTROL BOARD
+Repair / Spare Parts,CPU Board,GT1655-VT-A BOARD
+Repair / Spare Parts,CPU Board,GT1655-VT-B BOARD
+Repair / Spare Parts,CPU Board,GT1662-VN-CONTROL BOARD
+Repair / Spare Parts,CPU Board,GT1662-V-IF BORAD
+Repair / Spare Parts,PCB Board,GT1675M-STBD/A-IF Board
+Repair / Spare Parts,PCB Board,GT1675M-VTBD-IF Board
+Repair / Spare Parts,PCB Board,CPU Board For-GT1455-QTBDE
+Repair / Spare Parts,PCB Board,"I/F,USB CARD GT1155-QSBD/QTBD"
+Repair / Spare Parts,PCB Board,GT1675-V-IF BOARD
+Repair / Spare Parts,PCB Board,Control PCB GT1665HS-VTBD
+Repair / Spare Parts,PCB Board,USB PCB GT1665HS-VTBD
+Repair / Spare Parts,PCB Board,GT1675-V-IF(L)
+Repair / Spare Parts,PCB Board,DISPLAY GT1150-QLBD KG057QV1CA-G000
+Repair / Spare Parts,PCB Board,DISPLAY GT1155 HS-LCD KCG057QV1DB-G770W
+Repair / Spare Parts,PCB Board,DISPLAY PCB GT1575-VNBA(IF+USB)
+Repair / Spare Parts,PCB Board,DISPLAY GT1030
+Repair / Spare Parts,PCB Board,DISPLAY GT1020-LBD
+Repair / Spare Parts,PCB Board,DISPLAY GT1562-VNBA
+Repair / Spare Parts,PCB Board,DISPLAY CABLE GT1665M-VTBA
+Repair / Spare Parts,PCB Board,DISPLAY CABLE GT1672-VNBA
+Repair / Spare Parts,PCB Board,DISPLAY CABLE GT1665M-STBD
+Repair / Spare Parts,PCB Board,DISPLAY CABLE GT1662-VNBD
+Repair / Spare Parts,PCB Board,DISPLAY GT1050-QBBD KG057QV1CA-G020
+Repair / Spare Parts,PCB Board,DISPLAY GT1675-VNBA
+Repair / Spare Parts,PCB Board,Display GT1675M-VTBA
+Repair / Spare Parts,PCB Board,Display -GT1575-VTBA(V)
+Repair / Spare Parts,PCB Board,Display GT1675M-VTBA
+Repair / Spare Parts,PCB Board,Display GT1675M-VTBA/GT2710-VTB/GT2510
+Repair / Spare Parts,PCB Board,Display GT1455-QTBDE
+Repair / Spare Parts,PCB Board,Display GT1450-QLBDE KG057QVLGA-G01
+Repair / Spare Parts,PCB Board,Display unit GT1665M-STBA
+Repair / Spare Parts,PCB Board,GT1575-VNBA Display
+Repair / Spare Parts,PCB Board,display GT1665M-VTBA (China Make)
+Repair / Spare Parts,PCB Board,ETHERNET connector GT1685M-STBA DIP
+Repair / Spare Parts,I/O Card,GT1665HS-VTBD-BODY CASE
+Repair / Spare Parts,I/O Card,GT1665HS-VTBD-GRIP COVER
+Repair / Spare Parts,I/O Card,GT1665HS-VTBD-IF-TOP COVER
+Repair / Spare Parts,I/O Card,Body cover GT1665HS-VTBD
+Repair / Spare Parts,I/O Card,Environment sheetGT1665HS-VTBD
+Repair / Spare Parts,I/O Card,GT1150HS-QLBD TOP COVER
+Repair / Spare Parts,I/O Card,GT1150HS-QLBD BODY CASE
+Repair / Spare Parts,I/O Card,PANEL PLASTIC MOLDED PARTS GT1675-VNBA
+Repair / Spare Parts,I/O Card,PROTECTION SHEET GT1020
+Repair / Spare Parts,I/O Card,PROTECTION SHEET GT1150-QLBD
+Repair / Spare Parts,I/O Card,PROTECTION SHEET GT1045-QSBD
+Repair / Spare Parts,I/O Card,PROTECTION SHEET GT1562-VNBA
+Repair / Spare Parts,I/O Card,PROTECTION SHEET GT1665M-VTBA
+Repair / Spare Parts,I/O Card,PROTECTION SHEET GT1575/72V-STBA
+Repair / Spare Parts,I/O Card,PROTECTION SHEET GT1055-QSBD
+Repair / Spare Parts,I/O Card,PROTECTION SHEET GT1030-LBD
+Repair / Spare Parts,I/O Card,PROTECTION SHEET GT1675M-VTBD
+Repair / Spare Parts,I/O Card,PROTECTION SHEET GT1555-QTBD
+Repair / Spare Parts,I/O Card,PROTECTION SHEET GT1585-STBA
+Repair / Spare Parts,I/O Card,PROTECTION SHEET GT1695M-XTBA
+Repair / Spare Parts,I/O Card,Protection Sheet GT1455-QTBDE
+Repair / Spare Parts,I/O Card,PROTECTION SHEET GT1655
+Repair / Spare Parts,I/O Card,PROTECTION SHEET GT1695M XTBA
+Repair / Spare Parts,I/O Card,PSU GT1562/65/72/75-VNBA
+Repair / Spare Parts,I/O Card,PSU GT1575-VTBA/VNBA=PSU 11
+Repair / Spare Parts,I/O Card,PSU GT1585-STBA
+Repair / Spare Parts,I/O Card,PSU GT1595-XTBA
+Repair / Spare Parts,I/O Card,PSU GT1662-VNBA/GT1665M-VTBA/GT1665M-STBA/GT16
+Repair / Spare Parts,I/O Card,PSU GT1662-VNBD/GT1665M-VTBD/GT1665M-STBD/GT16
+Repair / Spare Parts,I/O Card,"PSU GT1575V-STBD,GT1575-VTBD,GT1575-STBD,GT1585"
+Repair / Spare Parts,I/O Card,PSU GT1550-QLBD/GT1555-QSBD
+Repair / Spare Parts,I/O Card,"GT1455-QTBDE POWER,I/F"
+Repair / Spare Parts,I/O Card,"POWER,IF GT1450-QLBDE"
+Repair / Spare Parts,I/O Card,"POWER,I/F GT1455-QTBD"
+Repair / Spare Parts,I/O Card,PSU GT1695M-XTBA
+Repair / Spare Parts,I/O Card,PSU-GT1695M-XTBD
+Repair / Spare Parts,I/O Card,"POWER,I/F GT1450-QLBD"
+Repair / Spare Parts,I/O Card,PSU GT1655 PWDB
+Repair / Spare Parts,I/O Card,TOUCH PANELGT1020
+Repair / Spare Parts,I/O Card,TOUCH PANELGT1030
+Repair / Spare Parts,I/O Card,TOUCH PANELGT1040 QBBD
+Repair / Spare Parts,I/O Card,TOUCH PANELGT1155-QSBD
+Repair / Spare Parts,I/O Card,TOUCH PANELGT1562-VNBA
+Repair / Spare Parts,I/O Card,TOUCH PANELGT1572-VNBA/GT1575-VNBD/VTBA
+Repair / Spare Parts,I/O Card,TOUCH PANELGT1575-STBA(V)
+Repair / Spare Parts,I/O Card,TOUCH PANEL GT1585-STBA TP-3533S1F0
+Repair / Spare Parts,I/O Card,TOUCH PANEL GT1585-VTBA (V) TP-4004S1F0
+Repair / Spare Parts,I/O Card,TOUCH PANEL GT1665M-STBA
+Repair / Spare Parts,I/O Card,TOUCH PANEL GT1672/75-VNBA
+Repair / Spare Parts,I/O Card,TOUCH PANEL GT1675M-STBA
+Repair / Spare Parts,I/O Card,TOUCH PANEL GT1575-STBA(V)
+Repair / Spare Parts,I/O Card,TOUCH PANEL GT1575-STBD/GT1575V-STBD/STBA
+Repair / Spare Parts,I/O Card,TOUCH PANEL GT1685M-STBA
+Repair / Spare Parts,I/O Card,TOUCH PANEL GT1662-VNBD
+Repair / Spare Parts,I/O Card,TOUCH PANEL GT1655-VTBD
+Repair / Spare Parts,I/O Card,"TOUCH PANEL GT1455-QTBDE, GT2505-QMBDS panel-4"
+Repair / Spare Parts,I/O Card,TOUCH PANEL GT1695M-XTBA
+Repair / Spare Parts,I/O Card,CPU Board For-GT2103-PMBDS
+Repair / Spare Parts,I/O Card,GT2104-PMBDS-CPU
+Repair / Spare Parts,I/O Card,CPU-GT2710-STBA/STBD
+Repair / Spare Parts,I/O Card,CPU GT2507 WTSD
+Repair / Spare Parts,I/O Card,CPU GT2107 WT
+Repair / Spare Parts,I/O Card,CPU-GT2510-WXTBD/WXTSD
+Repair / Spare Parts,I/O Card,GT2510-VTBD Control board
+Repair / Spare Parts,I/O Card,CPU GT2708-VTBA
+Repair / Spare Parts,I/O Card,CPU GT2708-STBA
+Repair / Spare Parts,I/O Card,PCB GT2104-PMBDS2-TD985A577G51
+Repair / Spare Parts,I/O Card,PCB GT2104-RTBD CPU-TD986A178G51
+Repair / Spare Parts,I/O Card,PCB GT2104--TD985A542G51
+Repair / Spare Parts,I/O Card,PCB GT2104-RTBD-PU-TD985A520G51
+Repair / Spare Parts,I/O Card,CPU Board For-GT2712-STBD
+Repair / Spare Parts,I/O Card,CPU Board For-GT2712-STWA
+Repair / Spare Parts,I/O Card,CPU Board For + PSU GT2103-PMBD
+Repair / Spare Parts,I/O Card,CPU-I/F BOARD GT2505-VTBD
+Repair / Spare Parts,I/O Card,GT2710-VTB CPU PCB
+Repair / Spare Parts,I/O Card,USB PCB GT2705
+Repair / Spare Parts,I/O Card,CPU Board For-GT27CONT-05-V
+Repair / Spare Parts,I/O Card,USB BOARD GT2708/10/12-VTBD
+Repair / Spare Parts,I/O Card,CPU Board For-GT2508-VTBD
+Repair / Spare Parts,I/O Card,CPU Board For-GT2508-VTWA
+Repair / Spare Parts,I/O Card,CPU+IF BOARD GT2105-QTBDS
+Repair / Spare Parts,I/O Card,GT2105-QTBDS POWER+IF BOARD
+Repair / Spare Parts,I/O Card,GT2105-QMBDS POWER+IF BOARD
+Repair / Spare Parts,I/O Card,CPU+IF BOARD GT2105-QMBDS
+Repair / Spare Parts,I/O Card,CPU PCB GT2715-XTBA
+Repair / Spare Parts,I/O Card,GT2512-STBA CPU PCB
+Repair / Spare Parts,I/O Card,DISPLAY GT2104-PMBD/PMBDS
+Repair / Spare Parts,I/O Card,DISPLAY GT2103-PMBD-LCD
+Repair / Spare Parts,I/O Card,DISPLAY DEVICE-GT2712-STBA
+Repair / Spare Parts,I/O Card,DISPLAY DEVICE-GT2710-SBTA/STBD
+Repair / Spare Parts,I/O Card,Display GT1675M-VTBA/GT2710-VTB/GT2510
+Repair / Spare Parts,I/O Card,Display GT2107/GT2507 WTBD
+Repair / Spare Parts,I/O Card,Display GT2510-WXTBD
+Repair / Spare Parts,I/O Card,Display GT2104-RTBD
+Repair / Spare Parts,I/O Card,Display GT2715-XTBA
+Repair / Spare Parts,I/O Card,Display GT2505HS-VTBD
+Repair / Spare Parts,I/O Card,Display GT2705 -VTBD
+Repair / Spare Parts,I/O Card,Display GT2708-STBD
+Repair / Spare Parts,I/O Card,Display Unit GT2708-VTBA
+Repair / Spare Parts,I/O Card,Display GT2710-VTB/GT2510 (China make)
+Repair / Spare Parts,I/O Card,Display GT2105-QTBDS
+Repair / Spare Parts,I/O Card,LCD CABLE GT2507-WTSD
+Repair / Spare Parts,I/O Card,FFC CABLE GT2507-WTSD
+Repair / Spare Parts,I/O Card,LCD CABLE GT2508F-VTNA
+Repair / Spare Parts,I/O Card,GT2715-XTBA flat cable
+Repair / Spare Parts,I/O Card,GT2710-VTBA flat cable
+Repair / Spare Parts,I/O Card,GT2103-PMBDS-CONNECTOR-MKDS1/3-3.81BK
+Repair / Spare Parts,I/O Card,GT2103-PMBDS-CONNECTOR-MKDS1/3-3.81BK
+Repair / Spare Parts,I/O Card,GT2104-PMBD-CONNECTOR
+Repair / Spare Parts,I/O Card,GT2103-PMBDS-CONNECTOR-MKDS1/3-3.81BK
+Repair / Spare Parts,I/O Card,GT2104-PMBD-CONNECTOR
+Repair / Spare Parts,I/O Card,PROTECTION SHEET GT2104-PMBDS
+Repair / Spare Parts,I/O Card,PROTECTION SHEET GT2103-PMBD
+Repair / Spare Parts,I/O Card,PROTECTION SHEET-GT2512-STBA
+Repair / Spare Parts,I/O Card,PROTECTION SHEET GT2710-STBA
+Repair / Spare Parts,I/O Card,PROTECTION SHEET-GT2712-STBD
+Repair / Spare Parts,I/O Card,Protection sheet GT2107 and GT2507
+Repair / Spare Parts,I/O Card,Protection sheet GT2510
+Repair / Spare Parts,I/O Card,Protection sheet GT2510
+Repair / Spare Parts,I/O Card,PROTECTION SHEET GT2510-WXTSD
+Repair / Spare Parts,I/O Card,PROTECTION SHEET GT2708-STBA
+Repair / Spare Parts,I/O Card,PROTECTION SHEET GT2715-XTBA
+Repair / Spare Parts,I/O Card,PROTECTION SHEET GT2105
+Repair / Spare Parts,I/O Card,PROTECTIVE SHEET GT2505
+Repair / Spare Parts,I/O Card,PROTECTION SHEET GT2705
+Repair / Spare Parts,I/O Card,PROTECTION SHEET GT2104-RTBD
+Repair / Spare Parts,I/O Card,PROTECTION SHEET GT2508-VTBA
+Repair / Spare Parts,I/O Card,PROTECTION SHEET GT2508-VTWA
+Repair / Spare Parts,I/O Card,PROTECTION SHEET GT2508F-VTNA
+Repair / Spare Parts,I/O Card,Protection sheet GT2512-WXTSD/WXTBD
+Repair / Spare Parts,I/O Card,PSU GT2508/10/12 and GT2708/10/12-DC
+Repair / Spare Parts,I/O Card,PSU GT2508/10/12 and GT2708/10/12-AC
+Repair / Spare Parts,I/O Card,PCB GT2104-RTBD-(POWER+IF BOARD)-TD985A543G51
+Repair / Spare Parts,I/O Card,PSU GT2715-XTBD
+Repair / Spare Parts,I/O Card,PSU GT2715-XTBA
+Repair / Spare Parts,I/O Card,PCB GT2104-RTBD (POWER+IF BOARD)-TD986A179G51
+Repair / Spare Parts,I/O Card,PSU GT2705-VTBD
+Repair / Spare Parts,I/O Card,PSU GT2512-STBA
+Repair / Spare Parts,I/O Card,PSU GT2512-STBD
+Repair / Spare Parts,I/O Card,PSU GT2505-VTBD
+Repair / Spare Parts,I/O Card,TOUCH PANEL GT2510-VTW*/GT2510F-VTN*/VTB*
+Repair / Spare Parts,I/O Card,TOUCH PANEL GT2708-VTBA
+Repair / Spare Parts,I/O Card,TOUCH PANEL GT2715-XTBD
+Repair / Spare Parts,I/O Card,TOUCH PANEL GT2712-STBA
+Repair / Spare Parts,I/O Card,TOUCH PANEL GT2508-VTBA
+Repair / Spare Parts,I/O Card,TOUCH PANEL GT2710-VTWD
+Repair / Spare Parts,I/O Card,TOUCH PANEL GT2104-PMBD
+Repair / Spare Parts,I/O Card,TOUCH PANEL GT2103-PMBD
+Repair / Spare Parts,I/O Card,TOUCH PANEL GT2512-STBA
+Repair / Spare Parts,I/O Card,TOUCH PANEL GT2107/GT2507
+Repair / Spare Parts,I/O Card,"GT1455-QTBDE, GT2505-QMBDS TOUCH PANEL panel-40"
+Repair / Spare Parts,I/O Card,TOUCH PANEL GT2510-WXTSD
+Repair / Spare Parts,I/O Card,TOUCH PANEL GT2506HS-VTBD
+Repair / Spare Parts,I/O Card,TOUCH PANEL GT2705
+Repair / Spare Parts,I/O Card,GT2104-RTBD TOUCH PANEL
+Repair / Spare Parts,I/O Card,Touch GT2512-WXTSD/WXTBD
