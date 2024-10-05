@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Auth;
 
 // web routes
 
-Route::get('/upi', [WebController::class, 'show'])->name('showWebPage');
+Route::get('/v1/{code}', [WebController::class, 'show'])->name('showWebPage');
 Route::post('/upi', [WebController::class, 'store'])->name('storeUpidata');
 
 

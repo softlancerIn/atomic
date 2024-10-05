@@ -9,15 +9,42 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class WebController extends Controller
 {
-    public function show() 
+    public function getEncodeData($companyId, $orderId, $amount)
     {
-        $upiUrl = "upi://pay?pa=9889702929@ybl&pn=rohit&am=500.00&cu=INR";
+        // Concatenate parameters
+        $stringToEncode = $companyId . '|' . $orderId . '|' . $amount;
+
+        // Base64 encode the string
+        $encodedString = base64_encode($stringToEncode);
+
+        return $encodedString;
+    }
+
+    public function getDecodeData($code)
+    {
+        // Concatenate parameters
+        $array = explode('|', base64_decode($code));
+
+        $data = [
+            'companyId' => $array[0],
+            'orderId' => $array[1],
+            'amount' => $array[2],
+        ];
+
+        return $data;
+    }
+
+    public function show($code) 
+    {
+        $data = $this->getDecodeData($code);
+
+        $upiUrl = "upi://pay?pa=9889702929@ybl&pn=rohit&am=1.00&cu=INR";
 
         // Generate QR code
         $qrCode = QrCode::size(300)->generate($upiUrl);
 
         // Pass QR code to the view
-        return view('web', compact('qrCode'));
+        return view('web', compact('qrCode', 'data'));
     }
 
     public function store()
