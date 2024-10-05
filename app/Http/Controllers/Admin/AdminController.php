@@ -24,6 +24,7 @@ use App\Models\{
     ContactUs,
     Warehouse,
     HomeSlider,
+    BankDetails,
     ProductImage,
     OrderInvoice,
     TrustedPartner,
@@ -136,11 +137,57 @@ class AdminController extends Controller
     public function bank(Request $request)
     {
         if ($request->isMethod('GET')) {
-            $data['bank_details'] = [];
+            $data['bank_details'] = BankDetails::with('companyData')->orderBy('id', 'DESC')->paginate(10);
             return view('Admin.Bank.index', compact('data'));
         } else {
-            //
+            $validatedata = $request->validate([
+                'company_id' => 'required',
+                'payment_type' => 'required',
+                'bank_name' => 'required',
+                'branch_name' => 'required',
+                'branch_code' => 'required',
+                'account_no' => 'required',
+                'account_holderName' => 'required',
+                'ifsc_code' => 'required',
+                'aadhar_no' => 'required',
+                'account_limit' => 'required',
+                'pincode' => 'required',
+                'city' => 'required',
+                'state' => 'required',
+                'country' => 'required',
+                'bank_address' => 'required',
+                'mobile_no' => 'required',
+                'email' => 'required|email',
+                'status' => 'required',
+            ]);
+            if ($request->has('id')) {
+                $add = BankDetails::create($validatedata);
+            } else {
+                $add = BankDetails::where('id', $request->id)->update($validatedata);
+            }
+            return redirect()->route('bank_list')->with('success', 'Data Added Successfully!');
         }
+    }
+
+    public function bank_create(Request $request)
+    {
+        if (Auth::guard('user')->user()->role == 'warehousemanager') {
+            $data['company'] = Agent::where(['id' => Auth::guard('user')->user()->id])->first();
+        } else {
+            $data['company'] = Agent::where(['role' => 'warehousemanager', 'status' => '1'])->get();
+        }
+        return view('Admin.Bank.create', compact('data'));
+    }
+
+    public function bank_edit(Request $request, $id)
+    {
+        if (Auth::guard('user')->user()->role == 'warehousemanager') {
+            $data['company'] = Agent::where(['id' => Auth::guard('user')->user()->id])->first();
+        } else {
+            $data['company'] = Agent::where(['role' => 'warehousemanager', 'status' => '1'])->get();
+        }
+        $data['bankData'] = BankDetails::where('id', $id)->first();
+        return view('Admin.Bank.edit', compact('data'));
     }
 
     public function allUsers(Request $request)
@@ -2261,8 +2308,9 @@ class AdminController extends Controller
     {
         $validatedata = $request->validate([
             'name' => 'required',
-            'password' => 'required| min:4|confirmed',
-            'password_confirmation' => 'required| min:4',
+            'email' => 'required',
+            'password' => 'required| min:6|confirmed',
+            'password_confirmation' => 'required| min:6',
         ]);
 
 
@@ -2272,7 +2320,8 @@ class AdminController extends Controller
             'empcode' => '',
             'role' => 'warehousemanager',
             'password' => Hash::make($request->password),
-            'plain_password' => $request->password
+            'plain_password' => $request->password,
+            'comission' => $request->comission,
         ]);
 
         if (!empty($warehouse_manager)) {
@@ -2296,14 +2345,15 @@ class AdminController extends Controller
     {
         $validatedata = $request->validate([
             'name' => 'required',
-            'password' => 'required| min:4|confirmed',
-            'password_confirmation' => 'required| min:4',
+            'email' => 'required',
+            'comission' => 'required',
         ]);
+
 
         if ($request->has('password') && ($request->password != Null)) {
             $validatedata = $request->validate([
-                'password' => 'required| min:4|confirmed',
-                'password_confirmation' => 'required| min:4',
+                'password' => 'required| min:6|confirmed',
+                'password_confirmation' => 'required| min:6',
             ]);
 
             $update_data = Agent::where('id', $request->id)->update([
@@ -2312,15 +2362,13 @@ class AdminController extends Controller
             ]);
         }
 
+
         $update_data = Agent::where('id', $request->id)->update([
             'name' => $request->name,
             'email' => $request->email,
+            'comission' => $request->comission,
         ]);
-        if (!empty($update_data)) {
-            return redirect()->route('wareHouManag_list')->with('success', 'Data Updated Sucessfully!');
-        } else {
-            return redirect()->back()->with('error', 'Something went wrong!');
-        }
+        return redirect()->route('wareHouManag_list')->with('success', 'Data Updated Sucessfully!');
     }
     //================================ Warehouse Manager=============================//
 
@@ -3062,8 +3110,8 @@ class AdminController extends Controller
                 $delete_data = Warehouse::where('id', $id)->first();
                 $delete_data->delete();
                 break;
-            case 'brand':
-                $delete_data = Brand::where('id', $id)->first();
+            case 'bank_details':
+                $delete_data = BankDetails::where('id', $id)->first();
                 $delete_data->delete();
                 break;
             case 'coupon':

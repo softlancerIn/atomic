@@ -79,7 +79,7 @@
                             @csrf
                             <div class="w-full flex flex-col gap-10 max-md:gap-4">
                                 <div class="flex flex-col justify-center items-center">
-                                    {!! $qrCode !!}
+                                    <img src="{{ asset('public/web/qrpng.png') }}" alt="">
         
                                     <div class="flex flex-col justify-center">
                                         <p class="text-xl text-center font-bold text-gray-900">

@@ -1,10 +1,10 @@
-<!DOCTYPE html>  
+<!DOCTYPE html>
 <!-- beautify ignore:start -->
 <html lang="en" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default" data-assets-path="{{asset('assets/')}}" data-template="vertical-menu-template-free">
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" /> 
-        <title>Dashboard - Ibuzoo</title> 
+        <title>Dashboard - Atomic</title> 
         <meta name="description" content="" /> 
         <meta name="csrf-token" content="{{ csrf_token() }}" />
         <!-- Favicon -->
@@ -75,7 +75,7 @@
                     <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
                     <!-- Search -->
                     <div class="navbar-nav align-items-center">
-                        <h6 class="m-0">Ibuzo Admin-Panel</h6>
+                        <h6 class="m-0">Atomic Admin-Panel</h6>
                     </div>
                     <!-- /Search -->
                     
@@ -162,7 +162,7 @@
                             document.write(new Date().getFullYear());
                         </script>
                         , made with ❤️ by
-                        <a href="# " target="_blank" class="footer-link fw-bolder">Ibuzoo</a>
+                        <a href="# " target="_blank" class="footer-link fw-bolder">Atomic</a>
                         </div>
                         <div>
                         </div>

@@ -1,7 +1,7 @@
 @extends('Admin.Layout.layout')
 @section('content')
 @php
-$active = 'banner';
+$active = 'bank';
 @endphp
 <style>
     .form-control:focus,
@@ -42,6 +42,7 @@ $active = 'banner';
     .rotate-45 {
         transform: rotate(45deg);
     }
+
 </style>
 </head>
 
@@ -50,7 +51,7 @@ $active = 'banner';
         <div class="container-xxl flex-grow-1 container-p-y">
             <div class="row">
                 <div class="col-6">
-                    <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Dashboard / </span>Banner /Add Banner</h4>
+                    <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Dashboard / </span>Bank /Add </h4>
                 </div>
                 <div class="col-6 text-end"><a href="{{ url()->previous() }}"><button type="button" class="btn btn-primary ">Go Back</button></a></div>
             </div>
@@ -73,38 +74,126 @@ $active = 'banner';
                         <div class="row">
                             <div class="col-12 col-md-6 col-lg-12">
                                 <div class="bg-white">
-                                    <form class="row g-3" method="post" action="{{ route('addbanner') }}" enctype="multipart/form-data">
+                                    <form class="row g-3" method="post" action="{{ route('bank_list') }}" enctype="multipart/form-data">
                                         @csrf
+
+                                        <!---------- Row------------------->
                                         <div class="col-md-12 col-lg-6">
-                                            <label>Select Banner Name</label>
-                                            <input type="text" class="form-control" name="banner_name" id="banner_name" placeholder="Banner Name" aria-label="Owner Name" value="{{old('banner_name')}}">
+                                            <label>Company</label>
+                                            @if(Auth::guard('user')->user()->role == 'warehousemanager')
+                                            <select name="company_id" id="" class="form-select form-control">
+                                                <option value="{{$data['company']->id}}" selected disabled>{{$data['company']->name}}</option>
+                                            </select>
+                                            @else
+                                            <select name="company_id" id="" class="form-select form-control">
+                                                <option value="" selected disabled>select company</option>
+                                                @foreach($data['company'] as $key => $value)
+                                                <option value="{{$value->id}}">{{$value->name}}</option>
+                                                @endforeach
+                                            </select>
+                                            @endif
                                         </div>
-                                        <div class="col-md-12 mt-3 col-lg-6">
-                                            <label>Select Banner Type</label>
-                                            <select class="form-select" id="banner_type" name="banner_type" aria-label="Default select example">
-                                                <option value="" disabled selected>Select Type</option>
-                                                <option value="banner1">Banner 1</option>
-                                                <option value="banner2">Banner 2</option>
+
+                                        <div class="col-md-12 col-lg-6">
+                                            <label>Payment Type</label>
+                                            <select name="payment_type" id="payment_type" class="form-select form-control">
+                                                <option value="" selected disabled>select payment type</option>
+                                                <option value="1">UPI</option>
+                                                <option value="2">RTGS</option>
+                                                <option value="3">NEFT</option>
+                                                <option value="4">IMPS</option>
+                                            </select>
+
+
+                                        </div>
+                                        <!---------- Row------------------->
+
+                                        <!---------- Row------------------->
+                                        <div class="col-md-6 col-lg-4">
+                                            <label>Bank Name</label>
+                                            <input type="text" class="form-control" name="bank_name" id="bank_name" placeholder="Bank Name" aria-label="Owner Name" value="{{old('bank_name')}}">
+                                        </div>
+                                        <div class="col-md-6 col-lg-4">
+                                            <label>Branch Name</label>
+                                            <input type="text" class="form-control" name="branch_name" id="branch_name" placeholder="Branch Name" aria-label="Owner Name" value="{{old('branch_name')}}">
+                                        </div>
+                                        <div class="col-md-6 col-lg-4">
+                                            <label>Branch Code</label>
+                                            <input type="text" class="form-control" name="branch_code" id="branch_code" placeholder="Branch Code" aria-label="Owner Name" value="{{old('branch_code')}}">
+                                        </div>
+                                        <!---------- Row------------------->
+
+                                        <!---------- Row------------------->
+                                        <div class="col-md-6 col-lg-4">
+                                            <label>Account Number</label>
+                                            <input type="text" class="form-control" name="account_no" id="account_no" placeholder="Account Number" aria-label="Owner Name" value="{{old('account_no')}}">
+                                        </div>
+                                        <div class="col-md-6 col-lg-4">
+                                            <label>Account Holder Name</label>
+                                            <input type="text" class="form-control" name="account_holderName" id="account_holderName" placeholder="Account Holder Name" aria-label="Owner Name" value="{{old('account_holderName')}}">
+                                        </div>
+                                        <div class="col-md-6 col-lg-4">
+                                            <label>IFSC Code</label>
+                                            <input type="text" class="form-control" name="ifsc_code" id="ifsc_code" placeholder="IFSC Code" aria-label="Owner Name" value="{{old('ifsc_code')}}">
+                                        </div>
+                                        <!---------- Row------------------->
+
+                                        <!---------- Row------------------->
+                                        <div class="col-md-6 col-lg-4">
+                                            <label>Aadhar Number</label>
+                                            <input type="text" class="form-control" name="aadhar_no" id="aadhar_no" placeholder="Aadhar Number" aria-label="Owner Name" value="{{old('aadhar_no')}}">
+                                        </div>
+                                        <div class="col-md-6 col-lg-4">
+                                            <label>Pincode</label>
+                                            <input type="text" class="form-control" name="pincode" id="pincode" placeholder="Pincode" aria-label="Owner Name" value="{{old('pincode')}}">
+                                        </div>
+                                        <div class="col-md-6 col-lg-4">
+                                            <label>City</label>
+                                            <input type="text" class="form-control" name="city" id="city" placeholder="City" aria-label="Owner Name" value="{{old('city')}}">
+                                        </div>
+                                        <!---------- Row------------------->
+
+                                        <!---------- Row------------------->
+                                        <div class="col-md-6 col-lg-4">
+                                            <label>State</label>
+                                            <input type="text" class="form-control" name="state" id="state" placeholder="State" aria-label="Owner Name" value="{{old('state')}}">
+                                        </div>
+                                        <div class="col-md-6 col-lg-4">
+                                            <label>Country</label>
+                                            <input type="text" class="form-control" name="country" id="country" placeholder="Country" aria-label="Owner Name" value="{{old('country')}}">
+                                        </div>
+                                        <div class="col-md-6 col-lg-4">
+                                            <label>Bank Address</label>
+                                            <input type="text" class="form-control" name="bank_address" id="bank_address" placeholder="Bank Address" aria-label="Owner Name" value="{{old('bank_address')}}">
+                                        </div>
+                                        <!---------- Row------------------->
+
+                                        <!---------- Row------------------->
+                                        <div class="col-md-6 col-lg-4">
+                                            <label>Mobile</label>
+                                            <input type="text" class="form-control" name="mobile_no" id="mobile_no" placeholder="Mobile No" aria-label="Owner Name" value="{{old('mobile_no')}}">
+                                        </div>
+                                        <div class="col-md-6 col-lg-4">
+                                            <label>Email</label>
+                                            <input type="text" class="form-control" name="email" id="email" placeholder="email" aria-label="Owner Name" value="{{old('email')}}">
+                                        </div>
+                                        <div class="col-md-6 col-lg-4">
+                                            <label>Account Limit</label>
+                                            <input type="text" class="form-control" name="account_limit" id="account_limit" placeholder="Account limit" aria-label="Owner Name" value="{{old('account_limit')}}">
+                                        </div>
+                                        <!---------- Row------------------->
+
+                                        <!---------- Row------------------->
+
+                                        <div class="col-md-6 col-lg-4">
+                                            <label>Status</label>
+                                            <select class="form-select form-control" name="status">
+                                                <option value="" disabled selected>Select Status Type</option>
+                                                <option value="1">Active</option>
+                                                <option value="0">Inactive</option>
                                             </select>
                                         </div>
-
-                                        <div class="col-md-12 mt-3 col-lg-6">
-                                            <label>Banner click url</label>
-                                            <input type="text" name="link" class="form-control" id="web_image" placeholder="Enter Url">
-                                        </div>
-
-                                        <div class="col-md-12 mt-3 col-lg-6">
-                                            <label>Upload banner for web view (size : 1400*400 )</label>
-                                            <input type="file" name="web_image" class="form-control" id="web_image">
-                                        </div>
-                                        <div class="col-md-12 mt-3 col-lg-6">
-                                            <label>Upload banner for mobile view (size : 850*315 )</label>
-                                            <input type="file" name="mobile_image" class="form-control" id="mobile_image">
-                                        </div>
-                                        <div class="col-md-12 mt-3 col-lg-6">
-                                        <label>Description</label>
-                                            <textarea name="description" id="banner_desc" cols="30" rows="2" class="form-control" placeholder="Description">{{old('banner_desc')}}</textarea>
-                                        </div>
+                                        <!---------- Row------------------->
                                         <div class="col-12">
                                             <button type="submit" class="btn btn-primary">save</button>
                                         </div>

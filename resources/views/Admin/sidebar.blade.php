@@ -72,7 +72,7 @@
         @endif
 
         <li class="menu-item {{$active == 'bank' ? 'active': ''}}">
-            <a href="{{ route('order_list') }}" class="menu-link">
+            <a href="{{ route('bank_list') }}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-home-circle"></i>
                 <div data-i18n="Analytics">Bank</div>
             </a>
