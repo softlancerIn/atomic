@@ -1,0 +1,17 @@
+c1_category,c2_category,leaf_category,,,c1_category,c2_category,leaf_category
+Industrial Robot,6-Axis Articulated Robot,"Industrial Robot 6-axis, +/- 0.05mm, 13kg, 1388mm, CR800 (Vertical Type Robot)",,,Servo System,Servo Amplifier,"Digital AC-Servo Amplifier MR-J4-B, for Motor Power 100 W, RJ type"
+Industrial Robot,6-Axis Articulated Robot,"Industrial Robot RV-8CRL-D 6-axis, +/- 0,02mm, 8kg, 931 mm (Vertical Type Robot)",,,Servo System,Servo Amplifier,"Digital AC-Servo Amplifier MR-J4-A, for Motor Power 100 W, RJ type"
+Industrial Robot,Robot Accessories,Robot Teaching Box,,,Servo System,Servo Amplifier,"Digital AC-Servo Amplifier MR-J4-GF, for Motor Power 100 W, CC Link IE"
+Industrial Robot,Robot Accessories,I/O-Interface,,,Servo System,Servo Amplifier,"Digital AC-Servo Amplifier MR-J4-GF, for Motor Power 100 W, CC Link IE"
+Industrial Robot,Robot Accessories,Robot Teaching Box,,,Servo System,Servo Amplifier,Digital AC-Servo Amplifier for Rated Motor Power up to 0.75 kW
+,,,,,Servo System,Servo Amplifier,"Digital AC-Servo Amplifier MR-J4-GF, for Motor Power 200 W, CC Link IE"
+,,,,,Servo System,Servo Amplifier,"Digital AC-Servo Amplifier MR-J4-GF, for Motor Power 400 W, CC Link IE"
+,,,,,Servo System,Servo Amplifier,"Digital AC-Servo Amplifier MR-J4-GF, for Motor Power 600 W, CC Link IE"
+,,,,,Servo System,Servo Amplifier,"Digital AC-Servo Amplifier MR-J4-GF, for Motor Power 750 W, CC Link IE"
+,,,,,Servo System,Servo Amplifier,"Digital AC-Servo Amplifier MR-J4-GF, for Motor Power 1 kW, CC Link IE"
+,,,,,Servo System,Servo Amplifier,"Digital AC-Servo Amplifier MR-J4-GF, for Motor Power 2 kW, CC Link IE"
+,,,,,Servo System,Servo Amplifier,"Digital AC-Servo Amplifier MR-J4-GF, for Motor Power 3.5 kW, CC Link IE"
+,,,,,Servo System,Servo Motor,"Servomotor HG Series, Power 50 W; Torque 0.16 Nm, Max. Torque 0.56 Nm"
+,,,,,Servo System,Servo Motor,"Servomotor HG Series, Power 50 W; Torque 0.16 Nm, Max. Torque 0.48 Nm, Brake"
+,,,,,Servo System,Servo Motor,"Servomotor HG Series, Power 7 kW; Torque 33.4 Nm, Max. Torque 100 Nm"
+,,,,,Servo System,Servo Motor,"Servomotor HG Series, Power 7 kW; Torque 33.4 Nm, Max. Torque 100 Nm, Brake"
