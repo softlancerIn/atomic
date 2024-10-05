@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Auth;
 
 // web routes
 
-Route::get('/', [WebController::class, 'show'])->name('showWebPage');
+Route::get('/upi', [WebController::class, 'show'])->name('showWebPage');
 Route::post('/upi', [WebController::class, 'store'])->name('storeUpidata');
 
 
@@ -146,8 +146,14 @@ Route::middleware(['auth:user'])->group(function () {
         //===================================== Ware House ========================================//
 
 
+        //===================================== Bank ========================================//
+        Route::match(['get', 'post'], 'bank-list', 'bank')->name('bank_list');
+        Route::match(['get', 'post'], 'bank-create', 'bank_create')->name('bank_create');
+        // Route::match(['get', 'post'], 'bank-add', 'bank_add')->name('bank_add');
+        Route::match(['get', 'post'], 'bank-edit/{id}', 'bank_edit')->name('bank_edit');
+        Route::match(['get', 'post'], 'bank-update', 'bank_update')->name('bank_update');
+        //===================================== Bank ========================================//
 
-        
 
 
 

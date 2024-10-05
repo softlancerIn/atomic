@@ -58,7 +58,7 @@ $active = 'warehouse_manager';
                         <tr>
                             <th>Sr No.</th>
                             <th>Name</th>
-                            {{-- <th>Emp Code</th> --}}
+                            <th>Comission</th>
                             <th>Email</th>
                             <th>Password</th>
                             <th>Actions</th>
@@ -70,7 +70,7 @@ $active = 'warehouse_manager';
                         <tr>
                             <td>{{$key+1}}</td>
                             <td>{{$item->name ?? '--'}}</td>
-                            {{-- <td>{{$item->empcode ?? '--'}}</td> --}}
+                            <td>{{$item->comission ?? '--'}}</td>
                             <td>{{$item->email ?? '--'}}</td>
                             <td>{{$item->plain_password ?? '--'}}</td>
                             <td>

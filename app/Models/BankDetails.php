@@ -11,4 +11,14 @@ class BankDetails extends Model
 
     protected $table = 'bank_details';
     protected $guarded = [];
+
+    /**
+     * Get the user that owns the BankDetails
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function companyData()
+    {
+        return $this->belongsTo(Agent::class, 'company_id', 'id');
+    }
 }
