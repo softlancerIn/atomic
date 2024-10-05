@@ -7,29 +7,29 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-    <div class="p-20 w-full shadow">
-        <div class="shadow-lg rounded-xl">
-            <div class=" bg-blue-500 rounded-xl">
-                <div class="flex gap-2.5 py-4 px-14  items-center">
+    <div class="p-20 w-full max-xl:p-8 max-md:p-0">
+        <div class="shadow-lg rounded-xl max-md:shadow-none">
+            <div class=" bg-blue-500 rounded-xl max-md:rounded-none max-md:fixed max-md:w-full max-md:z-10">
+                <div class="flex gap-2.5 py-4 px-14  items-center max-md:px-5 max-md:py-3">
                     <img
                         src="{{ asset('public/web/logo.svg') }}"
                         class="bg-white p-2.5 max-h-12 w-12 max-w-16 rounded-xl"
                         alt="LOgo">
     
-                    <div class="text-base font-semibold text-white ">
+                    <div class="text-base max-sm:text-sm font-semibold text-white ">
                         <p>atomic.softlancer.pay</p>
                         <p>Order Id: 1234567890</p>
                     </div>
                 </div>    
             </div>
     
-            <div class="grid grid-cols-2">
+            <div class="grid grid-cols-2 max-md:grid-cols-1 max-md:top-[72px] max-md:relative">
                 <!-- Left Section (Payment Methods) -->
-                <div class="bg-gray-100 rounded-lg p-6">
+                <div class="bg-gray-100 rounded-lg p-6 max-md:px-4 max-md:py-4">
                     <h3 class="text-gray-700 text-sm font-semibold mb-4">Select Payment Method</h3>
-                    <div class="space-y-4">
+                    <div class="space-y-4 max-md:grid max-md:grid-cols-2 max-md:gap-2.5 max-md:space-y-0">
                         <button
-                            class="flex items-center w-full p-3 bg-white rounded-lg shadow-sm text-gray-800 border border-transparent hover:border-blue-400 outline-none transition-all"
+                            class="flex items-center w-full p-3 max-md:p-2 bg-white rounded-lg shadow-sm text-gray-800 border border-transparent hover:border-blue-400 outline-none transition-all max-md:rounded"
                             id="button-upi"
                             onclick="change('upi')"
                         >
@@ -38,7 +38,7 @@
                         </button>
                     
                         <button
-                            class="flex items-center w-full p-3 bg-white rounded-lg shadow-sm text-gray-800 border border-transparent hover:border-blue-400 outline-none transition-all"
+                            class="flex items-center w-full p-3 max-md:p-2 bg-white rounded-lg shadow-sm text-gray-800 border border-transparent hover:border-blue-400 outline-none transition-all max-md:rounded"
                             id="button-imps"
                             onclick="change('imps')"
                         >
@@ -47,7 +47,7 @@
                         </button>
                     
                         <button
-                            class="flex items-center w-full p-3 bg-white rounded-lg shadow-sm text-gray-800 border border-transparent hover:border-blue-400 outline-none transition-all"
+                            class="flex items-center w-full p-3 bg-white rounded-lg max-md:p-2 shadow-sm text-gray-800 border border-transparent hover:border-blue-400 outline-none transition-all max-md:rounded"
                             id="button-neft"
                             onclick="change('neft')"
                         >
@@ -56,7 +56,7 @@
                         </button>
                     
                         <button
-                            class="flex items-center w-full p-3 bg-white rounded-lg shadow-sm text-gray-800 border border-transparent hover:border-blue-400 outline-none transition-all"
+                            class="flex items-center w-full p-3 bg-white rounded-lg max-md:p-2 shadow-sm text-gray-800 border border-transparent hover:border-blue-400 outline-none transition-all max-md:rounded"
                             id="button-rtgs"
                             onclick="change('rtgs')"
                         >
@@ -67,10 +67,10 @@
                 </div>
     
                 <!-- Right Section (Card Payment) -->
-                <div class="rounded-lg p-6">
+                <div class="rounded-lg p-6 max-md:py-4 max-md:px-4">
                     <!-- UPI Payment Section -->
                     <div id="upi">
-                        <h3 class="text-gray-700 text-sm font-semibold mb-4">Pay Using UPI</h3>
+                        <h3 class="text-gray-700 text-sm font-semibold mb-4 max-md:text-base">Pay Using UPI</h3>
 
                         <form
                             action="{{ route('storeUpidata') }}"
@@ -80,25 +80,27 @@
                             <div class="w-full flex flex-col gap-10 max-md:gap-4">
                                 <div class="flex flex-col justify-center items-center">
                                     <!-- Display the QR code -->
-                                    {!! $qrCode !!}
+                                    <div class="[&>*]:max-w-44 [&>*]:max-h-44">
+                                        {!! $qrCode !!}
+                                    </div>
         
                                     <div class="flex flex-col justify-center">
-                                        <p class="text-xl text-center font-bold text-gray-900">
+                                        <p class="text-xl text-center font-bold text-gray-900 max-md:hidden">
                                             Pay Using
                                         </p>
         
-                                        <div class="flex gap-2.5">
-                                            <img src="{{ asset('public/web/phonepay.png') }}" alt="phone Pay">
+                                        <div class="flex gap-2.5 my-2.5">
+                                            <img src="{{ asset('public/web/phonepay.png') }}" class="max-md:max-h-10 max-md:max-w-10" alt="phone Pay">
         
-                                            <img src="{{ asset('public/web/googlepay.png') }}" alt="Google Pay">
+                                            <img src="{{ asset('public/web/googlepay.png') }}" class="max-md:max-h-10 max-md:max-w-10" alt="Google Pay">
         
-                                            <img src="{{ asset('public/web/paytm.png') }}" alt="Paytm Pay">
+                                            <img src="{{ asset('public/web/paytm.png') }}" class="max-md:max-h-10 max-md:max-w-10" alt="Paytm Pay">
                                         </div>
                                     </div>
                                 </div>
         
                                 <div class="flex flex-col gap-3">
-                                    <div class="flex gap-4 max-md:flex-col border-b border-gray-200 pb-2.5">
+                                    <div class="flex gap-4 max-md:flex-col border-b border-gray-200 pb-2.5 max-md:border-none max-md:gap-2.5">
                                         <div class="w-full">
                                             <input
                                                 type="hidden"
@@ -148,6 +150,8 @@
                                                     maxlength="20"
                                                     {{-- pattern="^[A-Za-z0-9]{6,20}$" --}}
                                                     aria-label="Order ID"
+                                                    value="{{$data['orderId'] ?? ''}}"
+                                                    {{$data['orderId'] ? 'readonly' : ''}}
                                                 >
                                             </div>
                                         </div>
@@ -172,12 +176,23 @@
                                                     maxlength="20"
                                                     {{-- pattern="^[A-Za-z0-9]{6,20}$" --}}
                                                     aria-label="Amount"
+                                                    value="{{$data['amount'] ?? ''}}"
+                                                    {{$data['amount'] ? 'readonly' : ''}}
                                                 >
                                             </div>
                                         </div>
+
+                                        <div class="flex justify-end md:hidden max-sm:justify-normal">
+                                            <button
+                                                class="bg-blue-600 text-white max-sm:w-full py-2.5 px-6 rounded-md hover:bg-blue-700 max-md:rounded"
+                                                type="submit"
+                                            >
+                                                Save Details
+                                            </button>
+                                        </div>
                                     </div>
     
-                                    <div class="flex justify-end">
+                                    <div class="flex justify-end max-md:hidden">
                                         <button
                                             class="bg-blue-600 text-white py-2.5 px-6 rounded-md hover:bg-blue-700"
                                             type="submit"
@@ -200,10 +215,10 @@
                         >
                         @csrf
                             <div class="w-full flex flex-col gap-4">
-                                <h3 class="text-gray-700 text-sm font-semibold mb-4">Pay Using IMPS</h3>
+                                <h3 class="text-gray-700 text-sm font-semibold mb-4 max-md:text-base">Pay Using IMPS</h3>
 
                             
-                                <div class="flex flex-col gap-3">
+                                <div class="flex flex-col gap-3 max-md:gap-2.5">
                                     <div class="w-full">
                                         <input
                                             type="hidden"
@@ -347,9 +362,18 @@
                                             >
                                         </div>
                                     </div>
+
+                                    <div class="flex justify-end md:hidden">
+                                        <button
+                                            type="submit"
+                                            class="bg-blue-600 text-white max-sm:w-full max-md:rounded py-2.5 px-6 rounded-md hover:bg-blue-700"
+                                        >
+                                            Save Details
+                                        </button>
+                                    </div>
                                 </div>
 
-                                <div class="flex justify-end">
+                                <div class="flex justify-end max-md:hidden">
                                     <button
                                         type="submit"
                                         class="bg-blue-600 text-white py-2.5 px-6 rounded-md hover:bg-blue-700"
@@ -371,9 +395,9 @@
                         >
                             @csrf
                             <div class="w-full flex flex-col gap-4">
-                                <h3 class="text-gray-700 text-sm font-semibold mb-4">Pay Using NEFT</h3>
+                                <h3 class="text-gray-700 text-sm font-semibold mb-4 max-md:text-base">Pay Using NEFT</h3>
 
-                                <div class="flex flex-col gap-3">
+                                <div class="flex flex-col gap-3 max-md:gap-2.5">
                                     <div class="w-full">
                                         <input
                                             type="hidden"
@@ -516,10 +540,18 @@
                                             >
                                         </div>
                                     </div>
-                                </div>
-                                </form>
 
-                                <div class="flex justify-end">
+                                    <div class="flex justify-end md:hidden">
+                                        <button
+                                            type="submit"
+                                            class="bg-blue-600 text-white max-sm:w-full max-md:rounded py-2.5 px-6 rounded-md hover:bg-blue-700"
+                                        >
+                                            Save Details
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="flex justify-end max-md:hidden">
                                     <button
                                         type="submit"
                                         class="bg-blue-600 text-white py-2.5 px-6 rounded-md hover:bg-blue-700"
@@ -541,9 +573,9 @@
                         >
                             @csrf
                             <div class="w-full flex flex-col gap-4">
-                                <h3 class="text-gray-700 text-sm font-semibold mb-4">Pay Using RTGS</h3>
+                                <h3 class="text-gray-700 text-sm font-semibold mb-4 max-md:text-base">Pay Using RTGS</h3>
 
-                                <div class="flex flex-col gap-3">
+                                <div class="flex flex-col gap-3 max-md:gap-2.5">
                                     <div class="w-full">
                                         <input
                                             type="hidden"
@@ -686,10 +718,18 @@
                                             >
                                         </div>
                                     </div>
-                                </div>
-                                </form>
 
-                                <div class="flex justify-end">
+                                    <div class="flex justify-end md:hidden">
+                                        <button
+                                            type="submit"
+                                            class="bg-blue-600 text-white max-sm:w-full max-md:rounded py-2.5 px-6 rounded-md hover:bg-blue-700"
+                                        >
+                                            Save Details
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="flex justify-end max-md:hidden">
                                     <button
                                         type="submit"
                                         class="bg-blue-600 text-white py-2.5 px-6 rounded-md hover:bg-blue-700"
