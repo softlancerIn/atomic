@@ -33,7 +33,7 @@
                             id="button-upi"
                             onclick="change('upi')"
                         >
-                            <img src="https://via.placeholder.com/20" alt="UPI" class="mr-3">
+                            <img src="{{ asset('public/web/upi.svg') }}" alt="RTGS" class="h-6 mr-3">
                             <span>UPI</span>
                         </button>
                     
@@ -42,7 +42,7 @@
                             id="button-imps"
                             onclick="change('imps')"
                         >
-                            <img src="https://via.placeholder.com/20" alt="IMPS" class="mr-3">
+                            <img src="{{ asset('public/web/imps.svg') }}" alt="RTGS" class="h-6 mr-3">
                             <span>IMPS</span>
                         </button>
                     
@@ -51,7 +51,7 @@
                             id="button-neft"
                             onclick="change('neft')"
                         >
-                            <img src="https://via.placeholder.com/20" alt="NEFT" class="mr-3">
+                            <img src="{{ asset('public/web/neft.svg') }}" alt="RTGS" class="h-6 mr-3">
                             <span>NEFT</span>
                         </button>
                     
@@ -60,7 +60,7 @@
                             id="button-rtgs"
                             onclick="change('rtgs')"
                         >
-                            <img src="https://via.placeholder.com/20" alt="RTGS" class="mr-3">
+                            <img src="{{ asset('public/web/rtgs.svg') }}" alt="RTGS" class="h-6 mr-3">
                             <span>RTGS</span>
                         </button>
                     </div>                    
@@ -746,18 +746,22 @@
     </div>
 </body>
     <script type="text/javascript">
+        window.onload = function () {
+            document.getElementById('button-upi').classList.add('border-2', 'border-blue-400');
+        };
+
         function change(params) {
             const elements = ['upi', 'imps', 'rtgs', 'neft'];
             
             elements.forEach(element => {
                 document.getElementById(element).classList.add('hidden');
-                document.getElementById('button-' + element).classList.remove('border', 'border-blue-300');
+                document.getElementById('button-' + element).classList.remove('border-2', 'border-blue-400');
             });
 
             if (params) {
                 // Show the selected element and add border classes to the corresponding button
                 document.getElementById(params).classList.remove('hidden');
-                document.getElementById('button-' + params).classList.add('border', 'border-blue-400');
+                document.getElementById('button-' + params).classList.add('border-2', 'border-blue-400');
             }
         }
     </script>
