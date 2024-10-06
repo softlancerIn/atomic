@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
-use Illuminate\Support\Facades\Session;
+use App\Models\Agent;
+use App\Models\BankDetails;
 
 class WebController extends Controller
 {
@@ -32,35 +36,88 @@ class WebController extends Controller
         return $data;
     }
 
-    function isBase64($string)
-    {
-        if (preg_match('/^[a-zA-Z0-9\/\r\n+]*={0,2}$/', $string) && strlen($string) % 4 === 0) {
-            $decoded = base64_decode($string, true);
-
-            if ($decoded !== false && base64_encode($decoded) === $string) {
-                return true; 
-            }
-        }
-
-        return false; 
-    }
-
-
     public function show($code) 
     {
-        if ($this->isBase64($code)) {
-            $data = $this->getDecodeData($code);
-        } else {
-            abort(404, 'Invalid or tampered URL');
+        $data = $this->getDecodeData($code);
+        $bankDetails = BankDetails::where(['company_id' => $data['companyId'], 'status' => '1'])->get();
+        $banks = [];
+        foreach ($bankDetails as $bankDetail) {
+            $type = [
+                '1' => 'upi',
+                '2' => 'rtgs',
+                '3' => 'neft',
+                '4' => 'imps'
+            ];
+            if (in_array($bankDetail->payment_type, array_keys($type)) && $bankDetail->status){
+                $banks[$type[$bankDetail->payment_type]] = $bankDetail;
+            }
+        }
+        arsort($banks);
+        $amount = $data['amount'];
+        $qrCode = null;
+        if (isset($banks['upi']) && $banks['upi']) {
+            $upiUrl = "upi://pay?pa=".$banks['upi']->upi_id."&pn=".$banks['upi']->account_holderName."&am=$amount&cu=INR";
+            $qrCode = QrCode::size(300)->generate($upiUrl);
         }
 
-        $upiUrl = "upi://pay?pa=9889702929@ybl&pn=rohit&am=100.00&cu=INR";
+        return view('web', compact('qrCode', 'data', 'banks'));
+    }
 
-        // Generate QR code
-        $qrCode = QrCode::size(300)->generate($upiUrl);
+    public function auth() 
+    {
+        $token = request()->header('token');
+        $agent = Agent::where('password', $token)->first();
 
-        // Pass QR code to the view
-        return view('web', compact('qrCode', 'data'));
+        if ($agent) {
+            $bankDetails = BankDetails::where(['company_id' => $agent->id, 'status' => '1'])->get();
+            $banks = [];
+            foreach ($bankDetails as $bankDetail) {
+                $type = [
+                    '1' => 'upi',
+                    '2' => 'rtgs',
+                    '3' => 'neft',
+                    '4' => 'imps'
+                ];
+                if (in_array($bankDetail->payment_type, array_keys($type)) && $bankDetail->status){
+                    $banks[$type[$bankDetail->payment_type]] = $bankDetail;
+                }
+            }
+
+            if (!$banks) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Company BankDetails Not found!',
+                ], 422);
+            }
+            $orderId = request()->header('orderId');
+            $amount = request()->header('amount');
+
+            if (!$orderId || !$amount) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'please pass orderId and amount',
+                ], 422);
+            }
+
+            $code = $this->getEncodeData($agent->id ,$orderId, $amount);
+
+            $url = 'https://softlancer.in/other/atomic_git_old/v1/' . $code;
+
+            $response = [
+                'redirect_url' => $url
+            ];
+
+            return response()->json([
+                'status' => true,
+                'message' => 'data successfully send!',
+                'data' => $response
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'unauthorized user'
+            ], 401);
+        }
     }
 
     public function store()
@@ -83,8 +140,11 @@ class WebController extends Controller
 
         \DB::table('transactions')->insert($data);
 
-        session::flash('success', 'Data saved Successfully');
+        return redirect()->route('thank_you');
+    }
 
-        return redirect()->back();
+    public function thank_you() 
+    {
+        return view('thanks');
     }
 }

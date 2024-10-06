@@ -32,7 +32,6 @@ $active = 'warehouse_manager';
     .sm:justify-between div p {
         display: none;
     }
-
 </style>
 <div class="content-wrapper">
     <div class="container-xxl flex-grow-1 container-p-y">
@@ -61,11 +60,11 @@ $active = 'warehouse_manager';
                             <th>Comission</th>
                             <th>Email</th>
                             <th>Password</th>
+                            <th>Activity</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {{-- @dd($data); --}}
                         @forelse ($data['warehouse_manager'] as $key=>$item)
                         <tr>
                             <td>{{$key+1}}</td>
@@ -73,6 +72,11 @@ $active = 'warehouse_manager';
                             <td>{{$item->comission ?? '--'}}</td>
                             <td>{{$item->email ?? '--'}}</td>
                             <td>{{$item->plain_password ?? '--'}}</td>
+                            <td>
+                                <div class="form-check form-switch mb-2">
+                                    <input class="form-check-input" type="checkbox" onclick="change_user_status('{{$item->status}}','{{$item->id}}','bank')" id="flexSwitchCheckChecked" {{$item->status == '1' ? 'checked' : ''}}>
+                                </div>
+                            </td>
                             <td>
                                 <a class="btn btn-sm btn-success" class="edit_category" href="{{route('wareHouManag_edit',['id'=>$item->id])}}">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
@@ -103,29 +107,30 @@ $active = 'warehouse_manager';
 </div>
 @include('Admin.Modal.modal')
 <script>
-    function change_user_status(status, id) {
+    function change_user_status(status, id, tableType) {
         var _token = '{{ csrf_token() }}';
         $.ajax({
-            url: "{{ route('user-status') }}"
-            , type: "POST"
-            , data: {
-                status: status
-                , id: id
-            }
-            , dataType: "JSON"
-            , headers: {
+            url: "{{ route('globalStatusUpdate') }}",
+            type: "POST",
+            data: {
+                status: status,
+                id: id,
+                type: tableType,
+            },
+            dataType: "JSON",
+            headers: {
                 'X-CSRF-TOKEN': _token
-            }
-            , success: function(resp) {
-                if (resp.success) {
-
+            },
+            success: function(resp) {
+                console.log(resp);
+                if (resp.status == true) {
+                    window.location.reload();
                 } else {
-
+                    alert('Something went wrong!');
                 }
 
             }
         });
     }
-
 </script>
 @endsection

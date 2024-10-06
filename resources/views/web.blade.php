@@ -28,85 +28,258 @@
                 <div class="bg-gray-100 rounded-lg p-6 max-md:px-4 max-md:py-4">
                     <h3 class="text-gray-700 text-sm font-semibold mb-4">Select Payment Method</h3>
                     <div class="space-y-4 max-md:grid max-md:grid-cols-2 max-md:gap-2.5 max-md:space-y-0">
-                        <button
-                            class="flex items-center w-full p-3 max-md:p-2 bg-white rounded-lg shadow-sm text-gray-800 border border-transparent hover:border-blue-400 outline-none transition-all max-md:rounded"
-                            id="button-upi"
-                            onclick="change('upi')"
-                        >
-                            <img src="{{ asset('public/web/upi.svg') }}" alt="RTGS" class="h-6 mr-3">
-                            <span>UPI</span>
-                        </button>
-                    
-                        <button
-                            class="flex items-center w-full p-3 max-md:p-2 bg-white rounded-lg shadow-sm text-gray-800 border border-transparent hover:border-blue-400 outline-none transition-all max-md:rounded"
-                            id="button-imps"
-                            onclick="change('imps')"
-                        >
-                            <img src="{{ asset('public/web/imps.svg') }}" alt="RTGS" class="h-6 mr-3">
-                            <span>IMPS</span>
-                        </button>
-                    
-                        <button
-                            class="flex items-center w-full p-3 bg-white rounded-lg max-md:p-2 shadow-sm text-gray-800 border border-transparent hover:border-blue-400 outline-none transition-all max-md:rounded"
-                            id="button-neft"
-                            onclick="change('neft')"
-                        >
-                            <img src="{{ asset('public/web/neft.svg') }}" alt="RTGS" class="h-6 mr-3">
-                            <span>NEFT</span>
-                        </button>
-                    
-                        <button
-                            class="flex items-center w-full p-3 bg-white rounded-lg max-md:p-2 shadow-sm text-gray-800 border border-transparent hover:border-blue-400 outline-none transition-all max-md:rounded"
-                            id="button-rtgs"
-                            onclick="change('rtgs')"
-                        >
-                            <img src="{{ asset('public/web/rtgs.svg') }}" alt="RTGS" class="h-6 mr-3">
-                            <span>RTGS</span>
-                        </button>
+                        @foreach ($banks as $key => $item)
+                            <button
+                                class="flex items-center w-full p-3 max-md:p-2 bg-white rounded-lg shadow-sm text-gray-800 border border-transparent hover:border-blue-400 outline-none transition-all max-md:rounded"
+                                id="button-{{$key}}"
+                                onclick="change('{{ $key }}')"
+                            >
+                                <img src="https://via.placeholder.com/20" alt="UPI" class="mr-3">
+                                <span class="uppercase">{{ $key }}</span>
+                            </button>    
+                        @endforeach
                     </div>                    
                 </div>
     
                 <!-- Right Section (Card Payment) -->
                 <div class="rounded-lg p-6 max-md:py-4 max-md:px-4">
                     <!-- UPI Payment Section -->
-                    <div id="upi">
-                        <h3 class="text-gray-700 text-sm font-semibold mb-4 max-md:text-base">Pay Using UPI</h3>
-
-                        <form
-                            action="{{ route('storeUpidata') }}"
-                            method="POST"
+                    @if (isset($banks['upi']) && $banks['upi'])
+                        <div 
+                            id="upi" 
+                            class="hidden"
                         >
-                            @csrf
-                            <div class="w-full flex flex-col gap-10 max-md:gap-4">
-                                <div class="flex flex-col justify-center items-center">
-                                    <!-- Display the QR code -->
-                                    <div class="[&>*]:max-w-44 [&>*]:max-h-44">
-                                        {!! $qrCode !!}
+                            <h3 class="text-gray-700 text-sm font-semibold mb-4 max-md:text-base">Pay Using UPI</h3>
+
+                            <form
+                                action="{{ route('storeUpidata') }}"
+                                method="POST"
+                            >
+                                @csrf
+                                <div class="w-full flex flex-col gap-10 max-md:gap-4">
+                                    <div class="flex flex-col justify-center items-center">
+                                        <!-- Display the QR code -->
+                                        <div class="[&>*]:max-w-44 [&>*]:max-h-44">
+                                            {!! $qrCode !!}
+                                        </div>
+            
+                                        <div class="flex flex-col justify-center">
+                                            <p class="text-xl text-center font-bold text-gray-900 max-md:hidden">
+                                                Pay Using
+                                            </p>
+            
+                                            <div class="flex gap-2.5 my-2.5">
+                                                <img src="{{ asset('public/web/phonepay.png') }}" class="max-md:max-h-10 max-md:max-w-10" alt="phone Pay">
+            
+                                                <img src="{{ asset('public/web/googlepay.png') }}" class="max-md:max-h-10 max-md:max-w-10" alt="Google Pay">
+            
+                                                <img src="{{ asset('public/web/paytm.png') }}" class="max-md:max-h-10 max-md:max-w-10" alt="Paytm Pay">
+                                            </div>
+                                        </div>
                                     </div>
+            
+                                    <div class="flex flex-col gap-3">
+                                        <div class="flex gap-4 max-md:flex-col border-b border-gray-200 pb-2.5 max-md:border-none max-md:gap-2.5">
+                                            <div class="w-full">
+                                                <input
+                                                    type="hidden"
+                                                    name="type"
+                                                    value="upi"
+                                                >
+                                                <label
+                                                    for="ref_no"
+                                                    class="block text-sm font-medium leading-6 text-gray-900"
+                                                >
+                                                    UTR/Ref No
+                                                </label>
+                
+                                                <div class="mt-2">
+                                                    <input
+                                                        type="text"
+                                                        name="ref_no"
+                                                        id="ref_no"
+                                                        autocomplete="off"
+                                                        class="mb-1.5 w-full rounded-sm border border-gray-300 px-3 py-2 text-sm text-gray-900 hover:border-gray-500 outline-none transition-all max-md:py-2 max-sm:px-4 max-sm:py-2 max-sm:text-sm"
+                                                        placeholder="Enter UTR/Reference Number"
+                                                        required
+                                                        maxlength="22"
+                                                        {{-- pattern="^[A-Za-z0-9]{8,22}$" --}}
+                                                        aria-label="UTR/Reference Number"
+                                                    >
+                                                </div>
+                                            </div>
         
-                                    <div class="flex flex-col justify-center">
-                                        <p class="text-xl text-center font-bold text-gray-900 max-md:hidden">
-                                            Pay Using
-                                        </p>
+                                            <div class="w-full">
+                                                <label
+                                                    for="order_id"
+                                                    class="block text-sm font-medium leading-6 text-gray-900"
+                                                >
+                                                    Order ID
+                                                </label>
+                
+                                                <div class="mt-2">
+                                                    <input
+                                                        type="text"
+                                                        name="order_id"
+                                                        id="order_id"
+                                                        autocomplete="off"
+                                                        class="mb-1.5 w-full rounded-sm border border-gray-300 px-3 py-2 text-sm text-gray-900 hover:border-gray-500 outline-none transition-all max-md:py-2 max-sm:px-4 max-sm:py-2 max-sm:text-sm {{$data['orderId'] ? 'bg-gray-200 !text-gray-400 cursor-not-allowed	' : ''}}"
+                                                        placeholder="Enter Order ID"
+                                                        required
+                                                        maxlength="20"
+                                                        {{-- pattern="^[A-Za-z0-9]{6,20}$" --}}
+                                                        aria-label="Order ID"
+                                                        value="{{$data['orderId'] ?? ''}}"
+                                                        {{$data['orderId'] ? 'readonly' : ''}}
+                                                    >
+                                                </div>
+                                            </div>
         
-                                        <div class="flex gap-2.5 my-2.5">
-                                            <img src="{{ asset('public/web/phonepay.png') }}" class="max-md:max-h-10 max-md:max-w-10" alt="phone Pay">
+                                            <div class="w-full">
+                                                <label
+                                                    for="amount"
+                                                    class="block text-sm font-medium leading-6 text-gray-900"
+                                                >
+                                                    Amount
+                                                </label>
+                
+                                                <div class="mt-2">
+                                                    <input
+                                                        type="text"
+                                                        name="amount"
+                                                        id="amount"
+                                                        autocomplete="off"
+                                                        class="mb-1.5 w-full rounded-sm border border-gray-300 px-3 py-2 text-sm text-gray-900 hover:border-gray-500 outline-none transition-all max-md:py-2 max-sm:px-4 max-sm:py-2 max-sm:text-sm {{$data['amount'] ? 'bg-gray-200 !text-gray-400 cursor-not-allowed	' : ''}}"
+                                                        placeholder="Enter Order ID"
+                                                        required
+                                                        maxlength="20"
+                                                        {{-- pattern="^[A-Za-z0-9]{6,20}$" --}}
+                                                        aria-label="Amount"
+                                                        value="{{$data['amount'] ?? ''}}"
+                                                        {{$data['amount'] ? 'readonly' : ''}}
+                                                    >
+                                                </div>
+                                            </div>
+
+                                            <div class="flex justify-end md:hidden max-sm:justify-normal">
+                                                <button
+                                                    class="bg-blue-600 text-white max-sm:w-full py-2.5 px-6 rounded-md hover:bg-blue-700 max-md:rounded"
+                                                    type="submit"
+                                                >
+                                                    Save Details
+                                                </button>
+                                            </div>
+                                        </div>
         
-                                            <img src="{{ asset('public/web/googlepay.png') }}" class="max-md:max-h-10 max-md:max-w-10" alt="Google Pay">
-        
-                                            <img src="{{ asset('public/web/paytm.png') }}" class="max-md:max-h-10 max-md:max-w-10" alt="Paytm Pay">
+                                        <div class="flex justify-end max-md:hidden">
+                                            <button
+                                                class="bg-blue-600 text-white py-2.5 px-6 rounded-md hover:bg-blue-700"
+                                                type="submit"
+                                            >
+                                                Save Details
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
-        
-                                <div class="flex flex-col gap-3">
-                                    <div class="flex gap-4 max-md:flex-col border-b border-gray-200 pb-2.5 max-md:border-none max-md:gap-2.5">
+                            </form>
+                        </div>                        
+                    @endif
+
+                    @if (isset($banks['imps']) && $banks['imps'])
+                        <div
+                            id="imps"
+                            class="hidden"
+                        >
+                            <form
+                                action="{{ route('storeUpidata') }}"
+                                method="POST"
+                            >
+                            @csrf
+                                <div class="w-full flex flex-col gap-4">
+                                    <h3 class="text-gray-700 text-sm font-semibold mb-4 max-md:text-base">Pay Using IMPS</h3>
+
+                                
+                                    <div class="flex flex-col gap-3 max-md:gap-2.5">
                                         <div class="w-full">
                                             <input
                                                 type="hidden"
                                                 name="type"
-                                                value="upi"
+                                                value="imps"
                                             >
+
+                                            <label
+                                                for="account_no"
+                                                class="block text-sm font-medium leading-6 text-gray-900"
+                                            >
+                                                Account No
+                                            </label>
+
+                                            <div class="mt-2">
+                                                <input
+                                                    type="text"
+                                                    name="account_no"
+                                                    id="account_no"
+                                                    autocomplete="off"
+                                                    inputmode="numeric"
+                                                    class="mb-1.5 w-full rounded-sm border border-gray-200 px-3 py-2 text-sm text-zinc-500 hover:border-gray-400 outline-none transition-all max-md:py-2 max-sm:px-4 max-sm:py-2 max-sm:text-sm {{$banks['imps']->account_no ? 'bg-gray-200 !text-gray-400 cursor-not-allowed	' : ''}}"
+                                                    placeholder="Enter Account Number"
+                                                    required
+                                                    maxlength="18"
+                                                    {{-- pattern="\d{9,18}" --}}
+                                                    aria-label="Account Number"
+                                                    value="{{$banks['imps']->account_no ?? ''}}"
+                                                    {{$banks['imps']->account_no ? 'readonly' : ''}}
+                                                >
+                                            </div>
+                                        </div>
+                                
+                                        <div class="w-full">
+                                            <label for="ifsc_code" class="block text-sm font-medium leading-6 text-gray-900">IFSC Code</label>
+                                            <div class="mt-2">
+                                                <input
+                                                    type="text"
+                                                    name="ifsc_code"
+                                                    id="ifsc_code"
+                                                    autocomplete="off"
+                                                    inputmode="text"
+                                                    class="mb-1.5 w-full rounded-sm border border-gray-200 px-3 py-2 text-sm text-zinc-500 hover:border-gray-400 outline-none transition-all max-md:py-2 max-sm:px-4 max-sm:py-2 max-sm:text-sm {{$banks['imps']->ifsc_code ? 'bg-gray-200 !text-gray-400 cursor-not-allowed	' : ''}}"
+                                                    placeholder="Enter IFSC Code"
+                                                    required
+                                                    maxlength="11"
+                                                    {{-- pattern="^[A-Za-z]{4}\d{7}$" --}}
+                                                    aria-label="IFSC Code"
+                                                    value="{{$banks['imps']->ifsc_code ?? ''}}"
+                                                    {{$banks['imps']->ifsc_code ? 'readonly' : ''}}
+                                                >
+                                            </div>
+                                        </div>
+                                
+                                        <div class="w-full">
+                                            <label
+                                                for="holder_name"
+                                                class="block text-sm font-medium leading-6 text-gray-900"
+                                            >
+                                                Account Holder Name
+                                            </label>
+            
+                                            <div class="mt-2">
+                                                <input
+                                                    type="text"
+                                                    name="holder_name"
+                                                    id="holder_name"
+                                                    autocomplete="name"
+                                                    class="mb-1.5 w-full rounded-sm border border-gray-200 px-3 py-2 text-sm text-zinc-500 hover:border-gray-400 outline-none transition-all max-md:py-2 max-sm:px-4 max-sm:py-2 max-sm:text-sm {{$banks['imps']->account_holderName ? 'bg-gray-200 !text-gray-400 cursor-not-allowed	' : ''}}"
+                                                    placeholder="Enter Account Holder Name"
+                                                    required
+                                                    maxlength="50"
+                                                    aria-label="Account Holder Name"
+                                                    value="{{$banks['imps']->account_holderName ?? ''}}"
+                                                    {{$banks['imps']->account_holderName ? 'readonly' : ''}}
+                                                >
+                                            </div>
+                                        </div>
+                                
+                                        <div class="w-full">
                                             <label
                                                 for="ref_no"
                                                 class="block text-sm font-medium leading-6 text-gray-900"
@@ -120,7 +293,7 @@
                                                     name="ref_no"
                                                     id="ref_no"
                                                     autocomplete="off"
-                                                    class="mb-1.5 w-full rounded-sm border border-gray-300 px-3 py-2 text-sm text-gray-900 hover:border-gray-500 outline-none transition-all max-md:py-2 max-sm:px-4 max-sm:py-2 max-sm:text-sm"
+                                                    class="mb-1.5 w-full rounded-sm border border-gray-200 px-3 py-2 text-sm text-zinc-500 hover:border-gray-400 outline-none transition-all max-md:py-2 max-sm:px-4 max-sm:py-2 max-sm:text-sm"
                                                     placeholder="Enter UTR/Reference Number"
                                                     required
                                                     maxlength="22"
@@ -129,7 +302,7 @@
                                                 >
                                             </div>
                                         </div>
-    
+                                
                                         <div class="w-full">
                                             <label
                                                 for="order_id"
@@ -144,7 +317,7 @@
                                                     name="order_id"
                                                     id="order_id"
                                                     autocomplete="off"
-                                                    class="mb-1.5 w-full rounded-sm border border-gray-300 px-3 py-2 text-sm text-gray-900 hover:border-gray-500 outline-none transition-all max-md:py-2 max-sm:px-4 max-sm:py-2 max-sm:text-sm"
+                                                    class="mb-1.5 w-full rounded-sm border border-gray-200 px-3 py-2 text-sm text-zinc-500 hover:border-gray-400 outline-none transition-all max-md:py-2 max-sm:px-4 max-sm:py-2 max-sm:text-sm {{$data['orderId'] ? 'bg-gray-200 !text-gray-400 cursor-not-allowed	' : ''}}"
                                                     placeholder="Enter Order ID"
                                                     required
                                                     maxlength="20"
@@ -155,7 +328,7 @@
                                                 >
                                             </div>
                                         </div>
-    
+
                                         <div class="w-full">
                                             <label
                                                 for="amount"
@@ -169,12 +342,11 @@
                                                     type="text"
                                                     name="amount"
                                                     id="amount"
-                                                    autocomplete="off"
-                                                    class="mb-1.5 w-full rounded-sm border border-gray-300 px-3 py-2 text-sm text-gray-900 hover:border-gray-500 outline-none transition-all max-md:py-2 max-sm:px-4 max-sm:py-2 max-sm:text-sm"
-                                                    placeholder="Enter Order ID"
+                                                    autocomplete="name"
+                                                    class="mb-1.5 w-full rounded-sm border border-gray-200 px-3 py-2 text-sm text-zinc-500 hover:border-gray-400 outline-none transition-all max-md:py-2 max-sm:px-4 max-sm:py-2 max-sm:text-sm {{$data['amount'] ? 'bg-gray-200 !text-gray-400 cursor-not-allowed	' : ''}}"
+                                                    placeholder="Enter Account Holder Name"
                                                     required
-                                                    maxlength="20"
-                                                    {{-- pattern="^[A-Za-z0-9]{6,20}$" --}}
+                                                    maxlength="50"
                                                     aria-label="Amount"
                                                     value="{{$data['amount'] ?? ''}}"
                                                     {{$data['amount'] ? 'readonly' : ''}}
@@ -182,576 +354,421 @@
                                             </div>
                                         </div>
 
-                                        <div class="flex justify-end md:hidden max-sm:justify-normal">
+                                        <div class="flex justify-end md:hidden">
                                             <button
-                                                class="bg-blue-600 text-white max-sm:w-full py-2.5 px-6 rounded-md hover:bg-blue-700 max-md:rounded"
                                                 type="submit"
+                                                class="bg-blue-600 text-white max-sm:w-full max-md:rounded py-2.5 px-6 rounded-md hover:bg-blue-700"
                                             >
                                                 Save Details
                                             </button>
                                         </div>
                                     </div>
-    
+
                                     <div class="flex justify-end max-md:hidden">
                                         <button
+                                            type="submit"
                                             class="bg-blue-600 text-white py-2.5 px-6 rounded-md hover:bg-blue-700"
-                                            type="submit"
                                         >
                                             Save Details
                                         </button>
                                     </div>
                                 </div>
-                            </div>
-                        </form>
-                    </div>
+                            </form>
+                        </div>
+                    @endif
 
-                    <div
-                        id="imps"
-                        class="hidden"
-                    >
-                        <form
-                            action="{{ route('storeUpidata') }}"
-                            method="POST"
+                    @if (isset($banks['neft']) && $banks['neft'])
+                        <div
+                            id="neft"
+                            class="hidden"
                         >
-                        @csrf
-                            <div class="w-full flex flex-col gap-4">
-                                <h3 class="text-gray-700 text-sm font-semibold mb-4 max-md:text-base">Pay Using IMPS</h3>
+                            <form
+                                action="{{ route('storeUpidata') }}"
+                                method="POST"
+                            >
+                                @csrf
+                                <div class="w-full flex flex-col gap-4">
+                                    <h3 class="text-gray-700 text-sm font-semibold mb-4 max-md:text-base">Pay Using NEFT</h3>
 
-                            
-                                <div class="flex flex-col gap-3 max-md:gap-2.5">
-                                    <div class="w-full">
-                                        <input
-                                            type="hidden"
-                                            name="type"
-                                            value="imps"
-                                        >
+                                    <div class="flex flex-col gap-3 max-md:gap-2.5">
+                                        <div class="w-full">
+                                            <input
+                                                type="hidden"
+                                                name="type"
+                                                value="neft"
+                                            >
 
-                                        <label
-                                            for="account_no"
-                                            class="block text-sm font-medium leading-6 text-gray-900"
-                                        >
-                                            Account No
-                                        </label>
+                                            <label
+                                                for="account_no"
+                                                class="block text-sm font-medium leading-6 text-gray-900"
+                                            >
+                                                Account No
+                                            </label>
 
-                                        <div class="mt-2">
-                                            <input
-                                                type="text"
-                                                name="account_no"
-                                                id="account_no"
-                                                autocomplete="off"
-                                                inputmode="numeric"
-                                                class="mb-1.5 w-full rounded-sm border border-gray-200 px-3 py-2 text-sm text-zinc-500 hover:border-gray-400 outline-none transition-all max-md:py-2 max-sm:px-4 max-sm:py-2 max-sm:text-sm"
-                                                placeholder="Enter Account Number"
-                                                required
-                                                maxlength="18"
-                                                {{-- pattern="\d{9,18}" --}}
-                                                aria-label="Account Number"
-                                            >
+                                            <div class="mt-2">
+                                                <input
+                                                    type="text"
+                                                    name="account_no"
+                                                    id="account_no"
+                                                    autocomplete="off"
+                                                    inputmode="numeric"
+                                                    class="mb-1.5 w-full rounded-sm border border-gray-200 px-3 py-2 text-sm text-zinc-500 hover:border-gray-400 outline-none transition-all max-md:py-2 max-sm:px-4 max-sm:py-2 max-sm:text-sm {{$banks['neft']->account_no ? 'bg-gray-200 !text-gray-400 cursor-not-allowed	' : ''}}"
+                                                    placeholder="Enter Account Number"
+                                                    required
+                                                    maxlength="18"
+                                                    {{-- pattern="\d{9,18}" --}}
+                                                    aria-label="Account Number"
+                                                    value="{{$banks['neft']->account_no ?? ''}}"
+                                                    {{$banks['neft']->account_no ? 'readonly' : ''}}
+                                                >
+                                            </div>
                                         </div>
-                                    </div>
-                            
-                                    <div class="w-full">
-                                        <label for="ifsc_code" class="block text-sm font-medium leading-6 text-gray-900">IFSC Code</label>
-                                        <div class="mt-2">
-                                            <input
-                                                type="text"
-                                                name="ifsc_code"
-                                                id="ifsc_code"
-                                                autocomplete="off"
-                                                inputmode="text"
-                                                class="mb-1.5 w-full rounded-sm border border-gray-200 px-3 py-2 text-sm text-zinc-500 hover:border-gray-400 outline-none transition-all max-md:py-2 max-sm:px-4 max-sm:py-2 max-sm:text-sm"
-                                                placeholder="Enter IFSC Code"
-                                                required
-                                                maxlength="11"
-                                                {{-- pattern="^[A-Za-z]{4}\d{7}$" --}}
-                                                aria-label="IFSC Code"
-                                            >
+                                
+                                        <div class="w-full">
+                                            <label for="ifsc_code" class="block text-sm font-medium leading-6 text-gray-900">IFSC Code</label>
+                                            <div class="mt-2">
+                                                <input
+                                                    type="text"
+                                                    name="ifsc_code"
+                                                    id="ifsc_code"
+                                                    autocomplete="off"
+                                                    inputmode="text"
+                                                    class="mb-1.5 w-full rounded-sm border border-gray-200 px-3 py-2 text-sm text-zinc-500 hover:border-gray-400 outline-none transition-all max-md:py-2 max-sm:px-4 max-sm:py-2 max-sm:text-sm {{$banks['neft']->ifsc_code ? 'bg-gray-200 !text-gray-400 cursor-not-allowed	' : ''}}"
+                                                    placeholder="Enter IFSC Code"
+                                                    required
+                                                    maxlength="11"
+                                                    {{-- pattern="^[A-Za-z]{4}\d{7}$" --}}
+                                                    aria-label="IFSC Code"
+                                                    value="{{$banks['neft']->ifsc_code ?? ''}}"
+                                                    {{$banks['neft']->ifsc_code ? 'readonly' : ''}}
+                                                >
+                                            </div>
                                         </div>
-                                    </div>
-                            
-                                    <div class="w-full">
-                                        <label
-                                            for="holder_name"
-                                            class="block text-sm font-medium leading-6 text-gray-900"
-                                        >
-                                            Account Holder Name
-                                        </label>
-        
-                                        <div class="mt-2">
-                                            <input
-                                                type="text"
-                                                name="holder_name"
-                                                id="holder_name"
-                                                autocomplete="name"
-                                                class="mb-1.5 w-full rounded-sm border border-gray-200 px-3 py-2 text-sm text-zinc-500 hover:border-gray-400 outline-none transition-all max-md:py-2 max-sm:px-4 max-sm:py-2 max-sm:text-sm"
-                                                placeholder="Enter Account Holder Name"
-                                                required
-                                                maxlength="50"
-                                                aria-label="Account Holder Name"
+                                
+                                        <div class="w-full">
+                                            <label
+                                                for="holder_name"
+                                                class="block text-sm font-medium leading-6 text-gray-900"
                                             >
+                                                Account Holder Name
+                                            </label>
+
+                                            <div class="mt-2">
+                                                <input
+                                                    type="text"
+                                                    name="holder_name"
+                                                    id="holder_name"
+                                                    autocomplete="name"
+                                                    class="mb-1.5 w-full rounded-sm border border-gray-200 px-3 py-2 text-sm text-zinc-500 hover:border-gray-400 outline-none transition-all max-md:py-2 max-sm:px-4 max-sm:py-2 max-sm:text-sm {{$banks['neft']->account_holderName ? 'bg-gray-200 !text-gray-400 cursor-not-allowed	' : ''}}"
+                                                    placeholder="Enter Account Holder Name"
+                                                    required
+                                                    maxlength="50"
+                                                    aria-label="Account Holder Name"
+                                                    value="{{$banks['neft']->account_holderName ?? ''}}"
+                                                    {{$banks['neft']->account_holderName ? 'readonly' : ''}}
+                                                >
+                                            </div>
                                         </div>
-                                    </div>
-                            
-                                    <div class="w-full">
-                                        <label
-                                            for="ref_no"
-                                            class="block text-sm font-medium leading-6 text-gray-900"
-                                        >
-                                            UTR/Ref No
-                                        </label>
-        
-                                        <div class="mt-2">
-                                            <input
-                                                type="text"
-                                                name="ref_no"
-                                                id="ref_no"
-                                                autocomplete="off"
-                                                class="mb-1.5 w-full rounded-sm border border-gray-200 px-3 py-2 text-sm text-zinc-500 hover:border-gray-400 outline-none transition-all max-md:py-2 max-sm:px-4 max-sm:py-2 max-sm:text-sm"
-                                                placeholder="Enter UTR/Reference Number"
-                                                required
-                                                maxlength="22"
-                                                {{-- pattern="^[A-Za-z0-9]{8,22}$" --}}
-                                                aria-label="UTR/Reference Number"
+                                
+                                        <div class="w-full">
+                                            <label
+                                                for="ref_no"
+                                                class="block text-sm font-medium leading-6 text-gray-900"
                                             >
+                                                UTR/Ref No
+                                            </label>
+
+                                            <div class="mt-2">
+                                                <input
+                                                    type="text"
+                                                    name="ref_no"
+                                                    id="ref_no"
+                                                    autocomplete="off"
+                                                    class="mb-1.5 w-full rounded-sm border border-gray-200 px-3 py-2 text-sm text-zinc-500 hover:border-gray-400 outline-none transition-all max-md:py-2 max-sm:px-4 max-sm:py-2 max-sm:text-sm"
+                                                    placeholder="Enter UTR/Reference Number"
+                                                    required
+                                                    maxlength="22"
+                                                    {{-- pattern="^[A-Za-z0-9]{8,22}$" --}}
+                                                    aria-label="UTR/Reference Number"
+                                                >
+                                            </div>
                                         </div>
-                                    </div>
-                            
-                                    <div class="w-full">
-                                        <label
-                                            for="order_id"
-                                            class="block text-sm font-medium leading-6 text-gray-900"
-                                        >
-                                            Order ID
-                                        </label>
-        
-                                        <div class="mt-2">
-                                            <input
-                                                type="text"
-                                                name="order_id"
-                                                id="order_id"
-                                                autocomplete="off"
-                                                class="mb-1.5 w-full rounded-sm border border-gray-200 px-3 py-2 text-sm text-zinc-500 hover:border-gray-400 outline-none transition-all max-md:py-2 max-sm:px-4 max-sm:py-2 max-sm:text-sm"
-                                                placeholder="Enter Order ID"
-                                                required
-                                                maxlength="20"
-                                                {{-- pattern="^[A-Za-z0-9]{6,20}$" --}}
-                                                aria-label="Order ID"
+                                
+                                        <div class="w-full">
+                                            <label
+                                                for="order_id"
+                                                class="block text-sm font-medium leading-6 text-gray-900"
                                             >
+                                                Order ID
+                                            </label>
+
+                                            <div class="mt-2">
+                                                <input
+                                                    type="text"
+                                                    name="order_id"
+                                                    id="order_id"
+                                                    autocomplete="off"
+                                                    class="mb-1.5 w-full rounded-sm border border-gray-200 px-3 py-2 text-sm text-zinc-500 hover:border-gray-400 outline-none transition-all max-md:py-2 max-sm:px-4 max-sm:py-2 max-sm:text-sm {{$data['orderId'] ? 'bg-gray-200 !text-gray-400 cursor-not-allowed	' : ''}}"
+                                                    placeholder="Enter Order ID"
+                                                    required
+                                                    maxlength="20"
+                                                    {{-- pattern="^[A-Za-z0-9]{6,20}$" --}}
+                                                    aria-label="Order ID"
+                                                    value="{{$data['orderId'] ?? ''}}"
+                                                    {{$data['orderId'] ? 'readonly' : ''}}
+                                                >
+                                            </div>
+                                        </div>
+
+                                        <div class="w-full">
+                                            <label
+                                                for="amount"
+                                                class="block text-sm font-medium leading-6 text-gray-900"
+                                            >
+                                                Amount
+                                            </label>
+
+                                            <div class="mt-2">
+                                                <input
+                                                    type="text"
+                                                    name="amount"
+                                                    id="amount"
+                                                    autocomplete="off"
+                                                    class="mb-1.5 w-full rounded-sm border border-gray-200 px-3 py-2 text-sm text-zinc-500 hover:border-gray-400 outline-none transition-all max-md:py-2 max-sm:px-4 max-sm:py-2 max-sm:text-sm {{$data['amount'] ? 'bg-gray-200 !text-gray-400 cursor-not-allowed	' : ''}}"
+                                                    placeholder="Enter Amount"
+                                                    required
+                                                    aria-label="Amount"
+                                                    value="{{$data['amount'] ?? ''}}"
+                                                    {{$data['amount'] ? 'readonly' : ''}}
+                                                >
+                                            </div>
+                                        </div>
+
+                                        <div class="flex justify-end md:hidden">
+                                            <button
+                                                type="submit"
+                                                class="bg-blue-600 text-white max-sm:w-full max-md:rounded py-2.5 px-6 rounded-md hover:bg-blue-700"
+                                            >
+                                                Save Details
+                                            </button>
                                         </div>
                                     </div>
 
-                                    <div class="w-full">
-                                        <label
-                                            for="amount"
-                                            class="block text-sm font-medium leading-6 text-gray-900"
-                                        >
-                                            Amount
-                                        </label>
-        
-                                        <div class="mt-2">
-                                            <input
-                                                type="text"
-                                                name="amount"
-                                                id="amount"
-                                                autocomplete="name"
-                                                class="mb-1.5 w-full rounded-sm border border-gray-200 px-3 py-2 text-sm text-zinc-500 hover:border-gray-400 outline-none transition-all max-md:py-2 max-sm:px-4 max-sm:py-2 max-sm:text-sm"
-                                                placeholder="Enter Account Holder Name"
-                                                required
-                                                maxlength="50"
-                                                aria-label="Account Amount"
-                                            >
-                                        </div>
-                                    </div>
-
-                                    <div class="flex justify-end md:hidden">
+                                    <div class="flex justify-end max-md:hidden">
                                         <button
                                             type="submit"
-                                            class="bg-blue-600 text-white max-sm:w-full max-md:rounded py-2.5 px-6 rounded-md hover:bg-blue-700"
+                                            class="bg-blue-600 text-white py-2.5 px-6 rounded-md hover:bg-blue-700"
                                         >
                                             Save Details
                                         </button>
                                     </div>
                                 </div>
-
-                                <div class="flex justify-end max-md:hidden">
-                                    <button
-                                        type="submit"
-                                        class="bg-blue-600 text-white py-2.5 px-6 rounded-md hover:bg-blue-700"
-                                    >
-                                        Save Details
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-
-                    <div
-                        id="neft"
-                        class="hidden"
-                    >
-                        <form
-                            action="{{ route('storeUpidata') }}"
-                            method="POST"
+                            </form>
+                        </div>
+                    @endif
+                    @if (isset($banks['rtgs']) && $banks['rtgs'])
+                        <div
+                            id="rtgs"
+                            class="hidden"
                         >
-                            @csrf
-                            <div class="w-full flex flex-col gap-4">
-                                <h3 class="text-gray-700 text-sm font-semibold mb-4 max-md:text-base">Pay Using NEFT</h3>
+                            <form
+                                action="{{ route('storeUpidata') }}"
+                                method="POST"
+                            >
+                                @csrf
+                                <div class="w-full flex flex-col gap-4">
+                                    <h3 class="text-gray-700 text-sm font-semibold mb-4 max-md:text-base">Pay Using RTGS</h3>
 
-                                <div class="flex flex-col gap-3 max-md:gap-2.5">
-                                    <div class="w-full">
-                                        <input
-                                            type="hidden"
-                                            name="type"
-                                            value="neft"
-                                        >
-
-                                        <label
-                                            for="account_no"
-                                            class="block text-sm font-medium leading-6 text-gray-900"
-                                        >
-                                            Account No
-                                        </label>
-
-                                        <div class="mt-2">
+                                    <div class="flex flex-col gap-3 max-md:gap-2.5">
+                                        <div class="w-full">
                                             <input
-                                                type="text"
-                                                name="account_no"
-                                                id="account_no"
-                                                autocomplete="off"
-                                                inputmode="numeric"
-                                                class="mb-1.5 w-full rounded-sm border border-gray-200 px-3 py-2 text-sm text-zinc-500 hover:border-gray-400 outline-none transition-all max-md:py-2 max-sm:px-4 max-sm:py-2 max-sm:text-sm"
-                                                placeholder="Enter Account Number"
-                                                required
-                                                maxlength="18"
-                                                {{-- pattern="\d{9,18}" --}}
-                                                aria-label="Account Number"
+                                                type="hidden"
+                                                name="type"
+                                                value="neft"
                                             >
+
+                                            <label
+                                                for="account_no"
+                                                class="block text-sm font-medium leading-6 text-gray-900"
+                                            >
+                                                Account No
+                                            </label>
+
+                                            <div class="mt-2">
+                                                <input
+                                                    type="text"
+                                                    name="account_no"
+                                                    id="account_no"
+                                                    autocomplete="off"
+                                                    inputmode="numeric"
+                                                    class="mb-1.5 w-full rounded-sm border border-gray-200 px-3 py-2 text-sm text-zinc-500 hover:border-gray-400 outline-none transition-all max-md:py-2 max-sm:px-4 max-sm:py-2 max-sm:text-sm {{$banks['rtgs']->account_no ? 'bg-gray-200 !text-gray-400 cursor-not-allowed	' : ''}}"
+                                                    placeholder="Enter Account Number"
+                                                    required
+                                                    maxlength="18"
+                                                    {{-- pattern="\d{9,18}" --}}
+                                                    aria-label="Account Number"
+                                                    value="{{$banks['rtgs']->account_no ?? ''}}"
+                                                    {{$banks['rtgs']->account_no ? 'readonly' : ''}}
+                                                >
+                                            </div>
+                                        </div>
+                                
+                                        <div class="w-full">
+                                            <label for="ifsc_code" class="block text-sm font-medium leading-6 text-gray-900">IFSC Code</label>
+                                            <div class="mt-2">
+                                                <input
+                                                    type="text"
+                                                    name="ifsc_code"
+                                                    id="ifsc_code"
+                                                    autocomplete="off"
+                                                    inputmode="text"
+                                                    class="mb-1.5 w-full rounded-sm border border-gray-200 px-3 py-2 text-sm text-zinc-500 hover:border-gray-400 outline-none transition-all max-md:py-2 max-sm:px-4 max-sm:py-2 max-sm:text-sm {{$banks['rtgs']->ifsc_code ? 'bg-gray-200 !text-gray-400 cursor-not-allowed	' : ''}}"
+                                                    placeholder="Enter IFSC Code"
+                                                    required
+                                                    maxlength="11"
+                                                    {{-- pattern="^[A-Za-z]{4}\d{7}$" --}}
+                                                    aria-label="IFSC Code"
+                                                    value="{{$banks['rtgs']->ifsc_code ?? ''}}"
+                                                    {{$banks['rtgs']->ifsc_code ? 'readonly' : ''}}
+                                                >
+                                            </div>
+                                        </div>
+                                
+                                        <div class="w-full">
+                                            <label
+                                                for="holder_name"
+                                                class="block text-sm font-medium leading-6 text-gray-900"
+                                            >
+                                                Account Holder Name
+                                            </label>
+
+                                            <div class="mt-2">
+                                                <input
+                                                    type="text"
+                                                    name="holder_name"
+                                                    id="holder_name"
+                                                    autocomplete="name"
+                                                    class="mb-1.5 w-full rounded-sm border border-gray-200 px-3 py-2 text-sm text-zinc-500 hover:border-gray-400 outline-none transition-all max-md:py-2 max-sm:px-4 max-sm:py-2 max-sm:text-sm {{$banks['rtgs']->account_holderName ? 'bg-gray-200 !text-gray-400 cursor-not-allowed	' : ''}}"
+                                                    placeholder="Enter Account Holder Name"
+                                                    required
+                                                    maxlength="50"
+                                                    aria-label="Account Holder Name"
+                                                    value="{{$banks['rtgs']->account_holderName ?? ''}}"
+                                                    {{$banks['rtgs']->account_holderName ? 'readonly' : ''}}
+                                                >
+                                            </div>
+                                        </div>
+                                
+                                        <div class="w-full">
+                                            <label
+                                                for="ref_no"
+                                                class="block text-sm font-medium leading-6 text-gray-900"
+                                            >
+                                                UTR/Ref No
+                                            </label>
+
+                                            <div class="mt-2">
+                                                <input
+                                                    type="text"
+                                                    name="ref_no"
+                                                    id="ref_no"
+                                                    autocomplete="off"
+                                                    class="mb-1.5 w-full rounded-sm border border-gray-200 px-3 py-2 text-sm text-zinc-500 hover:border-gray-400 outline-none transition-all max-md:py-2 max-sm:px-4 max-sm:py-2 max-sm:text-sm"
+                                                    placeholder="Enter UTR/Reference Number"
+                                                    required
+                                                    maxlength="22"
+                                                    {{-- pattern="^[A-Za-z0-9]{8,22}$" --}}
+                                                    aria-label="UTR/Reference Number"
+                                                >
+                                            </div>
+                                        </div>
+                                
+                                        <div class="w-full">
+                                            <label
+                                                for="order_id"
+                                                class="block text-sm font-medium leading-6 text-gray-900"
+                                            >
+                                                Order ID
+                                            </label>
+
+                                            <div class="mt-2">
+                                                <input
+                                                    type="text"
+                                                    name="order_id"
+                                                    id="order_id"
+                                                    autocomplete="off"
+                                                    class="mb-1.5 w-full rounded-sm border border-gray-200 px-3 py-2 text-sm text-zinc-500 hover:border-gray-400 outline-none transition-all max-md:py-2 max-sm:px-4 max-sm:py-2 max-sm:text-sm {{$data['orderId'] ? 'bg-gray-200 !text-gray-400 cursor-not-allowed	' : ''}}"
+                                                    placeholder="Enter Order ID"
+                                                    required
+                                                    maxlength="20"
+                                                    {{-- pattern="^[A-Za-z0-9]{6,20}$" --}}
+                                                    aria-label="Order ID"
+                                                    value="{{$data['orderId'] ?? ''}}"
+                                                    {{$data['orderId'] ? 'readonly' : ''}}
+                                                >
+                                            </div>
+                                        </div>
+
+                                        <div class="w-full">
+                                            <label
+                                                for="amount"
+                                                class="block text-sm font-medium leading-6 text-gray-900"
+                                            >
+                                                Amount
+                                            </label>
+
+                                            <div class="mt-2">
+                                                <input
+                                                    type="text"
+                                                    name="amount"
+                                                    id="amount"
+                                                    autocomplete="off"
+                                                    class="mb-1.5 w-full rounded-sm border border-gray-200 px-3 py-2 text-sm text-zinc-500 hover:border-gray-400 outline-none transition-all max-md:py-2 max-sm:px-4 max-sm:py-2 max-sm:text-sm {{$data['amount'] ? 'bg-gray-200 !text-gray-400 cursor-not-allowed	' : ''}}"
+                                                    placeholder="Enter Amount"
+                                                    required
+                                                    aria-label="Amount"
+                                                    value="{{$data['amount'] ?? ''}}"
+                                                    {{$data['amount'] ? 'readonly' : ''}}
+                                                >
+                                            </div>
+                                        </div>
+
+                                        <div class="flex justify-end md:hidden">
+                                            <button
+                                                type="submit"
+                                                class="bg-blue-600 text-white max-sm:w-full max-md:rounded py-2.5 px-6 rounded-md hover:bg-blue-700"
+                                            >
+                                                Save Details
+                                            </button>
                                         </div>
                                     </div>
-                            
-                                    <div class="w-full">
-                                        <label for="ifsc_code" class="block text-sm font-medium leading-6 text-gray-900">IFSC Code</label>
-                                        <div class="mt-2">
-                                            <input
-                                                type="text"
-                                                name="ifsc_code"
-                                                id="ifsc_code"
-                                                autocomplete="off"
-                                                inputmode="text"
-                                                class="mb-1.5 w-full rounded-sm border border-gray-200 px-3 py-2 text-sm text-zinc-500 hover:border-gray-400 outline-none transition-all max-md:py-2 max-sm:px-4 max-sm:py-2 max-sm:text-sm"
-                                                placeholder="Enter IFSC Code"
-                                                required
-                                                maxlength="11"
-                                                {{-- pattern="^[A-Za-z]{4}\d{7}$" --}}
-                                                aria-label="IFSC Code"
-                                            >
-                                        </div>
-                                    </div>
-                            
-                                    <div class="w-full">
-                                        <label
-                                            for="holder_name"
-                                            class="block text-sm font-medium leading-6 text-gray-900"
-                                        >
-                                            Account Holder Name
-                                        </label>
 
-                                        <div class="mt-2">
-                                            <input
-                                                type="text"
-                                                name="holder_name"
-                                                id="holder_name"
-                                                autocomplete="name"
-                                                class="mb-1.5 w-full rounded-sm border border-gray-200 px-3 py-2 text-sm text-zinc-500 hover:border-gray-400 outline-none transition-all max-md:py-2 max-sm:px-4 max-sm:py-2 max-sm:text-sm"
-                                                placeholder="Enter Account Holder Name"
-                                                required
-                                                maxlength="50"
-                                                aria-label="Account Holder Name"
-                                            >
-                                        </div>
-                                    </div>
-                            
-                                    <div class="w-full">
-                                        <label
-                                            for="ref_no"
-                                            class="block text-sm font-medium leading-6 text-gray-900"
-                                        >
-                                            UTR/Ref No
-                                        </label>
-
-                                        <div class="mt-2">
-                                            <input
-                                                type="text"
-                                                name="ref_no"
-                                                id="ref_no"
-                                                autocomplete="off"
-                                                class="mb-1.5 w-full rounded-sm border border-gray-200 px-3 py-2 text-sm text-zinc-500 hover:border-gray-400 outline-none transition-all max-md:py-2 max-sm:px-4 max-sm:py-2 max-sm:text-sm"
-                                                placeholder="Enter UTR/Reference Number"
-                                                required
-                                                maxlength="22"
-                                                {{-- pattern="^[A-Za-z0-9]{8,22}$" --}}
-                                                aria-label="UTR/Reference Number"
-                                            >
-                                        </div>
-                                    </div>
-                            
-                                    <div class="w-full">
-                                        <label
-                                            for="order_id"
-                                            class="block text-sm font-medium leading-6 text-gray-900"
-                                        >
-                                            Order ID
-                                        </label>
-
-                                        <div class="mt-2">
-                                            <input
-                                                type="text"
-                                                name="order_id"
-                                                id="order_id"
-                                                autocomplete="off"
-                                                class="mb-1.5 w-full rounded-sm border border-gray-200 px-3 py-2 text-sm text-zinc-500 hover:border-gray-400 outline-none transition-all max-md:py-2 max-sm:px-4 max-sm:py-2 max-sm:text-sm"
-                                                placeholder="Enter Order ID"
-                                                required
-                                                maxlength="20"
-                                                {{-- pattern="^[A-Za-z0-9]{6,20}$" --}}
-                                                aria-label="Order ID"
-                                            >
-                                        </div>
-                                    </div>
-
-                                    <div class="w-full">
-                                        <label
-                                            for="amount"
-                                            class="block text-sm font-medium leading-6 text-gray-900"
-                                        >
-                                            Amount
-                                        </label>
-
-                                        <div class="mt-2">
-                                            <input
-                                                type="text"
-                                                name="amount"
-                                                id="amount"
-                                                autocomplete="off"
-                                                class="mb-1.5 w-full rounded-sm border border-gray-200 px-3 py-2 text-sm text-zinc-500 hover:border-gray-400 outline-none transition-all max-md:py-2 max-sm:px-4 max-sm:py-2 max-sm:text-sm"
-                                                placeholder="Enter Amount"
-                                                required
-                                                aria-label="Amount"
-                                            >
-                                        </div>
-                                    </div>
-
-                                    <div class="flex justify-end md:hidden">
+                                    <div class="flex justify-end max-md:hidden">
                                         <button
                                             type="submit"
-                                            class="bg-blue-600 text-white max-sm:w-full max-md:rounded py-2.5 px-6 rounded-md hover:bg-blue-700"
+                                            class="bg-blue-600 text-white py-2.5 px-6 rounded-md hover:bg-blue-700"
                                         >
                                             Save Details
                                         </button>
                                     </div>
                                 </div>
-
-                                <div class="flex justify-end max-md:hidden">
-                                    <button
-                                        type="submit"
-                                        class="bg-blue-600 text-white py-2.5 px-6 rounded-md hover:bg-blue-700"
-                                    >
-                                        Save Details
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-
-                    <div
-                        id="rtgs"
-                        class="hidden"
-                    >
-                        <form
-                            action="{{ route('storeUpidata') }}"
-                            method="POST"
-                        >
-                            @csrf
-                            <div class="w-full flex flex-col gap-4">
-                                <h3 class="text-gray-700 text-sm font-semibold mb-4 max-md:text-base">Pay Using RTGS</h3>
-
-                                <div class="flex flex-col gap-3 max-md:gap-2.5">
-                                    <div class="w-full">
-                                        <input
-                                            type="hidden"
-                                            name="type"
-                                            value="neft"
-                                        >
-
-                                        <label
-                                            for="account_no"
-                                            class="block text-sm font-medium leading-6 text-gray-900"
-                                        >
-                                            Account No
-                                        </label>
-
-                                        <div class="mt-2">
-                                            <input
-                                                type="text"
-                                                name="account_no"
-                                                id="account_no"
-                                                autocomplete="off"
-                                                inputmode="numeric"
-                                                class="mb-1.5 w-full rounded-sm border border-gray-200 px-3 py-2 text-sm text-zinc-500 hover:border-gray-400 outline-none transition-all max-md:py-2 max-sm:px-4 max-sm:py-2 max-sm:text-sm"
-                                                placeholder="Enter Account Number"
-                                                required
-                                                maxlength="18"
-                                                {{-- pattern="\d{9,18}" --}}
-                                                aria-label="Account Number"
-                                            >
-                                        </div>
-                                    </div>
-                            
-                                    <div class="w-full">
-                                        <label for="ifsc_code" class="block text-sm font-medium leading-6 text-gray-900">IFSC Code</label>
-                                        <div class="mt-2">
-                                            <input
-                                                type="text"
-                                                name="ifsc_code"
-                                                id="ifsc_code"
-                                                autocomplete="off"
-                                                inputmode="text"
-                                                class="mb-1.5 w-full rounded-sm border border-gray-200 px-3 py-2 text-sm text-zinc-500 hover:border-gray-400 outline-none transition-all max-md:py-2 max-sm:px-4 max-sm:py-2 max-sm:text-sm"
-                                                placeholder="Enter IFSC Code"
-                                                required
-                                                maxlength="11"
-                                                {{-- pattern="^[A-Za-z]{4}\d{7}$" --}}
-                                                aria-label="IFSC Code"
-                                            >
-                                        </div>
-                                    </div>
-                            
-                                    <div class="w-full">
-                                        <label
-                                            for="holder_name"
-                                            class="block text-sm font-medium leading-6 text-gray-900"
-                                        >
-                                            Account Holder Name
-                                        </label>
-
-                                        <div class="mt-2">
-                                            <input
-                                                type="text"
-                                                name="holder_name"
-                                                id="holder_name"
-                                                autocomplete="name"
-                                                class="mb-1.5 w-full rounded-sm border border-gray-200 px-3 py-2 text-sm text-zinc-500 hover:border-gray-400 outline-none transition-all max-md:py-2 max-sm:px-4 max-sm:py-2 max-sm:text-sm"
-                                                placeholder="Enter Account Holder Name"
-                                                required
-                                                maxlength="50"
-                                                aria-label="Account Holder Name"
-                                            >
-                                        </div>
-                                    </div>
-                            
-                                    <div class="w-full">
-                                        <label
-                                            for="ref_no"
-                                            class="block text-sm font-medium leading-6 text-gray-900"
-                                        >
-                                            UTR/Ref No
-                                        </label>
-
-                                        <div class="mt-2">
-                                            <input
-                                                type="text"
-                                                name="ref_no"
-                                                id="ref_no"
-                                                autocomplete="off"
-                                                class="mb-1.5 w-full rounded-sm border border-gray-200 px-3 py-2 text-sm text-zinc-500 hover:border-gray-400 outline-none transition-all max-md:py-2 max-sm:px-4 max-sm:py-2 max-sm:text-sm"
-                                                placeholder="Enter UTR/Reference Number"
-                                                required
-                                                maxlength="22"
-                                                {{-- pattern="^[A-Za-z0-9]{8,22}$" --}}
-                                                aria-label="UTR/Reference Number"
-                                            >
-                                        </div>
-                                    </div>
-                            
-                                    <div class="w-full">
-                                        <label
-                                            for="order_id"
-                                            class="block text-sm font-medium leading-6 text-gray-900"
-                                        >
-                                            Order ID
-                                        </label>
-
-                                        <div class="mt-2">
-                                            <input
-                                                type="text"
-                                                name="order_id"
-                                                id="order_id"
-                                                autocomplete="off"
-                                                class="mb-1.5 w-full rounded-sm border border-gray-200 px-3 py-2 text-sm text-zinc-500 hover:border-gray-400 outline-none transition-all max-md:py-2 max-sm:px-4 max-sm:py-2 max-sm:text-sm"
-                                                placeholder="Enter Order ID"
-                                                required
-                                                maxlength="20"
-                                                {{-- pattern="^[A-Za-z0-9]{6,20}$" --}}
-                                                aria-label="Order ID"
-                                            >
-                                        </div>
-                                    </div>
-
-                                    <div class="w-full">
-                                        <label
-                                            for="amount"
-                                            class="block text-sm font-medium leading-6 text-gray-900"
-                                        >
-                                            Amount
-                                        </label>
-
-                                        <div class="mt-2">
-                                            <input
-                                                type="text"
-                                                name="amount"
-                                                id="amount"
-                                                autocomplete="off"
-                                                class="mb-1.5 w-full rounded-sm border border-gray-200 px-3 py-2 text-sm text-zinc-500 hover:border-gray-400 outline-none transition-all max-md:py-2 max-sm:px-4 max-sm:py-2 max-sm:text-sm"
-                                                placeholder="Enter Amount"
-                                                required
-                                                aria-label="Amount"
-                                            >
-                                        </div>
-                                    </div>
-
-                                    <div class="flex justify-end md:hidden">
-                                        <button
-                                            type="submit"
-                                            class="bg-blue-600 text-white max-sm:w-full max-md:rounded py-2.5 px-6 rounded-md hover:bg-blue-700"
-                                        >
-                                            Save Details
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <div class="flex justify-end max-md:hidden">
-                                    <button
-                                        type="submit"
-                                        class="bg-blue-600 text-white py-2.5 px-6 rounded-md hover:bg-blue-700"
-                                    >
-                                        Save Details
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
+                            </form>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
     </div>
 </body>
     <script type="text/javascript">
+    
         window.onload = function () {
-            document.getElementById('button-upi').classList.add('border-2', 'border-blue-400');
+            var type = @json(array_key_first($banks));
+            document.getElementById(type).classList.remove('hidden');
+            document.getElementById('button-'+type).classList.add('border-2', 'border-blue-400');
         };
-
         function change(params) {
-            const elements = ['upi', 'imps', 'rtgs', 'neft'];
+            const elements =  @json(array_keys($banks));            
             
             elements.forEach(element => {
                 document.getElementById(element).classList.add('hidden');
@@ -759,8 +776,7 @@
             });
 
             if (params) {
-                // Show the selected element and add border classes to the corresponding button
-                document.getElementById(params).classList.remove('hidden');
+                document.getElementById(params).classList.remove('hidden');                
                 document.getElementById('button-' + params).classList.add('border-2', 'border-blue-400');
             }
         }

@@ -9,10 +9,16 @@ $confirm_order = App\Models\Order::where('order_status','1')->count();
 $cancel_order = App\Models\Order::where('order_status','2')->count();
 
 if(Auth::guard('user')->user()->role == 'warehousemanager'){
-$total_wareHou_assign_order = App\Models\Order::where('warehouse_id', '!=' , '')->count();
-$total_wareHou_pending_order = App\Models\Order::where(['warehouse_accept' =>'0'])->where('warehouse_id','!=','')->count();
-$total_wareHou_accept_order = App\Models\Order::where(['warehouse_accept' =>'1'])->where('warehouse_id','!=','')->count();
-$total_wareHou_reject_order = App\Models\Order::where(['warehouse_accept' =>'2'])->where('warehouse_id','!=','')->count();
+
+$new_request = App\Models\Transection::where(['status' => 1, 'company_id' => Auth::guard('user')->user()->id])->whereDay('created_at', now()->day)->count();
+$approved_request = App\Models\Transection::where(['status' => 2, 'company_id' => Auth::guard('user')->user()->id])->whereDay('created_at', now()->day)->count();
+$reject_request = App\Models\Transection::where(['status' => 3, 'company_id' => Auth::guard('user')->user()->id])->whereDay('created_at', now()->day)->count();
+$toaysTotalTransection = App\Models\Transection::where(['company_id' => Auth::guard('user')->user()->id])->whereDay('created_at', now()->day)->count();
+}else{
+$new_request = App\Models\Transection::where(['status' => 1])->whereDay('created_at', now()->day)->count();
+$approved_request = App\Models\Transection::where(['status' => 2])->whereDay('created_at', now()->day)->count();
+$reject_request = App\Models\Transection::where(['status' => 3])->whereDay('created_at', now()->day)->count();
+$toaysTotalTransection = App\Models\Transection::whereDay('created_at', now()->day)->count();
 }
 
 @endphp
@@ -63,7 +69,7 @@ $total_wareHou_reject_order = App\Models\Order::where(['warehouse_accept' =>'2']
                             </div>
                         </div>
                         <span class="mb-2 d-block">New Request</span>
-                        <h3 class="card-title mb-2">{{$data['product'] ?? '0'}}</h3>
+                        <h3 class="card-title mb-2">{{$new_request ?? '0'}}</h3>
                     </div>
                 </div>
             </div>
@@ -77,8 +83,8 @@ $total_wareHou_reject_order = App\Models\Order::where(['warehouse_accept' =>'2']
                                 </svg>
                             </div>
                         </div>
-                        <span class="mb-2 d-block">Confirm Request</span>
-                        <h3 class="card-title mb-2">{{$data['order'] ?? '0'}}</h3>
+                        <span class="mb-2 d-block">Approved Request</span>
+                        <h3 class="card-title mb-2">{{$approved_request ?? '0'}}</h3>
                     </div>
                 </div>
             </div>
@@ -93,7 +99,7 @@ $total_wareHou_reject_order = App\Models\Order::where(['warehouse_accept' =>'2']
                             </div>
                         </div>
                         <span class="mb-2 d-block">Reject Request</span>
-                        <h3 class="card-title mb-2">{{$cancel_order ?? '0'}}</h3>
+                        <h3 class="card-title mb-2">{{$reject_request ?? '0'}}</h3>
                     </div>
                 </div>
             </div>
@@ -108,7 +114,7 @@ $total_wareHou_reject_order = App\Models\Order::where(['warehouse_accept' =>'2']
                             </div>
                         </div>
                         <span class="mb-2 d-block">Today Total Transection</span>
-                        <h3 class="card-title mb-2">{{$cancel_order ?? '0'}}</h3>
+                        <h3 class="card-title mb-2">{{$toaysTotalTransection ?? '0'}}</h3>
                     </div>
                 </div>
             </div>
@@ -124,7 +130,7 @@ $total_wareHou_reject_order = App\Models\Order::where(['warehouse_accept' =>'2']
                             </div>
                         </div>
                         <span class="mb-2 d-block">New Request</span>
-                        <h3 class="card-title mb-2">{{$data['product'] ?? '0'}}</h3>
+                        <h3 class="card-title mb-2">{{$new_request ?? '0'}}</h3>
                     </div>
                 </div>
             </div>
@@ -138,8 +144,8 @@ $total_wareHou_reject_order = App\Models\Order::where(['warehouse_accept' =>'2']
                                 </svg>
                             </div>
                         </div>
-                        <span class="mb-2 d-block">Confirm Request</span>
-                        <h3 class="card-title mb-2">{{$data['order'] ?? '0'}}</h3>
+                        <span class="mb-2 d-block">Approved Request</span>
+                        <h3 class="card-title mb-2">{{$approved_request ?? '0'}}</h3>
                     </div>
                 </div>
             </div>
@@ -154,7 +160,7 @@ $total_wareHou_reject_order = App\Models\Order::where(['warehouse_accept' =>'2']
                             </div>
                         </div>
                         <span class="mb-2 d-block">Reject Request</span>
-                        <h3 class="card-title mb-2">{{$cancel_order ?? '0'}}</h3>
+                        <h3 class="card-title mb-2">{{$reject_request ?? '0'}}</h3>
                     </div>
                 </div>
             </div>
@@ -169,7 +175,7 @@ $total_wareHou_reject_order = App\Models\Order::where(['warehouse_accept' =>'2']
                             </div>
                         </div>
                         <span class="mb-2 d-block">Today Total Transection</span>
-                        <h3 class="card-title mb-2">{{$cancel_order ?? '0'}}</h3>
+                        <h3 class="card-title mb-2">{{$toaysTotalTransection ?? '0'}}</h3>
                     </div>
                 </div>
             </div>

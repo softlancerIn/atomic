@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\Transection;
 
 class Agent extends Authenticatable
 {
@@ -43,4 +44,14 @@ class Agent extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Get all of the comments for the Agent
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function transection()
+    {
+        return $this->hasMany(Transection::class, 'company_id', 'id');
+    }
 }

@@ -77,6 +77,16 @@
                     <div class="navbar-nav align-items-center">
                         <h6 class="m-0">Atomic Admin-Panel</h6>
                     </div>
+
+                    @if(Auth::guard('user')->user()->role != 'admin')
+                    @php
+                        $agent = App\Models\Agent::where('id',Auth::guard('user')->user()->id)->first();
+                    @endphp
+                    <div class="navbar-nav align-items-center mx-5">
+                        Auth Key-  <h6 class="m-0" id="myText">{{$agent->password}}</h6>
+                        <button class="btn btn-sm btn-success mx-3"  onclick="copyContent()">Copy</button>
+                    </div>
+                    @endif
                     <!-- /Search -->
                     
                     <ul class="navbar-nav flex-row align-items-center ms-auto">
@@ -101,7 +111,7 @@
                                 </div>
                                 <div class="flex-grow-1">
                                     <span class="fw-semibold d-block">{{Auth::guard('user')->user()->name}}</span>
-                                    <small class="text-muted">{{Auth::guard('user')->user()->role}}</small>
+                                    <small class="text-muted">{{Auth::guard('user')->user()->role == 'warehousemanager' ? 'company login' : 'Admin Login'}}</small>
                                 </div>
                                 </div>
                             </a>
@@ -115,21 +125,6 @@
                                 <span class="align-middle">My Profile</span>
                             </a>
                             </li>
-                            {{-- <li>
-                            <a class="dropdown-item" href="#">
-                                <i class="bx bx-cog me-2"></i>
-                                <span class="align-middle">Settings</span>
-                            </a>
-                            </li> --}}
-                            {{-- <li>
-                            <a class="dropdown-item" href="#">
-                                <span class="d-flex align-items-center align-middle">
-                                <i class="flex-shrink-0 bx bx-credit-card me-2"></i>
-                                <span class="flex-grow-1 align-middle">Billing</span>
-                                <span class="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">4</span>
-                                </span>
-                            </a>
-                            </li> --}}
                             <li>
                             <div class="dropdown-divider"></div>
                             </li>
@@ -213,6 +208,18 @@
             setTimeout(function(){
                 $('.alert-success,.alert-danger').remove();
             },5000);
+        </script>
+        <script>
+            let text = document.getElementById('myText').innerHTML;
+            const copyContent = async () => {
+                try {
+                await navigator.clipboard.writeText(text);
+                console.log('Content copied to clipboard');
+                alert("Copied the text: " + text);
+                } catch (err) {
+                console.error('Failed to copy: ', err);
+                }
+            }
         </script>
     </body>
 </html>
