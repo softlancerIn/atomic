@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Traits\CommonTrait;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Carbon;
 
 use App\Models\{
     Users,
@@ -23,6 +23,7 @@ use App\Models\{
     Industry,
     ContactUs,
     Warehouse,
+    Transection,
     HomeSlider,
     BankDetails,
     ProductImage,
@@ -64,6 +65,11 @@ class AdminController extends Controller
     public function login(Request $request)
     {
         $user_check = Agent::where('email', $request->email)->first();
+        if ($user_check->status == '0') {
+            return redirect()->back()->with('error', 'You are not able to login please connect with admin!');
+        }
+
+
         if (empty($user_check)) {
             return redirect()->back()->with('error', 'Invalid Credentials!');
         } else {
@@ -160,10 +166,41 @@ class AdminController extends Controller
                 'email' => 'required|email',
                 'status' => 'required',
             ]);
+
+            if ($request->payment_type == '1') {
+                $validatedata = $request->validate([
+                    'company_id' => 'required',
+                    'payment_type' => 'required',
+                    'bank_name' => 'required',
+                    'branch_name' => 'required',
+                    'branch_code' => 'required',
+                    'account_no' => 'required',
+                    'account_holderName' => 'required',
+                    'ifsc_code' => 'required',
+                    'aadhar_no' => 'required',
+                    'account_limit' => 'required',
+                    'pincode' => 'required',
+                    'city' => 'required',
+                    'state' => 'required',
+                    'country' => 'required',
+                    'bank_address' => 'required',
+                    'mobile_no' => 'required',
+                    'email' => 'required|email',
+                    'status' => 'required',
+                    'upi_id' => 'required',
+                ]);
+            }
+
+            $checkAreadyExist = BankDetails::where(['company_id' => $request->company_id, 'payment_type' => $request->payment_type, 'status' => '1'])->first();
+
+            if (!empty($checkAreadyExist)) {
+                $validatedata['status'] = '0';
+            }
+
             if ($request->has('id')) {
-                $add = BankDetails::create($validatedata);
-            } else {
                 $add = BankDetails::where('id', $request->id)->update($validatedata);
+            } else {
+                $add = BankDetails::create($validatedata);
             }
             return redirect()->route('bank_list')->with('success', 'Data Added Successfully!');
         }
@@ -189,6 +226,124 @@ class AdminController extends Controller
         $data['bankData'] = BankDetails::where('id', $id)->first();
         return view('Admin.Bank.edit', compact('data'));
     }
+
+    public function globalStatusUpdate(Request $request)
+    {
+        $status = '1';
+        if ($request->status == '1') {
+            $status = '0';
+        }
+        switch ($request->type) {
+            case 'warehousemanager':
+                $agent = Agent::where('id', $request->id)->update([
+                    'status' => $status,
+                ]);
+                break;
+            case 'transection':
+                $category = Transection::where('id', $request->id)->update([
+                    'status' => $request->status,
+                ]);
+                break;
+            case 'bank':
+                $bankData = BankDetails::where('id', $request->id)->first();
+                if ($status == '0') {
+                    if ($bankData->payment_type == '1') {
+                        $payment_type = '1';
+                        $msg = "Can't inactive this data because no any upi is active for transection process!";
+                    } elseif ($bankData->payment_type == '2') {
+                        $payment_type = '2';
+                        $msg = "Can't inactive this data because no any RTGS is active for transection process!";
+                    } elseif ($bankData->payment_type == '3') {
+                        $payment_type = '3';
+                        $msg = "Can't inactive this data because no any NEFT is active for transection process!";
+                    } else {
+                        $payment_type = '4';
+                        $msg = "Can't inactive this data because no any IMPS is active for transection process!";
+                    }
+                    $again_check = BankDetails::where(['company_id' => $bankData->company_id, 'status' => '1', 'payment_type' => $payment_type])->where('id', '!=', $request->id)->first();
+                    if (empty($again_check)) {
+                        return response()->json(['status' => false, 'message' => $msg]);
+                    }
+                    $status = $status;
+                    $bank = BankDetails::where('id', $request->id)->update([
+                        'status' => $status,
+                    ]);
+
+                    $update = BankDetails::where(['company_id' => $bankData->company_id, 'payment_type' => $payment_type])->where('id', '!=', $request->id)->get();
+                    foreach ($update as $key => $value) {
+                        BankDetails::where('id', $value->id)->update([
+                            'status' => '1',
+                        ]);
+                    }
+                } else {
+                    if ($bankData->payment_type == '1') {
+                        $payment_type = '1';
+                        $msg = "Can't inactive this data because no any upi is active for transection process!";
+                    } elseif ($bankData->payment_type == '2') {
+                        $payment_type = '2';
+                        $msg = "Can't inactive this data because no any RTGS is active for transection process!";
+                    } elseif ($bankData->payment_type == '3') {
+                        $payment_type = '3';
+                        $msg = "Can't inactive this data because no any NEFT is active for transection process!";
+                    } else {
+                        $payment_type = '4';
+                        $msg = "Can't inactive this data because no any IMPS is active for transection process!";
+                    }
+
+                    $update = BankDetails::where(['id' => $request->id])->update([
+                        'status' => '1',
+                    ]);
+
+                    $again_check = BankDetails::where(['company_id' => $bankData->company_id, 'status' => '1', 'payment_type' => $payment_type])->where('id', '!=', $request->id)->first();
+
+                    if (!empty($again_check)) {
+                        $update = BankDetails::where(['company_id' => $bankData->company_id, 'status' => '1', 'payment_type' => $payment_type])->where('id', '!=', $request->id)->get();
+                        foreach ($update as $key => $value) {
+                            BankDetails::where('id', $value->id)->update([
+                                'status' => '0',
+                            ]);
+                        }
+                    }
+                }
+                break;
+
+            default:
+                # code...
+                break;
+        }
+
+        return response()->json(['status' => true, 'message' => 'Status Updated Successfully!']);
+    }
+
+
+    //===============Daily Commission ==================
+
+
+    public function getSetDailyCommission($request)
+    {
+        Transection::where('created_at',)->get();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public function allUsers(Request $request)
     {
@@ -401,61 +556,171 @@ class AdminController extends Controller
         return view('Admin.User.edit', compact('data'));
     }
 
+    //============================= Payment gateway new function ==============================//
 
     public function categoryList(Request $request, $type)
     {
         switch ($type) {
             case 'new':
                 $data['type'] = 'new';
-                $data['category_data'] = Category::where('type', '0')->paginate(20);
-                return view('Admin.Category.c_index', compact('data'));
+                $type = '1';
+
                 break;
             case 'approved':
                 $data['type'] = 'approved';
-                $data['category'] = Category::where(['type' => '0', 'status' => '1'])->get();
+                $type = '2';
 
-                if ($request->has('search')) {
-                    $data['category_data'] = Category::where('name', 'LIKE', $request->search . '%')->where('type', '1')->paginate(10);
-                } else {
-                    $data['category_data'] = Category::where('type', '1')->paginate(20);
-                }
-
-                foreach ($data['category_data'] as $item) {
-                    $cat_name = Category::where('id', $item->cat_id)->first();
-                    $item->category_name = $cat_name->name ?? '--';
-                }
-                return view('Admin.Category.c_index', compact('data'));
                 break;
             case 'reject':
                 $data['type'] = 'reject';
-                $data['category'] = Category::where(['type' => '1', 'status' => '1'])->get();
+                $type = '3';
 
-                if ($request->has('search')) {
-                    $data['category_data'] = Category::where('name', 'LIKE', $request->search . '%')->where('type', '2')->paginate(10);
-                } else {
-                    $data['category_data'] = Category::where('type', '2')->paginate(20);
-                }
-
-
-
-                foreach ($data['category_data'] as $item) {
-                    if (!empty($item->cat_id)) {
-                        $c1_cat_name = Category::where('id', $item->cat_id)->first();
-                        $item->c1_category_name = $c1_cat_name->name ?? '';
-                    } else {
-                        $item->c1_category_name = '';
-                    }
-                    if (!empty($c1_cat_name->cat_id)) {
-                        $cat_name = Category::where('id', $c1_cat_name->cat_id)->first();
-                        $item->category_name = $cat_name->name ?? '';
-                    } else {
-                        $item->category_name = '';
-                    }
-                }
-                return view('Admin.Category.c_index', compact('data'));
                 break;
         }
+
+        if (Auth::guard('user')->user()->role == 'admin') {
+            $data['category_data'] = Transection::where(['status' => $type])->paginate(20);
+            if ($request->has('search')) {
+                $data['category_data'] = Transection::where('ref_no', 'LIKE', $request->search . '%')->where(['status' => $type])->paginate(10);
+            }
+        } else {
+            $data['category_data'] = Transection::where(['status' => $type, 'company_id' => Auth::guard('user')->user()->id])->paginate(20);
+            if ($request->has('search')) {
+                $data['category_data'] = Transection::where('ref_no', 'LIKE', $request->search . '%')->where(['status' => $type, 'company_id' => Auth::guard('user')->user()->id])->paginate(10);
+            }
+        }
+
+        return view('Admin.Category.c_index', compact('data'));
     }
+
+    public function exportTransection(Request $request, $type)
+    {
+        $startDate = Carbon::parse($request->start_date);
+        $endDate = Carbon::parse($request->end_time);
+
+        $transectionData = Transection::where('status', '1')->whereBetween('created_at', [$startDate, $endDate])->get();
+        if (empty($transectionData) || sizeof($transectionData) < 1) {
+            return redirect()->back()->with('error', 'Data Not Found!');
+        }
+        $row = [
+            'order_id',
+            'transection_no',
+            'transection_date',
+            'amount',
+            'status'
+        ];
+
+        $dataRows  = [];
+
+        foreach ($transectionData as $key => $items) {
+            $dataRows[] = [
+                !empty($items->order_id) ? '"' . $items->order_id . '"' : '',
+                !empty($items->ref_no) ? '"' . $items->ref_no . '"' : '',
+                !empty($items->created_at) ? '"' . $items->created_at . '"' : '',
+                !empty($items->amount) ? '"' . $items->amount . '"' : '',
+                'Initiate',
+            ];
+        }
+        $dataToExport = array_merge([$row], $dataRows);
+        return $this->exportCSV($dataToExport, 'export-data-between-' . $request->start_date . '-' . $request->end_date, '', '');
+    }
+
+    public function sampleExportTransection($id)
+    {
+        $data = [
+            [
+                'order_id',
+                'transection_no',
+                'transection_date',
+                'amount',
+                'status'
+            ]
+        ];
+        return $this->exportCSV($data, 'sample-transection', '', '');
+    }
+
+    public function importTransection(Request $request, $id)
+    {
+        try {
+            if ($request->hasFile('csv_file')) {
+                $path = $request->file('csv_file')->getRealPath();
+
+                $extension = $request->file('csv_file')->getClientOriginalExtension();
+
+                if ($extension == 'csv' || $extension == 'xlsx') {
+                    $data = array_map('str_getcsv', file($path));
+                    $header = array_shift($data);
+                    foreach ($data as $key => $row) {
+                        if (!empty($row[0])) {
+
+                            if ($row[4] == 'approved') {
+                                $status = '2';
+                            } else if ($row[4] == 'reject') {
+                                $status = '3';
+                            } elseif ($row[4] == 'Initiate') {
+                                $status = '1';
+                            } else {
+                                return redirect()->back()->with('error', 'Check payment status carefully!');
+                            }
+
+                            $update = Transection::where('ref_no', $row[1])->update([
+                                'status' => $status,
+                            ]);
+                        }
+                    }
+
+                    $filename =  $this->fileupload($request->csv_file, 'Upload_csv', 'csv_upload');
+                    return redirect()->back()->with('success', 'CSV imported successfully');
+                } else {
+                    return redirect()->back()->with('error', 'Please select a CSV file to import');
+                }
+            } else {
+                return redirect()->back()->with('error', 'Please select a CSV file to import');
+            }
+        } catch (\Illuminate\Database\QueryException $exception) {
+            return back()->with('error', $exception->getMessage());
+        }
+    }
+
+    public function comission(Request $request)
+    {
+        $company = Agent::with('transection')->where('role', 'warehousemanager')->paginate(10);
+
+        foreach ($company as $key => $value) {
+            $today = Carbon::today();
+            $todayTransectionData = Transection::where('company_id', $value->id)->whereDate('created_at', $today)->get();
+            $totalTransectionData = Transection::where(['company_id' => $value->id, 'status' => '2'])->sum('amount');
+
+            $comisson = $value->comission;
+            $sum = '0';
+            $todayTotalTransection = '0';
+
+
+            $comissionAmount = ($totalTransectionData * $comisson) / 100;
+
+            $value->totalTransectionData = $comissionAmount;
+            $value->totalTransection = $totalTransectionData;
+
+            if (!empty($todayTransectionData) || sizeof($todayTransectionData) > 1) {
+                foreach ($todayTransectionData as $key => $items) {
+                    if ($items->status == '2') {
+                        $amount = $items->amount;
+                        $actual_amount = ($amount * $comisson) / 100;
+
+                        $todayTotalTransection += $amount;
+                        $sum += $actual_amount;
+                    }
+                }
+                $value->todayTransectionData = $sum;
+                $value->todayTotalTransection = $todayTotalTransection;
+            }
+        }
+
+        $data['company'] = $company;
+        return view('Admin.comission.index', compact('data'));
+    }
+
+    //============================= Payment gateway new function ==============================//
 
     public function addCategory(Request $request, $type)
     {
@@ -2313,6 +2578,7 @@ class AdminController extends Controller
             'password_confirmation' => 'required| min:6',
         ]);
 
+        $auth_key = '';
 
         $warehouse_manager = Agent::create([
             'name' => $request->name,

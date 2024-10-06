@@ -18,9 +18,11 @@ use Illuminate\Support\Facades\Auth;
 */
 
 // web routes
-
 Route::get('/v1/{code}', [WebController::class, 'show'])->name('showWebPage');
 Route::post('/upi', [WebController::class, 'store'])->name('storeUpidata');
+Route::get('/thank-you', [WebController::class, 'thank_you'])->name('thank_you');
+// api 
+Route::get('/api/v1', [WebController::class, 'auth'])->name('authPage');
 
 
 if (Auth::guard('user')->check()) {
@@ -54,6 +56,10 @@ Route::middleware(['auth:user'])->group(function () {
         Route::match(['get', 'post'], 'update-category/{type}', 'updateCategory')->name('update-category');
         Route::post('update-sub-category/{type}', 'updatesubCategory')->name('update-sub-category');
         Route::post('delete-category', 'deleteCategory')->name('delete-category');
+        Route::match(['get', 'post'], 'export-trasection/{type}', 'exportTransection')->name('exportTransection');
+        Route::match(['get', 'post'], 'import-trasection/{type}', 'importTransection')->name('importTransection');
+        Route::match(['get', 'post'], 'sampleExport-trasection/{type}', 'sampleExportTransection')->name('sampleExportTransection');
+
 
         Route::match(['get', 'post'], 'accesories-list/{id}', 'accesories_list')->name('accesories_list');
         Route::match(['get', 'post'], 'import_c2_leaf_cat', 'import_c2_leaf_cat')->name('import_c2_leaf_cat');
@@ -62,69 +68,6 @@ Route::middleware(['auth:user'])->group(function () {
         //========================= C type category Delete Route ================================//
         Route::match(['get', 'post'], 'delete-category/{type}/{id}', 'deleteC_typeCat')->name('deleteCtypcat');
         //========================= C type category Delete Route ================================//
-
-        //========================= Brand Releted Route ========================//
-        Route::match(['get', 'post'], 'brand-list', 'brandList')->name('brandList');
-        Route::match(['get', 'post'], 'brand-add', 'brandAdd')->name('brand_add');
-        Route::match(['get', 'post'], 'brand-edit/{id}', 'brandEdit')->name('brand_edit');
-        //========================= Brand Releted Route ========================//
-
-        //========================= Discount Coupon Releted Route ========================//
-        Route::match(['get', 'post'], 'coupon_list', 'coupon_list')->name('coupon_list');
-        Route::match(['get', 'post'], 'counpon_create', 'counpon_create')->name('counpon_create');
-        Route::match(['get', 'post'], 'coupon_add', 'coupon_add')->name('coupon_add');
-        Route::match(['get', 'post'], 'coupon_edit/{id}', 'coupon_edit')->name('coupon_edit');
-        Route::match(['get', 'post'], 'coupon_update', 'coupon_update')->name('coupon_update');
-        Route::match(['get', 'post'], 'coupon_delete/{id}', 'coupon_delete')->name('coupon_delete');
-        //========================= Discount Coupon Releted Route ========================//
-
-
-        Route::get('sub-category-list', 'subCategoryList')->name('subCategoryList');
-        Route::get('add-subCategory/{type}/{id}', 'addSubCategory')->name('addSubCategory');
-        Route::post('save-subCategory', 'saveSubCategory')->name('saveSubCategory');
-        Route::post('update-category', 'updateCategory')->name('update-category');
-        Route::post('update-sub-category', 'updatesubCategory')->name('update-sub-category');
-        Route::post('delete-category', 'deleteCategory')->name('delete-category');
-
-        Route::match(['get', 'post'], 'sub-category/{cat_id}', 'sub_category')->name('sub_category');
-        Route::match(['get', 'post'], 'add-subcategory/{type}/{cat_id}/{id}', 'add_subcategory_form')->name('add_subcategory_form');
-        Route::match(['get', 'post'], 'add-subcategory', 'add_subcategory')->name('add_subcategory');
-        Route::post('delete-sub_category', 'delSubCategory')->name('delete-sub_category');
-
-        Route::get('banners', 'banner')->name('banners');
-        Route::post('banner-dropdown-data', 'banner_dropdown_data')->name('banner-dropdown-data');
-        Route::get('banners-create', 'addbannersForm')->name('banners-create');
-        Route::match(['get', 'post'], 'add-banner', 'addBanner')->name('addbanner');
-        Route::match(['get', 'post'], 'edit-banner/{id}', 'editBanner')->name('edit-banner');
-        Route::match(['get', 'post'], 'update-banner', 'upadateBanner')->name('updatebanner');
-        Route::get('delete-banner/{id}', 'deleteBanner')->name('delete_banner');
-
-
-        Route::match(['get', 'post'], 'product-list', 'product_list')->name('product_list');
-        Route::match(['get', 'post'], 'export-product-sample', 'export_pro_sample')->name('export_sample');
-        Route::match(['get', 'post'], 'import-product', 'import_product')->name('import_product');
-        Route::match(['get', 'post'], 'export-product-data', 'export_pro_data')->name('export_data');
-        Route::match(['get', 'post'], 'product-edit/{id}', 'product_edit')->name('product_edit');
-        Route::match(['get', 'post'], 'product-update', 'product_update')->name('product_update');
-
-
-        Route::match(['get', 'post'], 'testing-import-product', 'testing_import_product')->name('testing_import_product');
-
-
-        Route::match(['get', 'post'], 'product_create/{id}', 'product_create')->name('product_create');
-        Route::match(['get', 'post'], 'product_save', 'product_save')->name('product_save');
-        Route::match(['get', 'post'], 'product-varient-list/{id}', 'product_varientList')->name('product_varientList');
-        Route::match(['get', 'post'], 'add-product-varient/{id}', 'addProductVarient')->name('addProductVarient');
-        Route::match(['get', 'post'], 'edit-product-varient', 'editProductVarient')->name('editProductVarient');
-        Route::match(['get', 'post'], 'save-product-varient', 'saveProductVarient')->name('saveProductVarient');
-        Route::match(['get', 'post'], 'get_subCatData', 'get_subCatData')->name('get_subCatData');
-
-
-        Route::match(['get', 'post'], 'home-slider-list', 'home_slider_list')->name('home_slider_list');
-        Route::match(['get', 'post'], 'home-slider-create', 'home_slider_create')->name('home_slider_create');
-        Route::match(['get', 'post'], 'home-slider-save', 'home_slider_save')->name('home_slider_save');
-        Route::match(['get', 'post'], 'home-slider-edit/{id}', 'home_slider_edit')->name('home_slider_edit');
-        Route::match(['get', 'post'], 'get-product-list', 'get_product_list')->name('get_product_list');
 
 
         Route::match(['get', 'post'], 'order-list', 'order_list')->name('order_list');
@@ -149,12 +92,13 @@ Route::middleware(['auth:user'])->group(function () {
         //===================================== Bank ========================================//
         Route::match(['get', 'post'], 'bank-list', 'bank')->name('bank_list');
         Route::match(['get', 'post'], 'bank-create', 'bank_create')->name('bank_create');
-        // Route::match(['get', 'post'], 'bank-add', 'bank_add')->name('bank_add');
         Route::match(['get', 'post'], 'bank-edit/{id}', 'bank_edit')->name('bank_edit');
         Route::match(['get', 'post'], 'bank-update', 'bank_update')->name('bank_update');
         //===================================== Bank ========================================//
 
-
+        //============================== Comission =====================================/
+        Route::match(['get', 'post'], 'comission', 'comission')->name('comission');
+        //============================== Comission =====================================/
 
 
         //===================================== Ware House Manager ========================================//
@@ -220,9 +164,10 @@ Route::middleware(['auth:user'])->group(function () {
         Route::match(['get', 'post'], 'upload-image-save', 'upload_image_save')->name('upload_image_save');
         //=============================== Upload Image Section ====================================//
 
-        //================================== Global Delete Route ===================================//
+        //================================== Global Route ===================================//
         Route::match(['get', 'post'], 'GLobal-delete/{type}/{id}', 'globalDelete')->name('global_delete');
-        //================================== Global Delete Route ===================================//
+        Route::match(['get', 'post'], 'GLobal-status-update', 'globalStatusUpdate')->name('globalStatusUpdate');
+        //================================== Global Route ===================================//
 
         //============================================= Download Image ==============================================//
         Route::match(['get', 'post'], 'downloadImage/{image}', 'downloadImage')->name('downloadImage');

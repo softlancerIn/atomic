@@ -35,6 +35,7 @@ $active = 'bank';
                             <th>Type</th>
                             <th>Account No</th>
                             <th>IFSC Code</th>
+                            <th>UPI ID</th>
                             <th>Account Limit</th>
                             <th>Status</th>
                             <th>Actions</th>
@@ -62,10 +63,11 @@ $active = 'bank';
                             </td>
                             <td>{{$item->account_no}}</td>
                             <td>{{$item->ifsc_code}}</td>
+                            <td>{{$item->upi_id ?? '--'}}</td>
                             <td>{{$item->account_limit}}</td>
                             <td>
                                 <div class="form-check form-switch mb-2">
-                                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" {{$item->status == '1' ? 'checked' : ''}}>
+                                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" onclick="change_user_status('{{$item->status}}','{{$item->id}}','bank')" {{$item->status == '1' ? 'checked' : ''}}>
                                 </div>
                             </td>
                             <td>
@@ -123,5 +125,33 @@ $active = 'bank';
         </div>
     </div>
 </div>
+<script>
+    function change_user_status(status, id, tableType) {
+        var _token = '{{ csrf_token() }}';
+        $.ajax({
+            url: "{{ route('globalStatusUpdate') }}"
+            , type: "POST"
+            , data: {
+                status: status
+                , id: id
+                , type: tableType
+            , }
+            , dataType: "JSON"
+            , headers: {
+                'X-CSRF-TOKEN': _token
+            }
+            , success: function(resp) {
+                console.log(resp);
+                if (resp.status == true) {
+                    window.location.reload();
+                } else {
+                    alert(resp.message);
+                    window.location.reload();
+                }
 
+            }
+        });
+    }
+
+</script>
 @endsection
