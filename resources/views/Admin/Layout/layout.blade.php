@@ -48,6 +48,11 @@
             .table{
                 color:black;
             }
+            @media (max-width: 768px) {
+                .hide-on-mobile {
+                    display: none;
+                }
+            }
         </style>
 
     </head>
@@ -82,7 +87,7 @@
                     @php
                         $agent = App\Models\Agent::where('id',Auth::guard('user')->user()->id)->first();
                     @endphp
-                    <div class="navbar-nav align-items-center mx-5">
+                    <div class="navbar-nav align-items-center mx-5 hide-on-mobile">
                         Auth Key-  <h6 class="m-0" id="myText">{{$agent->password}}</h6>
                         <button class="btn btn-sm btn-success mx-3"  onclick="copyContent()">Copy</button>
                     </div>
