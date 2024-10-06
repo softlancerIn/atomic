@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Session;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use App\Models\Agent;
 use App\Models\BankDetails;
+use App\Models\Transection;
 
 class WebController extends Controller
 {
@@ -36,9 +38,30 @@ class WebController extends Controller
         return $data;
     }
 
+    function isBase64($string)
+    {
+        if (preg_match('/^[a-zA-Z0-9\/\r\n+]*={0,2}$/', $string) && strlen($string) % 4 === 0) {
+            $decoded = base64_decode($string, true);
+            if ($decoded !== false && base64_encode($decoded) === $string) {
+                return true; 
+            }
+        }
+        return false; 
+    }
+
     public function show($code) 
     {
+        if ($this->isBase64($code)) {
+            $data = $this->getDecodeData($code);
+        } else {
+            abort(404, 'Invalid or tampered URL');
+        }
         $data = $this->getDecodeData($code);
+        $transection = Transection::where(['order_id' => $data['orderId'], 'company_id' => $data['companyId']])->first();
+        if ($transection) {
+            return view('thanks');
+        }
+
         $bankDetails = BankDetails::where(['company_id' => $data['companyId'], 'status' => '1'])->get();
         $banks = [];
         foreach ($bankDetails as $bankDetail) {
@@ -101,7 +124,7 @@ class WebController extends Controller
 
             $code = $this->getEncodeData($agent->id ,$orderId, $amount);
 
-            $url = 'https://softlancer.in/other/atomic_git_old/v1/' . $code;
+            $url = 'https://atomic.softlancer.in/v1/' . $code;
 
             $response = [
                 'redirect_url' => $url
@@ -139,6 +162,8 @@ class WebController extends Controller
         }
 
         \DB::table('transactions')->insert($data);
+
+        session::flash('success', 'Data saved Successfully');
 
         return redirect()->route('thank_you');
     }

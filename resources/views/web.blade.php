@@ -86,6 +86,11 @@
                                                     name="type"
                                                     value="upi"
                                                 >
+                                                <input
+                                                    type="hidden"
+                                                    name="company_id"
+                                                    value="{{$data['companyId'] ?? ''}}"
+                                                >
                                                 <label
                                                     for="ref_no"
                                                     class="block text-sm font-medium leading-6 text-gray-900"
@@ -205,6 +210,11 @@
                                                 type="hidden"
                                                 name="type"
                                                 value="imps"
+                                            >
+                                            <input
+                                                type="hidden"
+                                                name="company_id"
+                                                value="{{$data['companyId'] ?? ''}}"
                                             >
 
                                             <label
@@ -397,6 +407,11 @@
                                                 name="type"
                                                 value="neft"
                                             >
+                                            <input
+                                                type="hidden"
+                                                name="company_id"
+                                                value="{{$data['companyId'] ?? ''}}"
+                                            >
 
                                             <label
                                                 for="account_no"
@@ -585,6 +600,11 @@
                                                 type="hidden"
                                                 name="type"
                                                 value="neft"
+                                            >
+                                            <input
+                                                type="hidden"
+                                                name="company_id"
+                                                value="{{$data['companyId'] ?? ''}}"
                                             >
 
                                             <label
