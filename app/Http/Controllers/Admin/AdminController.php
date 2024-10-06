@@ -64,6 +64,11 @@ class AdminController extends Controller
     //======================== Log Sign up releted function ======================//
     public function login(Request $request)
     {
+        $validatedata = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
         $user_check = Agent::where('email', $request->email)->first();
         if ($user_check->status == '0') {
             return redirect()->back()->with('error', 'You are not able to login please connect with admin!');
@@ -143,7 +148,11 @@ class AdminController extends Controller
     public function bank(Request $request)
     {
         if ($request->isMethod('GET')) {
-            $data['bank_details'] = BankDetails::with('companyData')->orderBy('id', 'DESC')->paginate(10);
+            if (Auth::guard('user')->user()->role != 'admin') {
+                $data['bank_details'] = BankDetails::with('companyData')->where('company_id', Auth::guard('user')->user()->id)->orderBy('id', 'DESC')->paginate(10);
+            } else {
+                $data['bank_details'] = BankDetails::with('companyData')->orderBy('id', 'DESC')->paginate(10);
+            }
             return view('Admin.Bank.index', compact('data'));
         } else {
             $validatedata = $request->validate([
