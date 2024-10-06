@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Illuminate\Support\Facades\Session;
 
 class WebController extends Controller
 {
@@ -34,11 +32,29 @@ class WebController extends Controller
         return $data;
     }
 
+    function isBase64($string)
+    {
+        if (preg_match('/^[a-zA-Z0-9\/\r\n+]*={0,2}$/', $string) && strlen($string) % 4 === 0) {
+            $decoded = base64_decode($string, true);
+
+            if ($decoded !== false && base64_encode($decoded) === $string) {
+                return true; 
+            }
+        }
+
+        return false; 
+    }
+
+
     public function show($code) 
     {
-        $data = $this->getDecodeData($code);
+        if ($this->isBase64($code)) {
+            $data = $this->getDecodeData($code);
+        } else {
+            abort(404, 'Invalid or tampered URL');
+        }
 
-        $upiUrl = "upi://pay?pa=9889702929@ybl&pn=rohit&am=1.00&cu=INR";
+        $upiUrl = "upi://pay?pa=9889702929@ybl&pn=rohit&am=100.00&cu=INR";
 
         // Generate QR code
         $qrCode = QrCode::size(300)->generate($upiUrl);
@@ -66,6 +82,8 @@ class WebController extends Controller
         }
 
         \DB::table('transactions')->insert($data);
+
+        session::flash('success', 'Data saved Successfully');
 
         return redirect()->back();
     }
