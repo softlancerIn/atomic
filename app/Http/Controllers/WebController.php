@@ -10,6 +10,7 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use App\Models\Agent;
 use App\Models\BankDetails;
 use App\Models\Transection;
+use Illuminate\Support\Facades\Validator;
 
 class WebController extends Controller
 {
@@ -143,11 +144,83 @@ class WebController extends Controller
         }
     }
 
+    public function payout() 
+    {
+        $token = request()->header('token');
+        $agent = Agent::where('password', $token)->first();
+        
+        if ($agent) {
+            $bankDetails = BankDetails::where(['company_id' => $agent->id, 'status' => '1'])->get();
+            $banks = [];
+            foreach ($bankDetails as $bankDetail) {
+                $type = [
+                    '1' => 'upi',
+                    '2' => 'rtgs',
+                    '3' => 'neft',
+                    '4' => 'imps'
+                ];
+                if (in_array($bankDetail->payment_type, array_keys($type)) && $bankDetail->status){
+                    $banks[$type[$bankDetail->payment_type]] = $bankDetail;
+                }
+            }
+
+            if (!$banks) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Company BankDetails Not found!',
+                ], 422);
+            }
+            $orderId = request()->header('orderId');
+            $amount = request()->header('amount');
+
+            if (!$orderId || !$amount) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'please pass orderId and amount',
+                ], 422);
+            }
+
+            $code = $this->getEncodeData($agent->id ,$orderId, $amount);
+
+            $url = 'https://atomic.softlancer.in/v1/' . $code;
+
+            $response = [
+                'redirect_url' => $url
+            ];
+
+            return response()->json([
+                'status' => true,
+                'message' => 'data successfully send!',
+                'data' => $response
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'unauthorized user'
+            ], 401);
+        }
+    }
+
     public function store()
     {
+        Validator::make(request()->all(), [
+            'type' =>'required',
+            'order_id' => 'required', 
+            'company_id' =>'required',
+            'amount' =>'required', 
+            'ref_no' =>'required'
+        ]);
+
+        $transection = Transection::where(['order_id' => request()->order_id, 'company_id' => request()->company_id])->first();
+
+        if ($transection) {
+            return redirect()->route('thank_you');
+        }
+
         $data = request()->only([
             'type', 
             'order_id', 
+            'company_id', 
             'amount', 
             'ref_no'
         ]);

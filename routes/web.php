@@ -17,12 +17,11 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-// web routes
+// ================================== web routes ====================================//
 Route::get('/v1/{code}', [WebController::class, 'show'])->name('showWebPage');
 Route::post('/upi', [WebController::class, 'store'])->name('storeUpidata');
 Route::get('/thank-you', [WebController::class, 'thank_you'])->name('thank_you');
-// api 
-Route::get('/api/v1', [WebController::class, 'auth'])->name('authPage');
+// ================================== web routes ====================================//
 
 
 if (Auth::guard('user')->check()) {
@@ -130,41 +129,16 @@ Route::middleware(['auth:user'])->group(function () {
         Route::match(['get', 'post'], 'stock-import', 'stockImport')->name('stockImport');
         //=================================== Stock Routes ======================================//
 
-        //==================================== Industry Section =======================================//
-        Route::match(['get', 'post'], 'industry-list', 'industry_list')->name('industry_list');
-        Route::match(['get', 'post'], 'industry-save', 'industry_save')->name('industry_save');
-        Route::match(['get', 'post'], 'industry-edit', 'industry_edit')->name('industry_edit');
-        //==================================== Industry Section =======================================//
-
-        //==================================== offer Section =======================================//
-        Route::match(['get', 'post'], 'offer-list', 'offer_list')->name('offer_list');
-        Route::match(['get', 'post'], 'offer-save', 'offer_save')->name('offer_save');
-        Route::match(['get', 'post'], 'offer-edit', 'offer_edit')->name('offer_edit');
-        //==================================== offer Section =======================================//
-
-        //==================================== career Section =======================================//
-        Route::match(['get', 'post'], 'career-list', 'career_list')->name('career_list');
-        Route::match(['get', 'post'], 'career-create', 'career_create')->name('career_create');
-        Route::match(['get', 'post'], 'career-save', 'career_save')->name('career_save');
-        Route::match(['get', 'post'], 'career-edit/{id}', 'career_edit')->name('career_edit');
-        //==================================== career Section =======================================//
-
         //================================ contact us section =======================================//
         Route::match(['get', 'post'], 'contact_us', 'contact_us')->name('contact_us');
         //================================ contact us section =======================================//
 
-        //============================== Reward Section =====================================//
-        Route::match(['get', 'post'], 'reward_list', 'reward_list')->name('reward_list');
-        Route::match(['get', 'post'], 'add_reward', 'add_reward')->name('add_reward');
-        Route::match(['get', 'post'], 'edit_reward', 'edit_reward')->name('edit_reward');
-        //============================== Reward Section =====================================//
-
-        //=============================== Upload Image Section ====================================//
-        Route::match(['get', 'post'], 'upload-image-list', 'upload_image_list')->name('upload_image_list');
-        Route::match(['get', 'post'], 'upload-image-save', 'upload_image_save')->name('upload_image_save');
-        //=============================== Upload Image Section ====================================//
+        //================================ report section =======================================//
+        Route::match(['get', 'post'], 'report', 'report')->name('report');
+        //================================ report section =======================================//
 
         //================================== Global Route ===================================//
+        Route::match(['get', 'post'], 'changeTransectionStatus/{type}/{id}', 'changeTransectionStatus')->name('changeTransectionStatus');
         Route::match(['get', 'post'], 'GLobal-delete/{type}/{id}', 'globalDelete')->name('global_delete');
         Route::match(['get', 'post'], 'GLobal-status-update', 'globalStatusUpdate')->name('globalStatusUpdate');
         //================================== Global Route ===================================//
@@ -175,6 +149,6 @@ Route::middleware(['auth:user'])->group(function () {
     });
 });
 
-Route::any('{query}', function () {
-    return redirect('/dashboard');
-})->where('query', '.*');
+// Route::any('{query}', function () {
+//     return redirect('/dashboard');
+// })->where('query', '.*');

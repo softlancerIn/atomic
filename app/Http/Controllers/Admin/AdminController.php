@@ -68,7 +68,7 @@ class AdminController extends Controller
             'email' => 'required|email',
             'password' => 'required',
         ]);
-
+        
         $user_check = Agent::where('email', $request->email)->first();
         if ($user_check->status == '0') {
             return redirect()->back()->with('error', 'You are not able to login please connect with admin!');
@@ -242,6 +242,7 @@ class AdminController extends Controller
         if ($request->status == '1') {
             $status = '0';
         }
+        
         switch ($request->type) {
             case 'warehousemanager':
                 $agent = Agent::where('id', $request->id)->update([
@@ -250,40 +251,22 @@ class AdminController extends Controller
                 break;
             case 'transection':
                 $category = Transection::where('id', $request->id)->update([
-                    'status' => $request->status,
+                    'status' => $status,
                 ]);
                 break;
             case 'bank':
                 $bankData = BankDetails::where('id', $request->id)->first();
+
                 if ($status == '0') {
-                    if ($bankData->payment_type == '1') {
-                        $payment_type = '1';
-                        $msg = "Can't inactive this data because no any upi is active for transection process!";
-                    } elseif ($bankData->payment_type == '2') {
-                        $payment_type = '2';
-                        $msg = "Can't inactive this data because no any RTGS is active for transection process!";
-                    } elseif ($bankData->payment_type == '3') {
-                        $payment_type = '3';
-                        $msg = "Can't inactive this data because no any NEFT is active for transection process!";
-                    } else {
-                        $payment_type = '4';
-                        $msg = "Can't inactive this data because no any IMPS is active for transection process!";
+                    $check = BankDetails::where(['company_id' => $bankData->company_id, 'status' => '1'])->get();
+                    if (sizeof($check) < 2) {
+                        return response()->json(['status' => false, 'message' => "Can't inactive this data because no payment type is active for transection process!"]);
                     }
-                    $again_check = BankDetails::where(['company_id' => $bankData->company_id, 'status' => '1', 'payment_type' => $payment_type])->where('id', '!=', $request->id)->first();
-                    if (empty($again_check)) {
-                        return response()->json(['status' => false, 'message' => $msg]);
-                    }
+
                     $status = $status;
                     $bank = BankDetails::where('id', $request->id)->update([
                         'status' => $status,
                     ]);
-
-                    $update = BankDetails::where(['company_id' => $bankData->company_id, 'payment_type' => $payment_type])->where('id', '!=', $request->id)->get();
-                    foreach ($update as $key => $value) {
-                        BankDetails::where('id', $value->id)->update([
-                            'status' => '1',
-                        ]);
-                    }
                 } else {
                     if ($bankData->payment_type == '1') {
                         $payment_type = '1';
@@ -324,13 +307,74 @@ class AdminController extends Controller
         return response()->json(['status' => true, 'message' => 'Status Updated Successfully!']);
     }
 
+    public function report(Request $request)
+    {
+
+        if ($request->isMethod('GET')) {
+            if (Auth::guard('user')->user()->role == 'admin') {
+                $data['report'] = Transection::orderBy('id', 'DESC')->paginate(10);
+            } else {
+                $data['report'] = Transection::where('company_id', Auth::guard('user')->user()->id)->orderBy('id', 'DESC')->paginate(10);
+            }
+            return view('Admin.report.index', compact('data'));
+        } else {
+            if ($request->has('search')) {
+                if (Auth::guard('user')->user()->role == 'admin') {
+                    $data['report'] = Transection::where('ref_no', 'LIKE', $request->search . '%')->orderBy('id', 'DESC')->paginate(10);
+                } else {
+                    $data['report'] = Transection::where('company_id', Auth::guard('user')->user()->id)->where('ref_no', 'LIKE', $request->search . '%')->orderBy('id', 'DESC')->paginate(10);
+                }
+                return view('Admin.report.index', compact('data'));
+            }
+
+            $startDate = Carbon::parse($request->start_date);
+            $endDate = Carbon::parse($request->end_time);
+
+            if (Auth::guard('user')->user()->role == 'admin') {
+                $transectionData = Transection::whereBetween('created_at', [$startDate, $endDate])->get();
+            } else {
+                $transectionData = Transection::where('company_id', Auth::guard('user')->user()->id)->whereBetween('created_at', [$startDate, $endDate])->get();
+            }
+
+            // $transectionData = Transection::where('status', '1')->whereBetween('created_at', [$startDate, $endDate])->get();
+            if (empty($transectionData) || sizeof($transectionData) < 1) {
+                return redirect()->back()->with('error', 'Data Not Found!');
+            }
+            $row = [
+                'order_id',
+                'transection_no',
+                'transection_date',
+                'amount',
+                'status'
+            ];
+
+            $dataRows  = [];
+
+            foreach ($transectionData as $key => $items) {
+                $dataRows[] = [
+                    !empty($items->order_id) ? '"' . $items->order_id . '"' : '',
+                    !empty($items->ref_no) ? '"' . $items->ref_no . '"' : '',
+                    !empty($items->created_at) ? '"' . $items->created_at . '"' : '',
+                    !empty($items->amount) ? '"' . $items->amount . '"' : '',
+                    'Initiate',
+                ];
+            }
+            $dataToExport = array_merge([$row], $dataRows);
+            return $this->exportCSV($dataToExport, 'export-data-between-' . $request->start_date . '-' . $request->end_date, '', '');
+        }
+    }
+
 
     //===============Daily Commission ==================
 
+    public function changeTransectionStatus(Request $request, $status, $id)
+    {
+        //
+    }
 
     public function getSetDailyCommission($request)
     {
-        Transection::where('created_at',)->get();
+        // Transection::where('created_at',)->get();
     }
 
 
@@ -590,12 +634,12 @@ class AdminController extends Controller
         if (Auth::guard('user')->user()->role == 'admin') {
             $data['category_data'] = Transection::where(['status' => $type])->paginate(20);
             if ($request->has('search')) {
-                $data['category_data'] = Transection::where('ref_no', 'LIKE', $request->search . '%')->where(['status' => $type])->paginate(10);
+                $data['category_data'] = Transection::where('ref_no', 'LIKE', $request->search . '%')->where(['status' => $type])->paginate(20);
             }
         } else {
             $data['category_data'] = Transection::where(['status' => $type, 'company_id' => Auth::guard('user')->user()->id])->paginate(20);
             if ($request->has('search')) {
-                $data['category_data'] = Transection::where('ref_no', 'LIKE', $request->search . '%')->where(['status' => $type, 'company_id' => Auth::guard('user')->user()->id])->paginate(10);
+                $data['category_data'] = Transection::where('ref_no', 'LIKE', $request->search . '%')->where(['status' => $type, 'company_id' => Auth::guard('user')->user()->id])->paginate(20);
             }
         }
 
@@ -2857,7 +2901,6 @@ class AdminController extends Controller
 
     public function industry_save(Request $request)
     {
-        // dd($request->all());
         if ($request->has('industry_id')) {
             $validator = Validator::make($request->all(), [
                 'name' => 'required',
@@ -3445,7 +3488,7 @@ class AdminController extends Controller
     public function logout()
     {
         Auth::guard('user')->logout();
-        return redirect('/');
+        return redirect('/login');
     }
 
     //============ Testing ======================//
