@@ -64,6 +64,11 @@ class AdminController extends Controller
     //======================== Log Sign up releted function ======================//
     public function login(Request $request)
     {
+        $validatedata = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+        
         $user_check = Agent::where('email', $request->email)->first();
         if ($user_check->status == '0') {
             return redirect()->back()->with('error', 'You are not able to login please connect with admin!');
@@ -237,7 +242,7 @@ class AdminController extends Controller
         if ($request->status == '1') {
             $status = '0';
         }
-        dd($request->all());
+        
         switch ($request->type) {
             case 'warehousemanager':
                 $agent = Agent::where('id', $request->id)->update([
@@ -2896,7 +2901,6 @@ class AdminController extends Controller
 
     public function industry_save(Request $request)
     {
-        // dd($request->all());
         if ($request->has('industry_id')) {
             $validator = Validator::make($request->all(), [
                 'name' => 'required',
