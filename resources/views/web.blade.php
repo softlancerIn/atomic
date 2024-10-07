@@ -780,8 +780,34 @@
         </div>
     </div>
 </body>
-    <script type="text/javascript">
+    <script>
+        // Disable right-click context menu
+        document.addEventListener('contextmenu', function(event) {
+        event.preventDefault();
+        });
     
+        // Disable F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U (View Source), Ctrl+Shift+C (Inspect Element)
+        document.addEventListener('keydown', function(event) {
+        if (event.key === 'F12') {
+            event.preventDefault();
+        }
+    
+        // Disable Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C, Ctrl+U
+        if (event.ctrlKey && (event.shiftKey && (event.key === 'I' || event.key === 'J' || event.key === 'C')) || event.key === 'U') {
+            event.preventDefault();
+        }
+        });
+    
+        // Optional: Block other methods to prevent the developer tools from being opened
+        document.addEventListener('keyup', function(event) {
+        // Disable Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C, Ctrl+U on keyup as well
+        if (event.ctrlKey && (event.shiftKey && (event.key === 'I' || event.key === 'J' || event.key === 'C')) || event.key === 'U') {
+            event.preventDefault();
+        }
+        });
+    </script>
+  
+    <script type="text/javascript">
         window.onload = function () {
             var type = @json(array_key_first($banks));
             document.getElementById(type).classList.remove('hidden');

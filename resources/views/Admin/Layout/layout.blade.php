@@ -151,7 +151,7 @@
                     @yield('content') 
                 </main>
 
-                @include('Admin.Modal.modal')
+                {{-- @include('Admin.Modal.modal') --}}
 
                 <!-- Footer -->
                 <footer class="content-footer footer bg-footer-theme">

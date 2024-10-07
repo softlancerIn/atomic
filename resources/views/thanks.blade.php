@@ -15,7 +15,7 @@
         h1 {
             font-size: 4rem;
             color: #4CAF50;
-            margin-bottom: 20px;
+            margin: 20px 0px;
         }
         p {
             font-size: 1.5rem;
@@ -49,25 +49,38 @@
         }
     </style>
     <script>
-        // Prevent back button navigation
-        history.pushState(null, null, location.href);
-        window.onpopstate = function () {
-            history.go(1);
+        window.onpopstate = function() {
+            // Refresh the page when the back button is clicked
+            location.reload();
+        };
+
+        // Ensure that a new state is pushed into the history stack when the page is loaded
+        window.onload = function() {
+            history.pushState(null, "", location.href);
         };
     </script>
 </head>
 <body>
 
     <div class="thankyou-box">
+        <svg xmlns="http://www.w3.org/2000/svg" width="5em" height="5em" viewBox="0 0 24 24">
+            <g fill="none" stroke="#4CAF50" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+              <path fill="#C8E6C9" fill-opacity="1" stroke-dasharray="64" stroke-dashoffset="64" d="M3 12c0 -4.97 4.03 -9 9 -9c4.97 0 9 4.03 9 9c0 4.97 -4.03 9 -9 9c-4.97 0 -9 -4.03 -9 -9Z">
+                <animate fill="freeze" attributeName="fill-opacity" begin="0.6s" dur="0.15s" values="0;1"/>
+                <animate fill="freeze" attributeName="stroke-dashoffset" dur="0.6s" values="64;0"/>
+              </path>
+              <path stroke-dasharray="14" stroke-dashoffset="14" d="M8 12l3 3l5 -5">
+                <animate fill="freeze" attributeName="stroke-dashoffset" begin="0.75s" dur="0.2s" values="14;0"/>
+              </path>
+            </g>
+        </svg>   
         <h1>Thank You!</h1>
         <p>Your payment was successful.</p>
         <p>We appreciate your business and hope you enjoy your purchase.</p>
-        
-        <a href="/" class="btn">Back to Home</a>
     </div>
 
     <footer>
-        &copy; 2024 Your Company. All rights reserved.
+        &copy; 2024 Atomic. All rights reserved.
     </footer>
 
 </body>
