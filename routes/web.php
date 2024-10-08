@@ -68,6 +68,11 @@ Route::middleware(['auth:user'])->group(function () {
         Route::match(['get', 'post'], 'delete-category/{type}/{id}', 'deleteC_typeCat')->name('deleteCtypcat');
         //========================= C type category Delete Route ================================//
 
+        //========================= C type refund Route ================================//
+        Route::match(['get', 'post'], 'payout-list', 'refundList')->name('refundList');
+        Route::match(['get', 'post'], 'payout/{type}', 'refundPost')->name('refundPost');
+        //========================= C type refund Route ================================//
+
 
         Route::match(['get', 'post'], 'order-list', 'order_list')->name('order_list');
         Route::match(['get', 'post'], 'order-view/{id}', 'order_view')->name('order_view');
@@ -136,6 +141,10 @@ Route::middleware(['auth:user'])->group(function () {
         //================================ report section =======================================//
         Route::match(['get', 'post'], 'report', 'report')->name('report');
         //================================ report section =======================================//
+
+        //================================ settelment section =======================================//
+        Route::match(['get', 'post'], 'settelment', 'settelment')->name('settelment');
+        //================================ settelment section =======================================//
 
         //================================== Global Route ===================================//
         Route::match(['get', 'post'], 'changeTransectionStatus/{type}/{id}', 'changeTransectionStatus')->name('changeTransectionStatus');

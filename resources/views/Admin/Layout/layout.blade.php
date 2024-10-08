@@ -91,6 +91,8 @@
                         Auth Key-  <h6 class="m-0" id="myText">{{$agent->password}}</h6>
                         <button class="btn btn-sm btn-success mx-3"  onclick="copyContent()">Copy</button>
                     </div>
+                    @else
+                    <h6 class="m-0" id="myText"></h6>
                     @endif
                     <!-- /Search -->
                     

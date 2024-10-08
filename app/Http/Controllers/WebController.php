@@ -10,6 +10,7 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use App\Models\Agent;
 use App\Models\BankDetails;
 use App\Models\Transection;
+use App\Models\RefundRequest;
 use Illuminate\Support\Facades\Validator;
 
 class WebController extends Controller
@@ -125,7 +126,7 @@ class WebController extends Controller
 
             $code = $this->getEncodeData($agent->id ,$orderId, $amount);
 
-            $url = 'https://atomic.softlancer.in/v1/' . $code;
+            $url = 'https://softlancer.in/other/atomic_git_old/v1/' . $code;
 
             $response = [
                 'redirect_url' => $url
@@ -150,43 +151,47 @@ class WebController extends Controller
         $agent = Agent::where('password', $token)->first();
         
         if ($agent) {
-            $bankDetails = BankDetails::where(['company_id' => $agent->id, 'status' => '1'])->get();
-            $banks = [];
-            foreach ($bankDetails as $bankDetail) {
-                $type = [
-                    '1' => 'upi',
-                    '2' => 'rtgs',
-                    '3' => 'neft',
-                    '4' => 'imps'
-                ];
-                if (in_array($bankDetail->payment_type, array_keys($type)) && $bankDetail->status){
-                    $banks[$type[$bankDetail->payment_type]] = $bankDetail;
-                }
-            }
+            $ref_id = request()->header('ref_id');
 
-            if (!$banks) {
+            if (!$ref_id) {                
                 return response()->json([
                     'status' => false,
-                    'message' => 'Company BankDetails Not found!',
+                    'message' => 'please pass ref_id',
                 ], 422);
             }
-            $orderId = request()->header('orderId');
-            $amount = request()->header('amount');
 
-            if (!$orderId || !$amount) {
+            $response = RefundRequest::create([
+                'ref_id' => $ref_id,
+                'company_id' => $agent->id,
+            ]);
+
+            return response()->json([
+                'status' => true,
+                'message' => 'data successfully send!',
+                'data' => $response
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'unauthorized user'
+            ], 401);
+        }
+    }
+
+    public function refund() 
+    {
+        $token = request()->header('token');
+        $agent = Agent::where('password', $token)->first();
+        
+        if ($agent) {
+            $orderId = request()->header('orderId');
+            if (!$orderId) {
                 return response()->json([
                     'status' => false,
                     'message' => 'please pass orderId and amount',
                 ], 422);
             }
-
-            $code = $this->getEncodeData($agent->id ,$orderId, $amount);
-
-            $url = 'https://atomic.softlancer.in/v1/' . $code;
-
-            $response = [
-                'redirect_url' => $url
-            ];
+            $response = [];
 
             return response()->json([
                 'status' => true,

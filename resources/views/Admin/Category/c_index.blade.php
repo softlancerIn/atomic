@@ -299,7 +299,10 @@ break;
 </div>
 <script>
     function change_user_status(status, id, tableType) {
-        return confirm('Are You sure to want to change this transetion status!');
+        var check = confirm('Are You sure to want to change this transetion status!');
+        if (!check) {
+            return;
+        }
         console.log(status);
         console.log(id);
         console.log(tableType);
