@@ -23,6 +23,7 @@ use App\Models\{
     Industry,
     ContactUs,
     Warehouse,
+    Settelment,
     Transection,
     HomeSlider,
     BankDetails,
@@ -40,6 +41,7 @@ use App\Models\Banner;
 use App\Models\File;
 use App\Models\Order;
 use App\Models\UserAddress;
+use App\Models\RefundRequest;
 use Illuminate\Support\Facades\Validator;
 use DB;
 use GuzzleHttp\Psr7\Request as Psr7Request;
@@ -68,7 +70,7 @@ class AdminController extends Controller
             'email' => 'required|email',
             'password' => 'required',
         ]);
-        
+
         $user_check = Agent::where('email', $request->email)->first();
         if ($user_check->status == '0') {
             return redirect()->back()->with('error', 'You are not able to login please connect with admin!');
@@ -242,7 +244,7 @@ class AdminController extends Controller
         if ($request->status == '1') {
             $status = '0';
         }
-        
+
         switch ($request->type) {
             case 'warehousemanager':
                 $agent = Agent::where('id', $request->id)->update([
@@ -250,8 +252,40 @@ class AdminController extends Controller
                 ]);
                 break;
             case 'transection':
+                if ($request->status == '2') {
+                    $amount = 0;
+                    $today = Carbon::today();
+                    $trs = Transection::where('id', $request->id)->first();
+
+                    $preSetlData = Settelment::where('company_id', $trs->company_id)->whereDate('created_at', $today)->first();
+                    if ($preSetlData) {
+                        $currentAmt = $preSetlData->amount;
+                        $amount = $currentAmt + $trs->amount;
+                    } else {
+                        $amount = $trs->amount;
+                    }
+
+
+                    // $today = Carbon::today()->startOfDay();
+
+                    $settlement = Settelment::where('company_id', $trs->company_id)
+                        ->whereDate('created_at', $today)
+                        ->first();
+
+                    if ($settlement) {
+                        $settlement->update([
+                            'amount' => $amount,
+                        ]);
+                    } else {
+                        $settlement = Settelment::create([
+                            'company_id' => $trs->company_id,
+                            'amount' => $amount,
+                            'created_at' => $today,
+                        ]);
+                    }
+                }
                 $category = Transection::where('id', $request->id)->update([
-                    'status' => $status,
+                    'status' => $request->status,
                 ]);
                 break;
             case 'bank':
@@ -646,6 +680,44 @@ class AdminController extends Controller
         return view('Admin.Category.c_index', compact('data'));
     }
 
+        //============================= Payment gateway new function ==============================//
+
+        public function refundList(Request $request)
+        {
+            $type = 'new';
+            switch ($type) {
+                case 'new':
+                    $data['type'] = 'new';
+                    $type = '1';
+    
+                    break;
+                case 'approved':
+                    $data['type'] = 'approved';
+                    $type = '2';
+    
+                    break;
+                case 'reject':
+                    $data['type'] = 'reject';
+                    $type = '3';
+    
+                    break;
+            }
+    
+            if (Auth::guard('user')->user()->role == 'admin') {
+                $data['category_data'] = RefundRequest::paginate(20);
+                if ($request->has('search')) {
+                    $data['category_data'] = RefundRequest::where('ref_no', 'LIKE', $request->search . '%')->paginate(20);
+                }
+            } else {
+                $data['category_data'] = RefundRequest::where(['company_id' => Auth::guard('user')->user()->id])->paginate(20);
+                if ($request->has('search')) {
+                    $data['category_data'] = RefundRequest::where('ref_no', 'LIKE', $request->search . '%')->where(['company_id' => Auth::guard('user')->user()->id])->paginate(20);
+                }
+            }
+    
+            return view('Admin.Refund.c_index', compact('data'));
+        }
+
     public function exportTransection(Request $request, $type)
     {
         $startDate = Carbon::parse($request->start_date);
@@ -771,6 +843,15 @@ class AdminController extends Controller
 
         $data['company'] = $company;
         return view('Admin.comission.index', compact('data'));
+    }
+
+    public function settelment(Request $request)
+    {
+        $settlement = Settelment::with('company')->orderBy('id', 'DESC')->paginate(10);
+        // dd($settlement);
+
+        $data['settelment'] = $settlement;
+        return view('Admin.settelment.index', compact('data'));
     }
 
     //============================= Payment gateway new function ==============================//
