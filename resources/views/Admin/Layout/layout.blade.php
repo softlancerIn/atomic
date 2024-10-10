@@ -44,6 +44,9 @@
         <style>
             body {
                 font-family: 'New Font', sans-serif;
+                /*font-size: 15px;
+                font-family: math;
+                font-variant: all-small-caps;*/
             }
             .table{
                 color:black;

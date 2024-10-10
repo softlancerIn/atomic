@@ -45,13 +45,13 @@ class WebController extends Controller
         if (preg_match('/^[a-zA-Z0-9\/\r\n+]*={0,2}$/', $string) && strlen($string) % 4 === 0) {
             $decoded = base64_decode($string, true);
             if ($decoded !== false && base64_encode($decoded) === $string) {
-                return true; 
+                return true;
             }
         }
-        return false; 
+        return false;
     }
 
-    public function show($code) 
+    public function show($code)
     {
         if ($this->isBase64($code)) {
             $data = $this->getDecodeData($code);
@@ -73,7 +73,7 @@ class WebController extends Controller
                 '3' => 'neft',
                 '4' => 'imps'
             ];
-            if (in_array($bankDetail->payment_type, array_keys($type)) && $bankDetail->status){
+            if (in_array($bankDetail->payment_type, array_keys($type)) && $bankDetail->status) {
                 $banks[$type[$bankDetail->payment_type]] = $bankDetail;
             }
         }
@@ -81,14 +81,14 @@ class WebController extends Controller
         $amount = $data['amount'];
         $qrCode = null;
         if (isset($banks['upi']) && $banks['upi']) {
-            $upiUrl = "upi://pay?pa=".$banks['upi']->upi_id."&pn=".$banks['upi']->account_holderName."&am=$amount&cu=INR";
+            $upiUrl = "upi://pay?pa=" . $banks['upi']->upi_id . "&pn=" . $banks['upi']->account_holderName . "&am=$amount&cu=INR";
             $qrCode = QrCode::size(300)->generate($upiUrl);
         }
 
         return view('web', compact('qrCode', 'data', 'banks'));
     }
 
-    public function auth() 
+    public function auth()
     {
         $token = request()->header('token');
         $agent = Agent::where('password', $token)->first();
@@ -103,7 +103,7 @@ class WebController extends Controller
                     '3' => 'neft',
                     '4' => 'imps'
                 ];
-                if (in_array($bankDetail->payment_type, array_keys($type)) && $bankDetail->status){
+                if (in_array($bankDetail->payment_type, array_keys($type)) && $bankDetail->status) {
                     $banks[$type[$bankDetail->payment_type]] = $bankDetail;
                 }
             }
@@ -124,7 +124,7 @@ class WebController extends Controller
                 ], 422);
             }
 
-            $code = $this->getEncodeData($agent->id ,$orderId, $amount);
+            $code = $this->getEncodeData($agent->id, $orderId, $amount);
 
             $url = 'https://softlancer.in/other/atomic_git_old/v1/' . $code;
 
@@ -145,30 +145,55 @@ class WebController extends Controller
         }
     }
 
-    public function payout() 
+    public function payout()
     {
         $token = request()->header('token');
         $agent = Agent::where('password', $token)->first();
-        
-        if ($agent) {
-            $ref_id = request()->header('ref_id');
 
-            if (!$ref_id) {                
+        if ($agent) {
+            $ref_no = request()->header('ref_no');
+
+            if (!$ref_no) {
                 return response()->json([
                     'status' => false,
-                    'message' => 'please pass ref_id',
+                    'message' => 'ref_no required!',
                 ], 422);
             }
 
-            $response = RefundRequest::create([
-                'ref_id' => $ref_id,
+            $transection = Transection::where(['ref_no' => $ref_no, 'company_id' => $agent->id,])->first();
+
+            if (!$transection) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Invalid ref_no!',
+                ], 422);
+            }
+
+            $response = RefundRequest::updateOrCreate([
+                'ref_no' => $ref_no,
+                'company_id' => $agent->id,
+            ], [
+                'ref_no' => $ref_no,
                 'company_id' => $agent->id,
             ]);
+
+            if ($response->status == 0) {
+                $status = 'Initiate';
+            } elseif ($response->status == 1) {
+                $status = 'approved';
+            } elseif ($response->status == 2) {
+                $status = 'reject';
+            }
+
+            $responseData = [
+                'ref_no' => $ref_no,
+                'status' => $status,
+            ];
 
             return response()->json([
                 'status' => true,
                 'message' => 'data successfully send!',
-                'data' => $response
+                'data' => $responseData
             ], 200);
         } else {
             return response()->json([
@@ -178,25 +203,51 @@ class WebController extends Controller
         }
     }
 
-    public function refund() 
+    public function refundStatus()
     {
         $token = request()->header('token');
         $agent = Agent::where('password', $token)->first();
-        
+
         if ($agent) {
-            $orderId = request()->header('orderId');
-            if (!$orderId) {
+            $ref_no = request()->header('ref_no');
+            if (!$ref_no) {
                 return response()->json([
                     'status' => false,
-                    'message' => 'please pass orderId and amount',
+                    'message' => 'ref_no required!',
                 ], 422);
             }
-            $response = [];
+
+            $transection = Transection::where(['ref_no' => $ref_no, 'company_id' => $agent->id,])->first();
+
+            if (!$transection) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Invalid ref_no!',
+                ], 422);
+            }
+
+            $response = RefundRequest::where([
+                'ref_no' => $ref_no,
+                'company_id' => $agent->id,
+            ])->first();
+
+            if ($response->status == 0) {
+                $status = 'Initiate';
+            } elseif ($response->status == 1) {
+                $status = 'approved';
+            } elseif ($response->status == 2) {
+                $status = 'reject';
+            }
+
+            $responseData = [
+                'ref_no' => $ref_no,
+                'status' => $status,
+            ];
 
             return response()->json([
                 'status' => true,
                 'message' => 'data successfully send!',
-                'data' => $response
+                'data' => $responseData
             ], 200);
         } else {
             return response()->json([
@@ -209,11 +260,11 @@ class WebController extends Controller
     public function store()
     {
         Validator::make(request()->all(), [
-            'type' =>'required',
-            'order_id' => 'required', 
-            'company_id' =>'required',
-            'amount' =>'required', 
-            'ref_no' =>'required'
+            'type' => 'required',
+            'order_id' => 'required',
+            'company_id' => 'required',
+            'amount' => 'required',
+            'ref_no' => 'required'
         ]);
 
         $transection = Transection::where(['order_id' => request()->order_id, 'company_id' => request()->company_id])->first();
@@ -223,18 +274,18 @@ class WebController extends Controller
         }
 
         $data = request()->only([
-            'type', 
-            'order_id', 
-            'company_id', 
-            'amount', 
+            'type',
+            'order_id',
+            'company_id',
+            'amount',
             'ref_no'
         ]);
 
         // If the type is not 'upi', add additional fields
         if (request()->type != 'upi') {
             $data = array_merge($data, request()->only([
-                'account_no', 
-                'ifsc_code', 
+                'account_no',
+                'ifsc_code',
                 'holder_name'
             ]));
         }
@@ -246,7 +297,7 @@ class WebController extends Controller
         return redirect()->route('thank_you');
     }
 
-    public function thank_you() 
+    public function thank_you()
     {
         return view('thanks');
     }

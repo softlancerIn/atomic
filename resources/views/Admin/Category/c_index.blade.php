@@ -62,6 +62,7 @@ break;
     .sm:justify-between div p {
         display: none;
     }
+
 </style>
 <div class="content-wrapper">
     <div class="container-xxl flex-grow-1 container-p-y">
@@ -83,7 +84,7 @@ break;
         @endif
         <!--- Session flash message -------->
         @if($data['type'] == 'new')
-        <div class="card col-12 col-md-1 col-lg-12 mb-2">
+        <div class="card col-12 col-md-12 col-lg-12 mb-2">
             <section>
                 <div class="container mt-4 mb-4">
                     <div class="row">
@@ -120,7 +121,7 @@ break;
         </div>
         @endif
 
-        <div class="card col-12 col-md-1 col-lg-12 mb-2">
+        <div class="card col-12 col-md-12 col-lg-12 mb-2">
             <section>
                 <div class="container mt-4 mb-4">
                     <div class="row">
@@ -265,6 +266,7 @@ break;
                 .sm:justify-between div p {
                     display: none;
                 }
+
             </style>
             <div class="d-flex justify-content-center">
                 {!! $data['category_data']->links() !!}
@@ -308,18 +310,18 @@ break;
         console.log(tableType);
         var _token = '{{ csrf_token() }}';
         $.ajax({
-            url: "{{ route('globalStatusUpdate') }}",
-            type: "POST",
-            data: {
-                status: status,
-                id: id,
-                type: tableType,
-            },
-            dataType: "JSON",
-            headers: {
+            url: "{{ route('globalStatusUpdate') }}"
+            , type: "POST"
+            , data: {
+                status: status
+                , id: id
+                , type: tableType
+            , }
+            , dataType: "JSON"
+            , headers: {
                 'X-CSRF-TOKEN': _token
-            },
-            success: function(resp) {
+            }
+            , success: function(resp) {
                 console.log(resp);
                 if (resp.status == true) {
                     window.location.reload();
@@ -330,6 +332,7 @@ break;
             }
         });
     }
+
 </script>
 
 <script>
@@ -341,8 +344,8 @@ break;
         var cat_id = $(this).data("id");
         console.log(cat_id);
         axios.post("{{route('edit-category',['type'=>'all','id'=>'0'])}}", {
-            'id': cat_id,
-        }).then(res => {
+            'id': cat_id
+        , }).then(res => {
             console.log(res);
             console.log(res.data.data.name);
             $('#cat_id').val(res.data.data.id);
@@ -362,8 +365,8 @@ break;
     $('#delete_category_btn').on("click", function() {
         var delete_id = $('#delete_id').val();
         axios.post("{{route('delete-category')}}", {
-                'id': delete_id,
-            })
+                'id': delete_id
+            , })
             .then(res => {
                 console.log(res);
                 window.location.reload()
@@ -371,5 +374,6 @@ break;
                 console.error(error);
             });
     });
+
 </script>
 @endsection

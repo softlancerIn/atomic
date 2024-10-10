@@ -288,6 +288,17 @@ class AdminController extends Controller
                     'status' => $request->status,
                 ]);
                 break;
+            case 'payout':
+                if ($request->status == '1') {
+                    $amount = 0;
+                    $today = Carbon::today();
+                    $trs = RefundRequest::where('id', $request->id)->first();
+                }
+
+                $category = RefundRequest::where('id', $request->id)->update([
+                    'status' => $request->status,
+                ]);
+                break;
             case 'bank':
                 $bankData = BankDetails::where('id', $request->id)->first();
 
@@ -680,73 +691,124 @@ class AdminController extends Controller
         return view('Admin.Category.c_index', compact('data'));
     }
 
-        //============================= Payment gateway new function ==============================//
+    //============================= Payment gateway new function ==============================//
 
-        public function refundList(Request $request)
-        {
-            $type = 'new';
-            switch ($type) {
-                case 'new':
-                    $data['type'] = 'new';
-                    $type = '1';
-    
-                    break;
-                case 'approved':
-                    $data['type'] = 'approved';
-                    $type = '2';
-    
-                    break;
-                case 'reject':
-                    $data['type'] = 'reject';
-                    $type = '3';
-    
-                    break;
+    public function refundList(Request $request)
+    {
+        // $type = 'new';
+        // switch ($type) {
+        //     case 'new':
+        //         $data['type'] = 'new';
+        //         $type = '1';
+
+        //         break;
+        //     case 'approved':
+        //         $data['type'] = 'approved';
+        //         $type = '2';
+
+        //         break;
+        //     case 'reject':
+        //         $data['type'] = 'reject';
+        //         $type = '3';
+
+        //         break;
+        // }
+
+        if (Auth::guard('user')->user()->role == 'admin') {
+            // Join Transection and RefundRequest based on ref_no and company_id
+            $query = Transection::join('refund_request', function ($join) {
+                $join->on('transactions.ref_no', '=', 'refund_request.ref_no')
+                    ->on('transactions.company_id', '=', 'refund_request.company_id');
+            })
+                ->select('transactions.*', 'refund_request.*', 'transactions.created_at as transaction_data'); // Select the necessary fields
+
+            // Check if the search query is provided
+            if ($request->has('search')) {
+                $query->where('transactions.ref_no', 'LIKE', $request->search . '%');  // Search in transactions table
             }
-    
-            if (Auth::guard('user')->user()->role == 'admin') {
-                $data['category_data'] = RefundRequest::paginate(20);
-                if ($request->has('search')) {
-                    $data['category_data'] = RefundRequest::where('ref_no', 'LIKE', $request->search . '%')->paginate(20);
-                }
-            } else {
-                $data['category_data'] = RefundRequest::where(['company_id' => Auth::guard('user')->user()->id])->paginate(20);
-                if ($request->has('search')) {
-                    $data['category_data'] = RefundRequest::where('ref_no', 'LIKE', $request->search . '%')->where(['company_id' => Auth::guard('user')->user()->id])->paginate(20);
-                }
+
+            // Paginate the results
+            $data['category_data'] = $query->paginate(20);
+        } else {
+            // For non-admin users, restrict by company_id and handle search
+            $query = RefundRequest::where(['company_id' => Auth::guard('user')->user()->id]);
+
+            if ($request->has('search')) {
+                $query->where('ref_no', 'LIKE', $request->search . '%');
             }
-    
-            return view('Admin.Refund.c_index', compact('data'));
+
+            $data['category_data'] = $query->paginate(20);
         }
+
+
+        return view('Admin.Refund.c_index', compact('data'));
+    }
 
     public function exportTransection(Request $request, $type)
     {
         $startDate = Carbon::parse($request->start_date);
         $endDate = Carbon::parse($request->end_time);
 
-        $transectionData = Transection::where('status', '1')->whereBetween('created_at', [$startDate, $endDate])->get();
-        if (empty($transectionData) || sizeof($transectionData) < 1) {
-            return redirect()->back()->with('error', 'Data Not Found!');
-        }
-        $row = [
-            'order_id',
-            'transection_no',
-            'transection_date',
-            'amount',
-            'status'
-        ];
+        if ($type == 'payout') {
+            $transectionData = RefundRequest::where('status', '0')->whereBetween('created_at', [$startDate, $endDate])->get();
 
-        $dataRows  = [];
+            if (sizeof($transectionData) < 1) {
+                return redirect()->back()->with('error', 'Data Not Found!');
+            }
 
-        foreach ($transectionData as $key => $items) {
-            $dataRows[] = [
-                !empty($items->order_id) ? '"' . $items->order_id . '"' : '',
-                !empty($items->ref_no) ? '"' . $items->ref_no . '"' : '',
-                !empty($items->created_at) ? '"' . $items->created_at . '"' : '',
-                !empty($items->amount) ? '"' . $items->amount . '"' : '',
-                'Initiate',
+            foreach ($transectionData as $key => $value) {
+                $transection = Transection::where('ref_no', 'like', $value->ref_no)->first();
+                $value->transection = $transection;
+            }
+
+            $row = [
+                'order_id',
+                'transection_no',
+                'transection_date',
+                'amount',
+                'status'
             ];
+
+            $dataRows  = [];
+
+            foreach ($transectionData as $key => $items) {
+                $dataRows[] = [
+                    !empty($items->transection->order_id) ? '"' . $items->transection->order_id . '"' : '',
+                    !empty($items->transection->ref_no) ? '"' . $items->transection->ref_no . '"' : '',
+                    !empty($items->transection->created_at) ? '"' . $items->transection->created_at . '"' : '',
+                    !empty($items->transection->amount) ? '"' . $items->transection->amount . '"' : '',
+                    'Initiate',
+                ];
+            }
+            $dataToExport = array_merge([$row], $dataRows);
+        } else {
+
+            $transectionData = Transection::where('status', '1')->whereBetween('created_at', [$startDate, $endDate])->get();
+
+            if (empty($transectionData) || sizeof($transectionData) < 1) {
+                return redirect()->back()->with('error', 'Data Not Found!');
+            }
+            $row = [
+                'order_id',
+                'transection_no',
+                'transection_date',
+                'amount',
+                'status'
+            ];
+
+            $dataRows  = [];
+
+            foreach ($transectionData as $key => $items) {
+                $dataRows[] = [
+                    !empty($items->order_id) ? '"' . $items->order_id . '"' : '',
+                    !empty($items->ref_no) ? '"' . $items->ref_no . '"' : '',
+                    !empty($items->created_at) ? '"' . $items->created_at . '"' : '',
+                    !empty($items->amount) ? '"' . $items->amount . '"' : '',
+                    'Initiate',
+                ];
+            }
+            $dataToExport = array_merge([$row], $dataRows);
         }
-        $dataToExport = array_merge([$row], $dataRows);
         return $this->exportCSV($dataToExport, 'export-data-between-' . $request->start_date . '-' . $request->end_date, '', '');
     }
 
@@ -764,7 +826,7 @@ class AdminController extends Controller
         return $this->exportCSV($data, 'sample-transection', '', '');
     }
 
-    public function importTransection(Request $request, $id)
+    public function importTransection(Request $request, $type)
     {
         try {
             if ($request->hasFile('csv_file')) {
@@ -775,24 +837,48 @@ class AdminController extends Controller
                 if ($extension == 'csv' || $extension == 'xlsx') {
                     $data = array_map('str_getcsv', file($path));
                     $header = array_shift($data);
-                    foreach ($data as $key => $row) {
-                        if (!empty($row[0])) {
 
-                            if ($row[4] == 'approved') {
-                                $status = '2';
-                            } else if ($row[4] == 'reject') {
-                                $status = '3';
-                            } elseif ($row[4] == 'Initiate') {
-                                $status = '1';
-                            } else {
-                                return redirect()->back()->with('error', 'Check payment status carefully!');
+                    if ($type == 'refund') {
+                        foreach ($data as $key => $row) {
+                            if (!empty($row[0])) {
+
+                                if ($row[4] == 'approved') {
+                                    $status = '1';
+                                } else if ($row[4] == 'reject') {
+                                    $status = '2';
+                                } elseif ($row[4] == 'Initiate') {
+                                    $status = '0';
+                                } else {
+                                    return redirect()->back()->with('error', 'Check payment status carefully!');
+                                }
+
+                                $update = RefundRequest::where('ref_no', $row[1])->update([
+                                    'status' => $status,
+                                ]);
                             }
+                        }
+                    } else {
+                        foreach ($data as $key => $row) {
+                            if (!empty($row[0])) {
 
-                            $update = Transection::where('ref_no', $row[1])->update([
-                                'status' => $status,
-                            ]);
+                                if ($row[4] == 'approved') {
+                                    $status = '2';
+                                } else if ($row[4] == 'reject') {
+                                    $status = '3';
+                                } elseif ($row[4] == 'Initiate') {
+                                    $status = '1';
+                                } else {
+                                    return redirect()->back()->with('error', 'Check payment status carefully!');
+                                }
+
+
+                                $update = Transection::where('ref_no', $row[1])->update([
+                                    'status' => $status,
+                                ]);
+                            }
                         }
                     }
+
 
                     $filename =  $this->fileupload($request->csv_file, 'Upload_csv', 'csv_upload');
                     return redirect()->back()->with('success', 'CSV imported successfully');
