@@ -20,5 +20,5 @@ use function Ramsey\Uuid\v1;
 //=================================  api ===========================================//
 Route::post('/v1', [WebController::class, 'auth'])->name('authPage');
 Route::post('/v1/payout/', [WebController::class, 'payout'])->name('payout');
-Route::post('/v1/refund/', [WebController::class, 'refund'])->name('refund');
+Route::post('/v1/refund-status/', [WebController::class, 'refundStatus'])->name('refundStatus');
 //=================================  api ===========================================//
