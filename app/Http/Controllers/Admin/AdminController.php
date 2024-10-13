@@ -72,14 +72,13 @@ class AdminController extends Controller
         ]);
 
         $user_check = Agent::where('email', $request->email)->first();
-        if ($user_check->status == '0') {
-            return redirect()->back()->with('error', 'You are not able to login please connect with admin!');
-        }
-
 
         if (empty($user_check)) {
             return redirect()->back()->with('error', 'Invalid Credentials!');
         } else {
+            if ($user_check->status == '0') {
+                return redirect()->back()->with('error', 'You are not able to login please connect with admin!');
+            }
             $check_pass = Hash::check($request->password, $user_check->password);
             if (!empty($check_pass)) {
                 Auth::guard('user')->loginUsingId($user_check->id);
