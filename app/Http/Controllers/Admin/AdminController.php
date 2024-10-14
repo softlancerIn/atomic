@@ -131,13 +131,13 @@ class AdminController extends Controller
     {
         $data = [];
         $data['user'] = Users::count();
-        $data['banner'] = Banner::count();
+        $data['banner'] = '0';
         $data['category'] = Category::count();
-        $data['product'] = Product::count();
-        $data['order'] = Order::count();
-        $data['confirm_order'] = Order::where('order_status', '1')->count();
+        $data['product'] = '0';
+        $data['order'] = '0';
+        $data['confirm_order'] = '0';
         $data['crops'] = [];
-        $data['pending_order'] = Order::where('order_status', '0')->count();
+        $data['pending_order'] = '0';
         return view('Admin.index', compact('data'));
     }
 
