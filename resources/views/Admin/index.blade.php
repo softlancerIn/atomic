@@ -26,7 +26,7 @@ $todayCommission = App\Models\Settelment::where('status','1')->whereDay('created
 $comm = 0;
 foreach($todayCommission as $key=>$value){
 $company = App\Models\Agent::where('id',$value->company_id)->first();
-$agentCommission = $company->comission;
+$agentCommission = $company->comission ?? '0;
 $amt = ($value->amount * $agentCommission)/100;
 $comm+=$amt;
 
