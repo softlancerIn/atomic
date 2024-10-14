@@ -27,7 +27,12 @@ $comm = 0;
 foreach($todayCommission as $key=>$value){
 $company = App\Models\Agent::where('id',$value->company_id)->first();
 $agentCommission = $company->comission ?? '0;
+if($agentCommission == '0'){
+$amt = 0;
+}else{
 $amt = ($value->amount * $agentCommission)/100;
+}
+
 $comm+=$amt;
 
 }
