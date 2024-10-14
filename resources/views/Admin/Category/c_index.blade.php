@@ -13,7 +13,7 @@ $active = 'reject_request';
 
 switch($data['type']){
 case 'new':
-$type = 'New';
+$type = 'Pending';
 $cat_placeholder = 'Select New';
 break;
 case 'approved':
