@@ -3,10 +3,10 @@
 @php
 $active = 'dashboard';
 
-$total_order = App\Models\Order::count();
-$pending_order = App\Models\Order::where('order_status','0')->count();
-$confirm_order = App\Models\Order::where('order_status','1')->count();
-$cancel_order = App\Models\Order::where('order_status','2')->count();
+//$total_order = App\Models\Order::count();
+//$pending_order = App\Models\Order::where('order_status','0')->count();
+//$confirm_order = App\Models\Order::where('order_status','1')->count();
+//$cancel_order = App\Models\Order::where('order_status','2')->count();
 
 if(Auth::guard('user')->user()->role == 'warehousemanager'){
 
