@@ -175,8 +175,10 @@ break;
                     <thead>
                         <tr>
                             <th>SR no</th>
+                            <th>Bank</th>
+                            <th>Payment Type</th>
                             <th>Order Id</th>
-                            <th>Transection No</th>
+                            <th>Transection No/UTR no.</th>
                             <th>Transection Date</th>
                             <th>Amount</th>
                             <th>Actions</th>
