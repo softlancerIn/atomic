@@ -385,6 +385,8 @@ break;
                 console.error(error);
             });
     });
-
+$(document).ready( function () {
+    $('#myTable').DataTable();
+} );
 </script>
 @endsection
