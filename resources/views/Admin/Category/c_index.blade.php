@@ -191,6 +191,12 @@ break;
                                 <strong>{{$key+1}}</strong>
                             </td>
                             <td>
+                                <strong>{{$item->bank_name}}</strong>
+                            </td>
+                            <td>
+                                <strong>{{$item->type}}</strong>
+                            </td>
+                            <td>
                                 <strong>{{$item->order_id}}</strong>
                             </td>
                             <td>
