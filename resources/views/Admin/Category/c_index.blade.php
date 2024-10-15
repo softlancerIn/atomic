@@ -28,7 +28,9 @@ break;
 
 
 @endphp
-
+<link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.css" />
+  
+<script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
 <style>
     .cus_btn_padding {
         padding: 0.4345rem 0.5rem;
@@ -171,7 +173,7 @@ break;
 
         <div class="card p-2">
             <div class="table-responsive text-nowrap">
-                <table class="table table-borderless">
+                <table class="table table-borderless" id="myTable" class="display">
                     <thead>
                         <tr>
                             <th>SR no</th>
