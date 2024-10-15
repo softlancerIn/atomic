@@ -687,6 +687,10 @@ class AdminController extends Controller
             }
         }
 
+        foreach($data['category_data'] as $value2){
+            $bank = BankDetails::where('ifsc_code','LIKE',"%{$value2->ifsc_code}%")->first();
+            $value2->bank_name = $bank->bank_name;
+        }
         return view('Admin.Category.c_index', compact('data'));
     }
 
