@@ -171,7 +171,7 @@ break;
 
         <div class="card p-2">
             <div class="table-responsive text-nowrap">
-                <table  id="myTable" class="display">
+                <table  class="table table-borderless">
                     <thead>
                         <tr>
                             <th>SR no</th>
