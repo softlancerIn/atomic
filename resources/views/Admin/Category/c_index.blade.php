@@ -28,8 +28,6 @@ break;
 
 
 @endphp
-<link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.css" />
-  
 
 <style>
     .cus_btn_padding {
@@ -309,7 +307,7 @@ break;
         </div>
     </div>
 </div>
-<script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
+
 <script>
     function change_user_status(status, id, tableType) {
         var check = confirm('Are You sure to want to change this transetion status!');
@@ -385,8 +383,6 @@ break;
                 console.error(error);
             });
     });
-$(document).ready( function () {
-    $('#myTable').DataTable();
-} );
+
 </script>
 @endsection
