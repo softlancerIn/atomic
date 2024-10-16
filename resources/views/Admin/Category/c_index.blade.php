@@ -171,15 +171,15 @@ break;
 
         <div class="card p-2">
             <div class="table-responsive text-nowrap">
-                <table  class="table table-borderless">
+                <table class="table table-borderless">
                     <thead>
                         <tr>
                             <th>SR no</th>
                             <th>Bank</th>
                             <th>Payment Type</th>
                             <th>Order Id</th>
-                            <th>Transection No/UTR no.</th>
-                            <th>Transection Date</th>
+                            <th>Transaction No/UTR no.</th>
+                            <th>Transaction Date</th>
                             <th>Amount</th>
                             <th>Actions</th>
                         </tr>

@@ -4,7 +4,7 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" /> 
-        <title>Dashboard - Atomic</title> 
+        <title>Dashboard - 24x7 PG</title> 
         <meta name="description" content="" /> 
         <meta name="csrf-token" content="{{ csrf_token() }}" />
         <!-- Favicon -->
@@ -83,7 +83,7 @@
                     <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
                     <!-- Search -->
                     <div class="navbar-nav align-items-center">
-                        <h6 class="m-0">Atomic Admin-Panel</h6>
+                        <h6 class="m-0">24x7 Payment Gateway Admin-Panel</h6>
                     </div>
 
                     @if(Auth::guard('user')->user()->role != 'admin')

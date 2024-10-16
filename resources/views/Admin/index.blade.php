@@ -3,11 +3,6 @@
 @php
 $active = 'dashboard';
 
-//$total_order = App\Models\Order::count();
-//$pending_order = App\Models\Order::where('order_status','0')->count();
-//$confirm_order = App\Models\Order::where('order_status','1')->count();
-//$cancel_order = App\Models\Order::where('order_status','2')->count();
-
 if(Auth::guard('user')->user()->role == 'warehousemanager'){
 
 $new_request = App\Models\Transection::where(['status' => 1, 'company_id' => Auth::guard('user')->user()->id])->whereDay('created_at', now()->day)->count();
@@ -156,8 +151,21 @@ $totlComm+=$amt;
                                 </svg>
                             </div>
                         </div>
-                        <span class="mb-2 d-block">Today Total Transection</span>
-                        <h3 class="card-title mb-2">{{$toaysTotalTransection ?? '0'}}</h3>
+                        <span class="mb-2 d-block"><a href="{{route('categoryList',['type'=>'new'])}}">Today Transaction(Rs.)</a></span>
+                        <h3 class="card-title mb-2">{{$data['totalTransaction'] ?? '0'}}</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-6 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="mb-2 d-block">Settelment</h4>
+                        <hr style="margin-top: 2px; margin-bottom:2px;">
+                        <ul>
+                            <li>Total Amount- {{$data['totalSettelment']}}</li>
+                            <li>Recived Amount- {{$data['recivedSettelment']}}</li>
+                            <li>Pending Amount- {{$data['pendingSettelment']}}</li>
+                        </ul>
                     </div>
                 </div>
             </div>

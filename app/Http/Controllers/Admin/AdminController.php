@@ -130,6 +130,13 @@ class AdminController extends Controller
     public function dashboard()
     {
         $data = [];
+
+        $data['totalTransaction'] = Transection::sum('amount');
+        $data['totalSettelment'] = Settelment::sum('amount');
+        $data['recivedSettelment'] = Settelment::sum('recived_amount');
+        $data['pendingSettelment'] = ($data['totalSettelment'] - $data['recivedSettelment']);
+
+
         $data['user'] = Users::count();
         $data['banner'] = '0';
         $data['category'] = Category::count();
@@ -687,8 +694,8 @@ class AdminController extends Controller
             }
         }
 
-        foreach($data['category_data'] as $value2){
-            $bank = BankDetails::where('ifsc_code','LIKE',"%{$value2->ifsc_code}%")->first();
+        foreach ($data['category_data'] as $value2) {
+            $bank = BankDetails::where('ifsc_code', 'LIKE', "%{$value2->ifsc_code}%")->first();
             $value2->bank_name = $bank->bank_name;
         }
         return view('Admin.Category.c_index', compact('data'));
@@ -733,16 +740,20 @@ class AdminController extends Controller
             // Paginate the results
             $data['category_data'] = $query->paginate(20);
         } else {
-            // For non-admin users, restrict by company_id and handle search
-            $query = RefundRequest::where(['company_id' => Auth::guard('user')->user()->id]);
-
+            $query = Transection::join('refund_request', function ($join) {
+                $join->on('transactions.ref_no', '=', 'refund_request.ref_no')
+                    ->on('transactions.company_id', '=', 'refund_request.company_id');
+            })
+                ->select('transactions.*', 'refund_request.*', 'transactions.created_at as transaction_data') // Select the necessary fields
+                ->where('transactions.company_id', Auth::guard('user')->user()->id);
+            // Check if the search query is provided
             if ($request->has('search')) {
-                $query->where('ref_no', 'LIKE', $request->search . '%');
+                $query->where('transactions.ref_no', 'LIKE', $request->search . '%');  // Search in transactions table
             }
 
+            // Paginate the results
             $data['category_data'] = $query->paginate(20);
         }
-
 
         return view('Admin.Refund.c_index', compact('data'));
     }
