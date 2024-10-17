@@ -100,9 +100,7 @@ $active = 'bank';
                                                 <select name="payment_type" id="payment_type" class="form-select form-control">
                                                     <option value="" selected disabled>select payment type</option>
                                                     <option value="1">UPI</option>
-                                                    <option value="2">RTGS</option>
-                                                    <option value="3">NEFT</option>
-                                                    <option value="4">IMPS</option>
+                                                    <option value="5">Bank Service</option>
                                                 </select>
 
 

@@ -84,6 +84,7 @@ break;
         @endif
         <!--- Session flash message -------->
         @if($data['type'] == 'new')
+        @if(Auth::guard('user')->user()->role !== 'user')
         <div class="card col-12 col-md-12 col-lg-12 mb-2">
             <section>
                 <div class="container mt-4 mb-4">
@@ -119,6 +120,7 @@ break;
                 </div>
             </section>
         </div>
+        @endif
         @endif
 
         <div class="card col-12 col-md-12 col-lg-12 mb-2">
@@ -181,7 +183,9 @@ break;
                             <th>Transaction No/UTR no.</th>
                             <th>Transaction Date</th>
                             <th>Amount</th>
+                            @if(Auth::guard('user')->user()->role !== 'user')
                             <th>Actions</th>
+                            @endif
                         </tr>
                     </thead>
                     <tbody>
@@ -208,6 +212,7 @@ break;
                             <td>
                                 <strong>{{$item->amount}}</strong>
                             </td>
+                            @if(Auth::guard('user')->user()->role !== 'user')
                             <td class="d-flex">
                                 @if($data['type'] == 'new')
                                 <div class="">
@@ -231,9 +236,10 @@ break;
                                 @elseif($data['type'] == 'reject')
                                 <button class="btn btn-sm btn-danger">Reject</button>
                                 @endif
-
-
+                                
+                                
                             </td>
+                            @endif
                         </tr>
                         @empty
                         <tr>

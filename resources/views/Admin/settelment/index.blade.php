@@ -18,6 +18,11 @@ $active = 'settelment';
             <p>{{Session::get('success')}}</p>
         </div>
         @endif
+        @if (Session::has('error'))
+        <div class="alert alert-danger">
+            <p>{{Session::get('error')}}</p>
+        </div>
+        @endif
         <!-------------- Session message ---------------->
         <div class="card p-2">
             <div class="table-responsive text-nowrap">
@@ -26,8 +31,12 @@ $active = 'settelment';
                         <tr>
                             <th>Company Name</th>
                             <th>Amount</th>
+                            <th>Recived Payment</th>
+                            <th>Pending Payment</th>
                             <th>TimeStamp</th>
+                            @if(Auth::guard('user')->user()->role != 'user')
                             <th>Actions</th>
+                            @endif
                         </tr>
                     </thead>
                     <tbody>
@@ -37,25 +46,28 @@ $active = 'settelment';
                                 <strong>{{$item->company->name}}</strong>
                             </td>
                             <td>{{$item->amount ?? '--'}}</td>
+                            <td>{{$item->recived_amount ?? '0'}}</td>
+                            <td>{{$item->amount - $item->recived_amount}}</td>
                             <td>{{$item->created_at ?? '--'}}</td>
 
                             <td class="d-flex">
                                 @if($item->status == '0')
+                                @if(Auth::guard('user')->user()->role != 'user')
+                                <div class="mx-1">
+                                    <a class="btn btn-sm btn-dark partPaymet" data-id="{{$item->id}}" data-bs-toggle="modal" data-bs-target="#partPayments" style="color:white;">
+                                        Part Payment
+                                    </a>
+                                </div>
                                 <div class="">
                                     <a class="btn btn-sm btn-success" id="" data-id="{{$item->id}}" onclick="change_user_status('1','{{$item->id}}','settelment')">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
-                                            <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
-                                            <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z" />
-                                        </svg>
                                         Approved
                                     </a>
                                 </div>
                                 <div class="mx-1">
                                     <a href="#" class="btn btn-sm btn-danger" onclick="change_user_status('2','{{$item->id}}','settelment')">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
-                                            <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5" />
-                                        </svg>Reject</a>
+                                        Reject</a>
                                 </div>
+                                @endif
                                 @else
                                 @if($item->status == '1')
                                 <span class="badge rounded-pill bg-success">Approved</span>
@@ -100,6 +112,7 @@ $active = 'settelment';
                 .sm:justify-between div p {
                     display: none;
                 }
+
             </style>
             <div class="d-flex justify-content-center">
                 {!! $data['settelment']->links() !!}
@@ -107,22 +120,55 @@ $active = 'settelment';
         </div>
     </div>
 </div>
+<!---------------------- Modal ---------------------->
+<div class="modal fade" id="partPayments" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="edit_catrgory">Part Payment</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{route('settelmentPartPayment')}}" method="post" class="needs-validation" enctype="multipart/form-data" novalidate>
+                    @csrf
+                    <!--- Hidden Category Type ---------->
+                    <input type="hidden" name="id" id="transactionId">
+                    <div class="col-md-12">
+                        <input type="text" class="form-control" name="amount" id="amount" placeholder="Enter Amount" aria-label="Owner Name">
+                    </div>
+                    <div class="col-md-12 mt-3">
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
+    $(document).ready(function() {
+        $('.partPaymet').on("click", function() {
+            var id = $(this).data("id");
+            console.log(id);
+            $('#transactionId').val(id);
+        });
+    });
+
     function change_user_status(status, id, tableType) {
         var _token = '{{ csrf_token() }}';
         $.ajax({
-            url: "{{ route('globalStatusUpdate') }}",
-            type: "POST",
-            data: {
-                status: status,
-                id: id,
-                type: tableType,
-            },
-            dataType: "JSON",
-            headers: {
+            url: "{{ route('globalStatusUpdate') }}"
+            , type: "POST"
+            , data: {
+                status: status
+                , id: id
+                , type: tableType
+            , }
+            , dataType: "JSON"
+            , headers: {
                 'X-CSRF-TOKEN': _token
-            },
-            success: function(resp) {
+            }
+            , success: function(resp) {
                 console.log(resp);
                 if (resp.status == true) {
                     window.location.reload();
@@ -134,5 +180,6 @@ $active = 'settelment';
             }
         });
     }
+
 </script>
 @endsection

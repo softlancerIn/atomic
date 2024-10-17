@@ -907,8 +907,9 @@ html:not(.layout-menu-collapsed)
   color: #040404;
 }
 .bg-menu-theme .menu-inner > .menu-item.active > .menu-link {
-  color: #040404;
-  background-color: #30010165 !important;
+  /* color: #040404; */
+  color: #03020291;
+  background-color: #63b9c340 !important;
 }
 .bg-menu-theme .menu-inner > .menu-item.active:before {
   background: #040404;

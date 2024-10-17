@@ -100,9 +100,10 @@ $active = 'bank';
                                                 <select name="payment_type" id="payment_type" class="form-select form-control">
                                                     <option value="" selected disabled>select payment type</option>
                                                     <option value="1" {{$data['bankData']->payment_type == '1' ? 'selected' : ''}}>UPI</option>
-                                                    <option value="2" {{$data['bankData']->payment_type == '2' ? 'selected' : ''}}>RTGS</option>
+                                                    {{-- <option value="2" {{$data['bankData']->payment_type == '2' ? 'selected' : ''}}>RTGS</option>
                                                     <option value="3" {{$data['bankData']->payment_type == '3' ? 'selected' : ''}}>NEFT</option>
-                                                    <option value="4" {{$data['bankData']->payment_type == '4' ? 'selected' : ''}}>IMPS</option>
+                                                    <option value="4" {{$data['bankData']->payment_type == '4' ? 'selected' : ''}}>IMPS</option> --}}
+                                                    <option value="4" {{$data['bankData']->payment_type == '5' ? 'selected' : ''}}>Bank Service</option>
                                                 </select>
 
 

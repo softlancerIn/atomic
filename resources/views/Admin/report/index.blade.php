@@ -54,6 +54,7 @@ $active = 'report';
         </div>
         @endif
         <!--- Session flash message -------->
+        @if(Auth::guard('user')->user()->role !== 'user')
         <div class="card col-12 col-md-12 col-sm-6 col-lg-12 mb-2">
             <section>
                 <div class="container mt-4 mb-4">
@@ -81,6 +82,7 @@ $active = 'report';
                 </div>
             </section>
         </div>
+        @endif
 
 
         <div class="card col-12 col-md-12 col-sm-6 col-lg-12 mb-2">

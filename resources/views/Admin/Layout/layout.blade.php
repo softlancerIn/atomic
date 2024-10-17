@@ -86,7 +86,7 @@
                         <h6 class="m-0">24x7 Payment Gateway Admin-Panel</h6>
                     </div>
 
-                    @if(Auth::guard('user')->user()->role != 'admin')
+                    @if(Auth::guard('user')->user()->role != ('admin' || 'user'))
                     @php
                         $agent = App\Models\Agent::where('id',Auth::guard('user')->user()->id)->first();
                     @endphp

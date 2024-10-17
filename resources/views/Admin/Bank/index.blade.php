@@ -9,9 +9,11 @@ $active = 'bank';
             <div class="col-6">
                 <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Dashboard / </span>Bank List</h4>
             </div>
+            @if(Auth::guard('user')->user()->role !== 'user')
             <div class="col-6 text-end">
                 <a href="{{route('bank_create')}}"><button type="button" class="btn btn-primary">Add</button></a>
             </div>
+            @endif
 
         </div>
 
@@ -36,9 +38,12 @@ $active = 'bank';
                             <th>Account No</th>
                             <th>IFSC Code</th>
                             <th>UPI ID</th>
+                            <th>Today Payment</th>
                             <th>Account Limit</th>
+                            @if(Auth::guard('user')->user()->role !== 'user')
                             <th>Status</th>
                             <th>Actions</th>
+                            @endif
                         </tr>
                     </thead>
                     <tbody>
@@ -53,18 +58,16 @@ $active = 'bank';
                             <td>
                                 @if($item->payment_type == '1')
                                 UPI
-                                @elseif($item->payment_type == '2')
-                                RTGS
-                                @elseif($item->payment_type == '3')
-                                NEFT
                                 @else
-                                IMPS
+                                Bank Service
                                 @endif
                             </td>
                             <td>{{$item->account_no}}</td>
                             <td>{{$item->ifsc_code}}</td>
                             <td>{{$item->upi_id ?? '--'}}</td>
+                            <td>{{$item->today_payment ?? '--'}}</td>
                             <td>{{$item->account_limit}}</td>
+                            @if(Auth::guard('user')->user()->role !== 'user')
                             <td>
                                 <div class="form-check form-switch mb-2">
                                     <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" onclick="change_user_status('{{$item->status}}','{{$item->id}}','bank')" {{$item->status == '1' ? 'checked' : ''}}>
@@ -82,6 +85,7 @@ $active = 'bank';
                                     <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5" />
                                 </svg>Delete</a> --}}
                             </td>
+                            @endif
                         </tr>
 
                         @endforeach

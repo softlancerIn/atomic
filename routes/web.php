@@ -92,6 +92,14 @@ Route::middleware(['auth:user'])->group(function () {
         Route::match(['get', 'post'], 'company-update', 'wareHouse_update')->name('wareHouse_update');
         //===================================== Ware House ========================================//
 
+        //===================================== Ware House ========================================//
+        Route::match(['get', 'post'], 'user-list', 'users_list')->name('users_list');
+        Route::match(['get', 'post'], 'user-create', 'users_create')->name('users_create');
+        Route::match(['get', 'post'], 'user-add', 'users_add')->name('users_add');
+        Route::match(['get', 'post'], 'user-edit/{id}', 'users_edit')->name('users_edit');
+        Route::match(['get', 'post'], 'user-update', 'users_update')->name('users_update');
+        //===================================== Ware House ========================================//
+
 
         //===================================== Bank ========================================//
         Route::match(['get', 'post'], 'bank-list', 'bank')->name('bank_list');
@@ -144,6 +152,7 @@ Route::middleware(['auth:user'])->group(function () {
 
         //================================ settelment section =======================================//
         Route::match(['get', 'post'], 'settelment', 'settelment')->name('settelment');
+        Route::match(['get', 'post'], 'settelmentPartPayment', 'settelmentPartPayment')->name('settelmentPartPayment');
         //================================ settelment section =======================================//
 
         //================================== Global Route ===================================//

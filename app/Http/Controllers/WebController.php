@@ -64,14 +64,15 @@ class WebController extends Controller
             return view('thanks');
         }
 
-        $bankDetails = BankDetails::where(['company_id' => $data['companyId'], 'status' => '1'])->get();
+        $bankDetails = BankDetails::where(['company_id' => $data['companyId'], 'status' => '1'])->inRandomOrder()->get();
         $banks = [];
         foreach ($bankDetails as $bankDetail) {
             $type = [
                 '1' => 'upi',
                 '2' => 'rtgs',
                 '3' => 'neft',
-                '4' => 'imps'
+                '4' => 'imps',
+                '5' => 'bank_service'
             ];
             if (in_array($bankDetail->payment_type, array_keys($type)) && $bankDetail->status) {
                 $banks[$type[$bankDetail->payment_type]] = $bankDetail;
