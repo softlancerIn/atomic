@@ -127,7 +127,7 @@ class WebController extends Controller
 
             $code = $this->getEncodeData($agent->id, $orderId, $amount);
 
-            $url = 'https://softlancer.in/other/atomic_git_old/v1/' . $code;
+            $url = url('/v1/' . $code);
 
             $response = [
                 'redirect_url' => $url
