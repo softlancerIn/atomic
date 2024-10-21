@@ -25,7 +25,7 @@ Route::get('/thank-you', [WebController::class, 'thank_you'])->name('thank_you')
 
 
 if (Auth::guard('user')->check()) {
-    Route::get('dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+    Route::match(['get', 'post'], 'dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
 } else {
     Route::get('/login', [AdminController::class, 'index'])->name('login');
     Route::post('login', [AdminController::class, 'login'])->name('authenticate');
@@ -37,7 +37,7 @@ if (Auth::guard('user')->check()) {
 Route::middleware(['auth:user'])->group(function () {
     Route::controller(AdminController::class)->group(function () {
         Route::get('logout', 'logout')->name('logout');
-        Route::get('dashboard', 'dashboard')->name('dashboard');
+        Route::match(['get', 'post'], 'dashboard', 'dashboard')->name('dashboard');
 
 
         Route::get('users', 'allUsers')->name('users');

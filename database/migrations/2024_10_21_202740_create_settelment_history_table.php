@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSettelmentTable extends Migration
+class CreateSettelmentHistoryTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,10 @@ class CreateSettelmentTable extends Migration
      */
     public function up()
     {
-        Schema::create('settelment', function (Blueprint $table) {
+        Schema::create('settelment_history', function (Blueprint $table) {
             $table->id();
-            $table->string('company_id')->nullable();
+            $table->string('transactionId')->nullable();
             $table->string('amount')->nullable();
-
-            $table->enum('status', ['1', '0'])->default('1')->comment('1: Active, 0: Inactive');
             $table->timestamps();
         });
     }
@@ -30,6 +28,6 @@ class CreateSettelmentTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('settelment');
+        Schema::dropIfExists('settelment_history');
     }
 }

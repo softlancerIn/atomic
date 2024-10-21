@@ -127,9 +127,17 @@ class AdminController extends Controller
 
     //======================== Log Sign up releted function ======================//
 
-    public function dashboard()
+    public function dashboard(Request $request)
     {
         $data = [];
+
+        if ($request->has('date')) {
+            $timestamp = strtotime($request->date);
+            $day = date('d', $timestamp);
+
+            $data['date'] = $day;
+            $data['filled_date'] = $request->date;
+        }
 
         $data['totalTransaction'] = Transection::sum('amount');
         $data['totalSettelment'] = Settelment::sum('amount');
@@ -156,8 +164,13 @@ class AdminController extends Controller
     public function bank(Request $request)
     {
         if ($request->isMethod('GET')) {
-            if (Auth::guard('user')->user()->role != ('admin' || 'user')) {
-                $data['bank_details'] = BankDetails::with('companyData')->where('company_id', Auth::guard('user')->user()->id)->orderBy('id', 'DESC')->paginate(10);
+            $company = Agent::where('id', Auth::guard('user')->user()->user)->first();
+            if (Auth::guard('user')->user()->role != 'admin' || $company) {
+                if ($company) {
+                    $data['bank_details'] = BankDetails::with('companyData')->where('company_id', Auth::guard('user')->user()->user)->orderBy('id', 'DESC')->paginate(10);
+                } else {
+                    $data['bank_details'] = BankDetails::with('companyData')->where('company_id', Auth::guard('user')->user()->id)->orderBy('id', 'DESC')->paginate(10);
+                }
             } else {
                 $data['bank_details'] = BankDetails::with('companyData')->orderBy('id', 'DESC')->paginate(10);
             }
@@ -361,19 +374,33 @@ class AdminController extends Controller
     public function report(Request $request)
     {
 
+        $company = Agent::where('id', Auth::guard('user')->user()->user)->first();
         if ($request->isMethod('GET')) {
-            if (Auth::guard('user')->user()->role == ('admin' || 'user')) {
+            if (Auth::guard('user')->user()->role == 'admin') {
                 $data['report'] = Transection::where('status', '2')->orderBy('id', 'DESC')->paginate(10);
             } else {
-                $data['report'] = Transection::where('status', '2')->where('company_id', Auth::guard('user')->user()->id)->orderBy('id', 'DESC')->paginate(10);
+                if ($company) {
+                    $data['report'] = Transection::where('status', '2')->where('company_id', Auth::guard('user')->user()->user)->orderBy('id', 'DESC')->paginate(10);
+                } else {
+                    $data['report'] = Transection::where('status', '2')->where('company_id', Auth::guard('user')->user()->id)->orderBy('id', 'DESC')->paginate(10);
+                }
+            }
+
+            foreach ($data['report'] as $key => $value) {
+                $bank = BankDetails::where('ifsc_code', 'LIKE', "%{$value->ifsc_code}%")->first();
+                $value->bankData = $bank;
             }
             return view('Admin.report.index', compact('data'));
         } else {
             if ($request->has('search')) {
-                if (Auth::guard('user')->user()->role == ('admin' || 'user')) {
+                if (Auth::guard('user')->user()->role == 'admin') {
                     $data['report'] = Transection::where('status', '2')->where('ref_no', 'LIKE', $request->search . '%')->orderBy('id', 'DESC')->paginate(10);
                 } else {
-                    $data['report'] = Transection::where('status', '2')->where('company_id', Auth::guard('user')->user()->id)->where('ref_no', 'LIKE', $request->search . '%')->orderBy('id', 'DESC')->paginate(10);
+                    if ($company) {
+                        $data['report'] = Transection::where('status', '2')->where('company_id', Auth::guard('user')->user()->user)->where('ref_no', 'LIKE', $request->search . '%')->orderBy('id', 'DESC')->paginate(10);
+                    } else {
+                        $data['report'] = Transection::where('status', '2')->where('company_id', Auth::guard('user')->user()->id)->where('ref_no', 'LIKE', $request->search . '%')->orderBy('id', 'DESC')->paginate(10);
+                    }
                 }
                 return view('Admin.report.index', compact('data'));
             }
@@ -381,28 +408,42 @@ class AdminController extends Controller
             $startDate = Carbon::parse($request->start_date);
             $endDate = Carbon::parse($request->end_time);
 
-            if (Auth::guard('user')->user()->role == ('admin' || 'user')) {
+            if (Auth::guard('user')->user()->role == 'admin') {
                 $transectionData = Transection::whereBetween('created_at', [$startDate, $endDate])->get();
             } else {
-                $transectionData = Transection::where('company_id', Auth::guard('user')->user()->id)->whereBetween('created_at', [$startDate, $endDate])->get();
+                if ($company) {
+                    $transectionData = Transection::where('company_id', Auth::guard('user')->user()->user)->whereBetween('created_at', [$startDate, $endDate])->get();
+                } else {
+                    $transectionData = Transection::where('company_id', Auth::guard('user')->user()->id)->whereBetween('created_at', [$startDate, $endDate])->get();
+                }
             }
 
-            // $transectionData = Transection::where('status', '1')->whereBetween('created_at', [$startDate, $endDate])->get();
+            foreach ($transectionData as $key => $value) {
+                $bank = BankDetails::where('ifsc_code', 'LIKE', "%{$value->ifsc_code}%")->first();
+                $value->bankData = $bank;
+            }
+
             if (empty($transectionData) || sizeof($transectionData) < 1) {
                 return redirect()->back()->with('error', 'Data Not Found!');
             }
             $row = [
-                'order_id',
-                'transection_no',
-                'transection_date',
-                'amount',
-                'status'
+                'ID',
+                'Account',
+                'Method',
+                'order ID',
+                'Transaction No',
+                'Transaction Date',
+                'Amount',
+                'Status'
             ];
 
             $dataRows  = [];
 
             foreach ($transectionData as $key => $items) {
                 $dataRows[] = [
+                    $key + 1,
+                    !empty($items->bankData->account_no) ? '"' . $items->bankData->account_no . '"' : '',
+                    !empty($items->type) ? '"' . $items->type . '"' : '',
                     !empty($items->order_id) ? '"' . $items->order_id . '"' : '',
                     !empty($items->ref_no) ? '"' . $items->ref_no . '"' : '',
                     !empty($items->created_at) ? '"' . $items->created_at . '"' : '',
@@ -682,7 +723,7 @@ class AdminController extends Controller
                 break;
         }
 
-        if (Auth::guard('user')->user()->role == ('admin' || 'user')) {
+        if (Auth::guard('user')->user()->role == 'admin') {
             $data['category_data'] = Transection::where(['status' => $type])->paginate(20);
             if ($request->has('search')) {
                 $data['category_data'] = Transection::where('ref_no', 'LIKE', $request->search . '%')->where(['status' => $type])->paginate(20);
@@ -705,7 +746,7 @@ class AdminController extends Controller
 
     public function refundList(Request $request)
     {
-        if (Auth::guard('user')->user()->role == ('admin' || 'user')) {
+        if (Auth::guard('user')->user()->role == 'admin') {
             // Join Transection and RefundRequest based on ref_no and company_id
             $query = Transection::join('refund_request', function ($join) {
                 $join->on('transactions.ref_no', '=', 'refund_request.ref_no')
@@ -811,11 +852,7 @@ class AdminController extends Controller
     {
         $data = [
             [
-                'order_id',
                 'transection_no',
-                'transection_date',
-                'amount',
-                'status'
             ]
         ];
         return $this->exportCSV($data, 'sample-transection', '', '');
@@ -855,21 +892,25 @@ class AdminController extends Controller
                     } else {
                         foreach ($data as $key => $row) {
                             if (!empty($row[0])) {
+                                $str = $row[0];
+                                if (strpos($str, "UPI") === 0) {
+                                    $parts = explode('/', $str);
+                                    $trs_no = $parts[1];
+                                } elseif (strtoupper(substr($str, 0, 4)) === "IMPS") {
+                                    $parts = explode('/', $str);
 
-                                if ($row[4] == 'approved') {
-                                    $status = '2';
-                                } else if ($row[4] == 'reject') {
-                                    $status = '3';
-                                } elseif ($row[4] == 'Initiate') {
-                                    $status = '1';
+                                    $trs_no = $parts[2];
                                 } else {
-                                    return redirect()->back()->with('error', 'Check payment status carefully!');
+                                    return redirect()->back()->with('error', 'Something went wrong!');
                                 }
 
 
-                                $update = Transection::where('ref_no', $row[1])->update([
-                                    'status' => $status,
-                                ]);
+                                $checkTrnNo = Transection::where('ref_no', 'like', $trs_no . '%')->first();
+                                if ($checkTrnNo) {
+                                    $update = Transection::where('ref_no', $row[1])->update([
+                                        'status' => '2',
+                                    ]);
+                                }
                             }
                         }
                     }
@@ -2926,6 +2967,9 @@ class AdminController extends Controller
     {
         $data = [];
         $warehouse_manager = Agent::where('role', 'user')->get();
+        foreach ($warehouse_manager as $key => $val) {
+            $warehouse_manager[$key]['company'] = Agent::where('id', $val->user)->first()->name;
+        }
 
         $data['warehouse_manager']  = $warehouse_manager;
         return view('Admin.users.index', compact('data'));
@@ -2937,12 +2981,14 @@ class AdminController extends Controller
         $warehouse = Warehouse::where('status', '1')->get();
 
         $data['warehouse'] = $warehouse;
+        $data['company'] = Agent::where('role', 'warehousemanager')->get();
         return view('Admin.users.create', compact('data'));
     }
 
     public function users_add(Request $request)
     {
         $validatedata = $request->validate([
+            'user' => 'required',
             'name' => 'required',
             'email' => 'required',
             'password' => 'required| min:6|confirmed',
@@ -2956,6 +3002,7 @@ class AdminController extends Controller
             'email' => $request->email,
             'empcode' => '',
             'role' => 'user',
+            'user' => $request->user,
             'password' => Hash::make($request->password),
             'plain_password' => $request->password,
             'comission' => $request->comission,
@@ -2972,6 +3019,7 @@ class AdminController extends Controller
     {
         $data = [];
         $warehouse = Warehouse::where('status', '1')->get();
+        $data['company'] = Agent::where('role', 'warehousemanager')->get();
         $warehoue_data = Agent::where('id', $id)->first();
         $data['warehoue_data'] = $warehoue_data;
         $data['warehouse'] = $warehouse;
@@ -2983,6 +3031,7 @@ class AdminController extends Controller
         $validatedata = $request->validate([
             'name' => 'required',
             'email' => 'required',
+            'user' => 'required',
         ]);
 
 
@@ -3002,6 +3051,7 @@ class AdminController extends Controller
         $update_data = Agent::where('id', $request->id)->update([
             'name' => $request->name,
             'email' => $request->email,
+            'user' => $request->user,
             'comission' => $request->comission,
         ]);
         return redirect()->route('users_list')->with('success', 'Data Updated Sucessfully!');

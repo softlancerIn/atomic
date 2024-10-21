@@ -16,7 +16,7 @@ class CreateRefundRequestTable extends Migration
         Schema::create('refund_request', function (Blueprint $table) {
             $table->id();
             $table->string('company_id')->nullable();
-            $table->string('ref_id')->nullable();
+            $table->string('ref_no')->nullable();
             $table->enum('status', ['0', '1', '2'])->default('0')->comment('0: Initiate, 1: approved, 2: reject');
             $table->timestamps();
         });

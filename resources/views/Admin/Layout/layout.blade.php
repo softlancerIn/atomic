@@ -86,13 +86,13 @@
                         <h6 class="m-0">24x7 Payment Gateway Admin-Panel</h6>
                     </div>
 
-                    @if(Auth::guard('user')->user()->role != ('admin' || 'user'))
+                    @if(Auth::guard('user')->user()->role == 'warehousemanager' || Auth::guard('user')->user()->role == 'user')
                     @php
                         $agent = App\Models\Agent::where('id',Auth::guard('user')->user()->id)->first();
                     @endphp
                     <div class="navbar-nav align-items-center mx-5 hide-on-mobile">
                         Auth Key-  <h6 class="m-0" id="myText">{{$agent->password}}</h6>
-                        <button class="btn btn-sm btn-success mx-3"  onclick="copyContent()">Copy</button>
+                        <button class="btn btn-sm btn-success mx-3 copyBtn"  onclick="copyContent()">Copy</button>
                     </div>
                     @else
                     <h6 class="m-0" id="myText"></h6>
@@ -129,15 +129,15 @@
                             <li>
                             <div class="dropdown-divider"></div>
                             </li>
-                            <li>
+                            {{-- <li>
                             <a class="dropdown-item" href="#">
                                 <i class="bx bx-user me-2"></i>
                                 <span class="align-middle">My Profile</span>
                             </a>
-                            </li>
-                            <li>
+                            </li> --}}
+                            {{-- <li>
                             <div class="dropdown-divider"></div>
-                            </li>
+                            </li> --}}
                             <li>
                             <a class="dropdown-item" href="{{route('logout')}}">
                                 <i class="bx bx-power-off me-2"></i>
@@ -150,7 +150,6 @@
                     </ul>
                     </div>
                 </nav> 
-                {{-- @dd(Auth::guard('user')->user()->name); --}}
                 <!-- / Navbar -->
                 <main style="height: 82%;">
                     @yield('content') 
@@ -177,7 +176,6 @@
 
                 <div class="content-backdrop fade"></div>
             </div>
-            <!-- Content wrapper -->
             </div>
             <!-- / Layout page -->
         </div>
@@ -185,15 +183,6 @@
         <!-- Overlay -->
         <div class="layout-overlay layout-menu-toggle"></div>
         </div>
-        <!-- / Layout wrapper -->
-
-        {{-- <div class="buy-now">
-            <a href="https://themeselection.com/products/sneat-bootstrap-html-admin-template/" target="_blank" class="btn btn-danger btn-buy-now" >
-                Upgrade to Pro
-            </a>
-        </div> --}}
-
-        <!-- Core JS -->
         <!-- build:js assets/vendor/js/core.js -->
         <script src="{{asset('public/assets/vendor/libs/jquery/jquery.js')}}"></script>
         <script src="{{asset('public/assets/vendor/libs/popper/popper.js')}}"></script>
@@ -225,7 +214,11 @@
                 try {
                 await navigator.clipboard.writeText(text);
                 console.log('Content copied to clipboard');
-                alert("Copied the text: " + text);
+                $('.copyBtn').html('copied !');
+
+                setTimeout(function(){
+                    $('.copyBtn').html('copy');
+                },3000);
                 } catch (err) {
                 console.error('Failed to copy: ', err);
                 }

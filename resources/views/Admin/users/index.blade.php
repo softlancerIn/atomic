@@ -58,6 +58,7 @@ $active = 'users_manager';
                     <thead>
                         <tr>
                             <th>Sr No.</th>
+                            <th>Company</th>
                             <th>Name</th>
                             <th>Email</th>
                             <th>Password</th>
@@ -71,6 +72,7 @@ $active = 'users_manager';
                         @forelse ($data['warehouse_manager'] as $key=>$item)
                         <tr>
                             <td>{{$key+1}}</td>
+                            <td>{{$item->company ?? '--'}}</td>
                             <td>{{$item->name ?? '--'}}</td>
                             <td>{{$item->email ?? '--'}}</td>
                             <td>{{$item->plain_password ?? '--'}}</td>

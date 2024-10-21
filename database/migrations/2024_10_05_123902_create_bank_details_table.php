@@ -17,6 +17,7 @@ class CreateBankDetailsTable extends Migration
             $table->id();
             $table->string('company_id')->nullable();
             $table->string('bank_name')->nullable();
+            $table->string('upi_id')->nullable();
             $table->string('branch_name')->nullable();
             $table->string('branch_code')->nullable();
             $table->string('account_no')->nullable();
@@ -31,6 +32,8 @@ class CreateBankDetailsTable extends Migration
             $table->string('mobile_no')->nullable();
             $table->string('email')->nullable();
             $table->string('payment_type')->nullable();
+            $table->enum('payment_type', ['1', '2'])->default('1')->comment('1: UPI, 2: Bank Service');
+
             $table->string('account_limit')->nullable();
             // $table->string('mobile_no')->nullable();
             $table->enum('status', ['1', '0'])->default('1')->comment('1: Active, 1: Inactive');

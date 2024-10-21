@@ -81,10 +81,14 @@ $active = 'users_manager';
                                         <div class="col-md-6 col-lg-6 col-sm-12">
                                             <input type="text" class="form-control" name="name" id="name" placeholder="Enter Name" aria-label="Enter Name" value="{{$data['warehoue_data']->name}}" required>
                                         </div>
-                                        {{-- <div class="col-md-6 col-lg-6 col-sm-12">
-                                            <input type="text" class="form-control" name="comission" id="comission" placeholder="Enter comission" aria-label="Enter Name" value="{{$data['warehoue_data']->comission}}" required>
-                                        </div> --}}
-
+                                        <div class="col-md-6 col-lg-6 col-sm-12">
+                                            <select class="form-control" name="user" id="">
+                                                <option value="" disabled selected>Select Company</option>
+                                                @foreach ($data['company'] as $val)
+                                                    <option value="{{$val->id}}" {{($data['warehoue_data']->user == $val->id) ? 'selected' : ''}}>{{$val->name}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
                                         <div class="col-md-6 col-lg-6 col-sm-12 mt-3">
                                             <input type="email" name="email" class="form-control" id="email" placeholder="Enter Email" value="{{$data['warehoue_data']->email}}" required>
                                         </div>

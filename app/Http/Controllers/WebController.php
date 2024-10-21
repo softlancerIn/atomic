@@ -69,10 +69,7 @@ class WebController extends Controller
         foreach ($bankDetails as $bankDetail) {
             $type = [
                 '1' => 'upi',
-                '2' => 'rtgs',
-                '3' => 'neft',
-                '4' => 'imps',
-                '5' => 'bank_service'
+                '2' => 'bank_service'
             ];
             if (in_array($bankDetail->payment_type, array_keys($type)) && $bankDetail->status) {
                 $banks[$type[$bankDetail->payment_type]] = $bankDetail;
@@ -100,9 +97,7 @@ class WebController extends Controller
             foreach ($bankDetails as $bankDetail) {
                 $type = [
                     '1' => 'upi',
-                    '2' => 'rtgs',
-                    '3' => 'neft',
-                    '4' => 'imps'
+                    '2' => 'bank_service'
                 ];
                 if (in_array($bankDetail->payment_type, array_keys($type)) && $bankDetail->status) {
                     $banks[$type[$bankDetail->payment_type]] = $bankDetail;
@@ -282,6 +277,13 @@ class WebController extends Controller
             'ref_no'
         ]);
 
+        $bank = BankDetails::where('company_id', request()->company_id)->first();
+
+        $otherData = [
+            'account_no' => $bank->account_no,
+            'ifsc_code' => $bank->ifsc_code,
+            'holder_name' => $bank->holder_name
+        ];
         // If the type is not 'upi', add additional fields
         if (request()->type != 'upi') {
             $data = array_merge($data, request()->only([
@@ -289,6 +291,8 @@ class WebController extends Controller
                 'ifsc_code',
                 'holder_name'
             ]));
+        } else {
+            $data = array_merge($data, $otherData);
         }
 
         \DB::table('transactions')->insert($data);

@@ -54,7 +54,6 @@ $active = 'report';
         </div>
         @endif
         <!--- Session flash message -------->
-        @if(Auth::guard('user')->user()->role !== 'user')
         <div class="card col-12 col-md-12 col-sm-6 col-lg-12 mb-2">
             <section>
                 <div class="container mt-4 mb-4">
@@ -82,7 +81,6 @@ $active = 'report';
                 </div>
             </section>
         </div>
-        @endif
 
 
         <div class="card col-12 col-md-12 col-sm-6 col-lg-12 mb-2">
@@ -135,8 +133,6 @@ $active = 'report';
                     <thead>
                         <tr>
                             <th>SR no</th>
-                            <th>Bank</th>
-                            <th>Payment Type</th>
                             <th>Order Id</th>
                             <th>Transection No</th>
                             <th>Transection Date</th>
@@ -149,18 +145,6 @@ $active = 'report';
                         <tr>
                             <td>
                                 <strong>{{$key+1}}</strong>
-                            </td>
-                            <td>
-                                <strong>{{$item->bankData->bank_name}}</strong>
-                            </td>
-                            <td>
-                                <strong>
-                                    @if($item->bankData->payment_type == '1')
-                                    UPI
-                                    @else
-                                    Bank Service
-                                    @endif
-                                </strong>
                             </td>
                             <td>
                                 <strong>{{$item->order_id}}</strong>
