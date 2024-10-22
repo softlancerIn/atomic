@@ -722,6 +722,7 @@ class AdminController extends Controller
 
                 break;
         }
+        $company = Agent::where('id', Auth::guard('user')->user()->user)->first();
 
         if (Auth::guard('user')->user()->role == 'admin') {
             $data['category_data'] = Transection::where(['status' => $type])->paginate(20);
@@ -729,7 +730,11 @@ class AdminController extends Controller
                 $data['category_data'] = Transection::where('ref_no', 'LIKE', $request->search . '%')->where(['status' => $type])->paginate(20);
             }
         } else {
-            $data['category_data'] = Transection::where(['status' => $type, 'company_id' => Auth::guard('user')->user()->id])->paginate(20);
+            if ($company) {
+                $data['category_data'] = Transection::where(['status' => $type, 'company_id' => Auth::guard('user')->user()->user])->paginate(20);
+            } else {
+                $data['category_data'] = Transection::where(['status' => $type, 'company_id' => Auth::guard('user')->user()->id])->paginate(20);
+            }
             if ($request->has('search')) {
                 $data['category_data'] = Transection::where('ref_no', 'LIKE', $request->search . '%')->where(['status' => $type, 'company_id' => Auth::guard('user')->user()->id])->paginate(20);
             }
@@ -737,7 +742,9 @@ class AdminController extends Controller
 
         foreach ($data['category_data'] as $value2) {
             $bank = BankDetails::where('ifsc_code', 'LIKE', "%{$value2->ifsc_code}%")->first();
+            $agent = Agent::where('id', $bank->company_id)->first();
             $value2->bank_name = $bank->bank_name;
+            $value2->agent = $agent;
         }
         return view('Admin.Category.c_index', compact('data'));
     }
@@ -765,7 +772,7 @@ class AdminController extends Controller
 
                 break;
         }
-
+        $company = Agent::where('id', Auth::guard('user')->user()->user)->first();
         if (Auth::guard('user')->user()->role == 'admin') {
             $query = Transection::join('refund_request', function ($join) {
                 $join->on('transactions.ref_no', '=', 'refund_request.ref_no')
@@ -781,14 +788,23 @@ class AdminController extends Controller
             // Paginate the results
             // $data['category_data'] = $query->paginate(20);
         } else {
-            $query = Transection::join('refund_request', function ($join) {
-                $join->on('transactions.ref_no', '=', 'refund_request.ref_no')
-                    ->on('transactions.company_id', '=', 'refund_request.company_id');
-            })
-                ->select('transactions.*', 'refund_request.*', 'transactions.created_at as transaction_data') // Select the necessary fields
-                ->where('transactions.company_id', Auth::guard('user')->user()->id);
-            $query->where('refund_request.status', $status);
-
+            if ($company) {
+                $query = Transection::join('refund_request', function ($join) {
+                    $join->on('transactions.ref_no', '=', 'refund_request.ref_no')
+                        ->on('transactions.company_id', '=', 'refund_request.company_id');
+                })
+                    ->select('transactions.*', 'refund_request.*', 'transactions.created_at as transaction_data') // Select the necessary fields
+                    ->where('transactions.company_id', Auth::guard('user')->user()->user);
+                $query->where('refund_request.status', $status);
+            } else {
+                $query = Transection::join('refund_request', function ($join) {
+                    $join->on('transactions.ref_no', '=', 'refund_request.ref_no')
+                        ->on('transactions.company_id', '=', 'refund_request.company_id');
+                })
+                    ->select('transactions.*', 'refund_request.*', 'transactions.created_at as transaction_data') // Select the necessary fields
+                    ->where('transactions.company_id', Auth::guard('user')->user()->id);
+                $query->where('refund_request.status', $status);
+            }
             if ($request->has('search')) {
                 $query->where('transactions.ref_no', 'LIKE', $request->search . '%');  // Search in transactions table
             }
@@ -803,6 +819,8 @@ class AdminController extends Controller
             $admin = Agent::where('id', $value->company_id)->first();
             $comm = ($value->amount * (int)$admin->payout_comission) / 100;
             $value->payOut_comissionAmt = ((int)$value->amount - $comm);
+
+            $value->agent = $admin;
         }
 
         $data['category_data'] = $refunfList;

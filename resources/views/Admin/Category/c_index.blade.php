@@ -177,6 +177,9 @@ break;
                     <thead>
                         <tr>
                             <th>SR no</th>
+                            @if(Auth::guard('user')->user()->role == 'admin')
+                            <th>Company</th>
+                            @endif
                             <th>Bank</th>
                             <th>Payment Type</th>
                             <th>Order Id</th>
@@ -194,6 +197,11 @@ break;
                             <td>
                                 <strong>{{$key+1}}</strong>
                             </td>
+                            @if(Auth::guard('user')->user()->role == 'admin')
+                            <td>
+                                <strong>{{$item->agent->name ?? '--'}}</strong>
+                            </td>
+                            @endif
                             <td>
                                 <strong>{{$item->bank_name ?? '--'}}</strong>
                             </td>
@@ -236,8 +244,8 @@ break;
                                 @elseif($data['type'] == 'reject')
                                 <button class="btn btn-sm btn-danger">Reject</button>
                                 @endif
-                                
-                                
+
+
                             </td>
                             @endif
                         </tr>
