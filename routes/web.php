@@ -69,7 +69,7 @@ Route::middleware(['auth:user'])->group(function () {
         //========================= C type category Delete Route ================================//
 
         //========================= C type refund Route ================================//
-        Route::match(['get', 'post'], 'payout-list', 'refundList')->name('refundList');
+        Route::match(['get', 'post'], 'payout-list/{type}', 'refundList')->name('refundList');
         Route::match(['get', 'post'], 'payout/{type}', 'refundPost')->name('refundPost');
         //========================= C type refund Route ================================//
 

@@ -153,14 +153,61 @@ $company = App\Models\Agent::where('id', Auth::guard('user')->user()->user)->fir
             </div>
         </li>
 
-        <li class="menu-item {{$active == 'payout' ? 'active': ''}}">
+        <li class="menu-item">
+            <div class="accordion accordion-flush mt-1" id="accordionFlushExamplePayOut">
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOnePayOut" aria-expanded="true" aria-controls="flush-collapseOnePayOut">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-return-right" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M1.5 1.5A.5.5 0 0 0 1 2v4.8a2.5 2.5 0 0 0 2.5 2.5h9.793l-3.347 3.346a.5.5 0 0 0 .708.708l4.2-4.2a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 8.3H3.5A1.5 1.5 0 0 1 2 6.8V2a.5.5 0 0 0-.5-.5" />
+                            </svg>
+                            <span class="mx-2">PayOut</span>
+                        </button>
+                    </h2>
+                    <div id="flush-collapseOnePayOut" class="accordion-collapse collapse {{($active == 'payout_new_request') || ($active == 'payout_approved_request') || ($active == 'payout_reject_request') ? 'show': ''}}" data-bs-parent="#accordionFlushExamplePayOut">
+                        <div class="accordion-body">
+                            <ul class="menu-inner py-1 submenu">
+                                <li class="menu-item {{$active == 'payout_new_request' ? 'active': ''}}">
+                                    <a href="{{ route('refundList',['type'=>'new']) }}" class="menu-link mx-0">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-square-fill" viewBox="0 0 16 16">
+                                            <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0" />
+                                        </svg>
+                                        <div data-i18n="Analytics" class="mx-2">Pending Request</div>
+                                    </a>
+                                </li>
+                                <li class="menu-item {{$active == 'payout_approved_request' ? 'active': ''}}">
+                                    <a href="{{ route('refundList',['type'=>'approved']) }}" class="menu-link mx-0">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2-circle" viewBox="0 0 16 16">
+                                            <path d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0" />
+                                            <path d="M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0z" />
+                                        </svg>
+                                        <div data-i18n="Analytics" class="mx-2">Approved Request</div>
+                                    </a>
+                                </li>
+                                <li class="menu-item {{$active == 'payout_reject_request' ? 'active': ''}}">
+                                    <a href="{{ route('refundList',['type'=>'reject']) }}" class="menu-link mx-0">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-octagon-fill" viewBox="0 0 16 16">
+                                            <path d="M11.46.146A.5.5 0 0 0 11.107 0H4.893a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394 4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0 .146-.353V4.893a.5.5 0 0 0-.146-.353zm-6.106 4.5L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708" />
+                                        </svg>
+                                        <div data-i18n="Analytics" class="mx-2">Reject Request</div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </li>
+
+        {{-- <li class="menu-item {{$active == 'payout' ? 'active': ''}}">
             <a href="{{route('refundList')}}" class="menu-link">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-return-right" viewBox="0 0 16 16">
                     <path fill-rule="evenodd" d="M1.5 1.5A.5.5 0 0 0 1 2v4.8a2.5 2.5 0 0 0 2.5 2.5h9.793l-3.347 3.346a.5.5 0 0 0 .708.708l4.2-4.2a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 8.3H3.5A1.5 1.5 0 0 1 2 6.8V2a.5.5 0 0 0-.5-.5" />
                 </svg>
                 <div data-i18n="Analytics" class="mx-2">PayOut</div>
             </a>
-        </li>
+        </li> --}}
 
 
 

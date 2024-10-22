@@ -744,23 +744,42 @@ class AdminController extends Controller
 
     //============================= Payment gateway new function ==============================//
 
-    public function refundList(Request $request)
+    public function refundList(Request $request, $type)
     {
+        switch ($type) {
+            case 'new':
+                $data['type'] = 'new';
+                $type = '1';
+                $status = '0';
+
+                break;
+            case 'approved':
+                $data['type'] = 'approved';
+                $type = '2';
+                $status = '1';
+
+                break;
+            case 'reject':
+                $data['type'] = 'reject';
+                $status = '2';
+
+                break;
+        }
+
         if (Auth::guard('user')->user()->role == 'admin') {
-            // Join Transection and RefundRequest based on ref_no and company_id
             $query = Transection::join('refund_request', function ($join) {
                 $join->on('transactions.ref_no', '=', 'refund_request.ref_no')
                     ->on('transactions.company_id', '=', 'refund_request.company_id');
             })
                 ->select('transactions.*', 'refund_request.*', 'transactions.created_at as transaction_data'); // Select the necessary fields
+            $query->where('refund_request.status', $status);
 
-            // Check if the search query is provided
             if ($request->has('search')) {
                 $query->where('transactions.ref_no', 'LIKE', $request->search . '%');  // Search in transactions table
             }
 
             // Paginate the results
-            $data['category_data'] = $query->paginate(20);
+            // $data['category_data'] = $query->paginate(20);
         } else {
             $query = Transection::join('refund_request', function ($join) {
                 $join->on('transactions.ref_no', '=', 'refund_request.ref_no')
@@ -768,15 +787,25 @@ class AdminController extends Controller
             })
                 ->select('transactions.*', 'refund_request.*', 'transactions.created_at as transaction_data') // Select the necessary fields
                 ->where('transactions.company_id', Auth::guard('user')->user()->id);
-            // Check if the search query is provided
+            $query->where('refund_request.status', $status);
+
             if ($request->has('search')) {
                 $query->where('transactions.ref_no', 'LIKE', $request->search . '%');  // Search in transactions table
             }
 
             // Paginate the results
-            $data['category_data'] = $query->paginate(20);
+
+
         }
 
+        $refunfList = $query->paginate(20);
+        foreach ($refunfList as $key => $value) {
+            $admin = Agent::where('id', $value->company_id)->first();
+            $comm = ($value->amount * (int)$admin->payout_comission) / 100;
+            $value->payOut_comissionAmt = ((int)$value->amount - $comm);
+        }
+
+        $data['category_data'] = $refunfList;
         return view('Admin.Refund.c_index', compact('data'));
     }
 
@@ -795,13 +824,18 @@ class AdminController extends Controller
             foreach ($transectionData as $key => $value) {
                 $transection = Transection::where('ref_no', 'like', $value->ref_no)->first();
                 $value->transection = $transection;
+
+                $admin = Agent::where('id', $value->company_id)->first();
+                $comm = ($transection->amount * (int)$admin->payout_comission) / 100;
+                $value->payOut_comissionAmt = ((int)$transection->amount - $comm);
             }
 
             $row = [
                 'order_id',
-                'transection_no',
-                'transection_date',
-                'amount',
+                'Transection No',
+                'Transection Date',
+                'Transaction amount',
+                'Refund amount',
                 'status'
             ];
 
@@ -813,6 +847,7 @@ class AdminController extends Controller
                     !empty($items->transection->ref_no) ? '"' . $items->transection->ref_no . '"' : '',
                     !empty($items->transection->created_at) ? '"' . $items->transection->created_at . '"' : '',
                     !empty($items->transection->amount) ? '"' . $items->transection->amount . '"' : '',
+                    !empty($items->payOut_comissionAmt) ? '"' . $items->payOut_comissionAmt . '"' : '',
                     'Initiate',
                 ];
             }
@@ -852,7 +887,8 @@ class AdminController extends Controller
     {
         $data = [
             [
-                'transection_no',
+                'Transection no',
+                'status',
             ]
         ];
         return $this->exportCSV($data, 'sample-transection', '', '');
@@ -874,11 +910,11 @@ class AdminController extends Controller
                         foreach ($data as $key => $row) {
                             if (!empty($row[0])) {
 
-                                if ($row[4] == 'approved') {
+                                if ($row[5] == 'approved') {
                                     $status = '1';
-                                } else if ($row[4] == 'reject') {
+                                } else if ($row[5] == 'reject') {
                                     $status = '2';
-                                } elseif ($row[4] == 'Initiate') {
+                                } elseif ($row[5] == 'Initiate') {
                                     $status = '0';
                                 } else {
                                     return redirect()->back()->with('error', 'Check payment status carefully!');
@@ -893,22 +929,42 @@ class AdminController extends Controller
                         foreach ($data as $key => $row) {
                             if (!empty($row[0])) {
                                 $str = $row[0];
+
                                 if (strpos($str, "UPI") === 0) {
                                     $parts = explode('/', $str);
                                     $trs_no = $parts[1];
                                 } elseif (strtoupper(substr($str, 0, 4)) === "IMPS") {
-                                    $parts = explode('/', $str);
 
-                                    $trs_no = $parts[2];
+                                    $parts = explode('/', $str);
+                                    $trs_no = $parts[1];
+                                } elseif (substr($str, 0, 4) === 'IMPS') {
+
+                                    $parts = explode('/', $str);
+                                    $trs_no =  $parts[1];
+                                } elseif (substr($str, 0, 1) === 'N') {
+
+                                    $parts = explode('/', $str);
+                                    $trs_no =  $parts[1];
                                 } else {
                                     return redirect()->back()->with('error', 'Something went wrong!');
                                 }
 
+                                if ($row[1] == 'approved') {
+                                    $status = '2';
+                                } else if ($row[1] == 'reject') {
+                                    $status = '3';
+                                } elseif ($row[1] == 'Initiate') {
+                                    $status = '1';
+                                } else {
+                                    return redirect()->back()->with('error', 'Check payment status carefully!');
+                                }
+
 
                                 $checkTrnNo = Transection::where('ref_no', 'like', $trs_no . '%')->first();
+
                                 if ($checkTrnNo) {
-                                    $update = Transection::where('ref_no', $row[1])->update([
-                                        'status' => '2',
+                                    $update = Transection::where('id', $checkTrnNo->id)->update([
+                                        'status' => $status,
                                     ]);
                                 }
                             }
@@ -916,7 +972,7 @@ class AdminController extends Controller
                     }
 
 
-                    $filename =  $this->fileupload($request->csv_file, 'Upload_csv', 'csv_upload');
+                    $filename =  $this->fileupload($request->csv_file, 'Upload_csv');
                     return redirect()->back()->with('success', 'CSV imported successfully');
                 } else {
                     return redirect()->back()->with('error', 'Please select a CSV file to import');

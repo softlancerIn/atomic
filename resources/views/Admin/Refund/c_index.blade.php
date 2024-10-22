@@ -1,11 +1,20 @@
 @extends('Admin.Layout.layout')
 @section('content')
 @php
-$active = 'payout';
-$data['type'] = "new";
+
+if($data['type'] == 'new'){
+$active = 'payout_new_request';
+}
+elseif($data['type'] == 'approved'){
+$active = 'payout_approved_request';
+}
+elseif($data['type'] == 'reject'){
+$active = 'payout_reject_request';
+}
+
 switch($data['type']){
 case 'new':
-$type = 'New';
+$type = 'Pending';
 $cat_placeholder = 'Select New';
 break;
 case 'approved':
@@ -167,7 +176,8 @@ break;
                             <th>SR no</th>
                             <th>Order No</th>
                             <th>Transection No</th>
-                            <th>Amount</th>
+                            <th>Transaction Amount</th>
+                            <th>Refund Amount</th>
                             <th>Transection Date</th>
                             <th>Payout Date</th>
                             @if(Auth::guard('user')->user()->role !== 'user')
@@ -189,6 +199,9 @@ break;
                             </td>
                             <td>
                                 <strong>{{$item->amount}}</strong>
+                            </td>
+                            <td>
+                                <strong>{{$item->payOut_comissionAmt}}</strong>
                             </td>
                             <td>
                                 <strong>{{$item->transaction_data}}</strong>
@@ -220,8 +233,8 @@ break;
                                 @elseif($item->status == '2')
                                 <span class="badge rounded-pill bg-danger">Reject</span>
                                 @endif
-                                
-                                
+
+
                             </td>
                             @endif
                         </tr>
