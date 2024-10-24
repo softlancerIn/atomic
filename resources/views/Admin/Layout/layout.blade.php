@@ -8,7 +8,7 @@
         <meta name="description" content="" /> 
         <meta name="csrf-token" content="{{ csrf_token() }}" />
         <!-- Favicon -->
-        <link rel="icon" type="image/x-icon" href="{{asset('/public/favicon.png')}}" /> 
+        <link rel="icon" type="image/x-icon" href="{{asset('/public/logo.png')}}" /> 
         <!-- Fonts -->
 
         <link rel="preconnect" href="https://fonts.googleapis.com" />

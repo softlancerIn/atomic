@@ -84,7 +84,9 @@ $active = 'warehouse_manager';
                                         <div class="col-md-6 col-lg-6 col-sm-12">
                                             <input type="text" class="form-control" name="comission" id="comission" placeholder="Enter comission" aria-label="Enter Name" value="{{$data['warehoue_data']->comission}}" required>
                                         </div>
-
+                                        <div class="col-md-6 col-lg-6 col-sm-12">
+                                            <input type="text" class="form-control" name="payoutComission" id="comission" placeholder="Enter payout comission" aria-label="Enter Name" value="{{$data['warehoue_data']->payout_comission}}" required>
+                                        </div>
                                         <div class="col-md-6 col-lg-6 col-sm-12 mt-3">
                                             <input type="email" name="email" class="form-control" id="email" placeholder="Enter Email" value="{{$data['warehoue_data']->email}}" required>
                                         </div>

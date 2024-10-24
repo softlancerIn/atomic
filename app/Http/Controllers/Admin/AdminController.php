@@ -189,7 +189,6 @@ class AdminController extends Controller
                 'account_no' => 'required',
                 'account_holderName' => 'required',
                 'ifsc_code' => 'required',
-                'aadhar_no' => 'required',
                 'account_limit' => 'required',
                 'pincode' => 'required',
                 'city' => 'required',
@@ -211,7 +210,6 @@ class AdminController extends Controller
                     'account_no' => 'required',
                     'account_holderName' => 'required',
                     'ifsc_code' => 'required',
-                    'aadhar_no' => 'required',
                     'account_limit' => 'required',
                     'pincode' => 'required',
                     'city' => 'required',
@@ -224,6 +222,8 @@ class AdminController extends Controller
                     'upi_id' => 'required',
                 ]);
             }
+
+            $validatedata['aadhar_no'] = $request->aadhar_no ?? '';
 
             $checkAreadyExist = BankDetails::where(['company_id' => $request->company_id, 'payment_type' => $request->payment_type, 'status' => '1'])->first();
 
@@ -786,7 +786,6 @@ class AdminController extends Controller
             }
 
             // Paginate the results
-            // $data['category_data'] = $query->paginate(20);
         } else {
             if ($company) {
                 $query = Transection::join('refund_request', function ($join) {
@@ -981,6 +980,36 @@ class AdminController extends Controller
                                 $checkTrnNo = Transection::where('ref_no', 'like', $trs_no . '%')->first();
 
                                 if ($checkTrnNo) {
+
+                                    $amount = 0;
+                                    $today = Carbon::today();
+                                    // $trs = Transection::where('id', $request->id)->first();
+
+                                    $preSetlData = Settelment::where('company_id', $checkTrnNo->company_id)->whereDate('created_at', $today)->first();
+                                    if ($preSetlData) {
+                                        $currentAmt = $preSetlData->amount;
+                                        $amount = $currentAmt + $checkTrnNo->amount;
+                                    } else {
+                                        $amount = $checkTrnNo->amount;
+                                    }
+
+                                    $settlement = Settelment::where('company_id', $checkTrnNo->company_id)
+                                        ->whereDate('created_at', $today)
+                                        ->first();
+
+                                    if ($settlement) {
+                                        $settlement->update([
+                                            'amount' => $amount,
+                                        ]);
+                                    } else {
+                                        $settlement = Settelment::create([
+                                            'company_id' => $checkTrnNo->company_id,
+                                            'amount' => $amount,
+                                            'created_at' => $today,
+                                        ]);
+                                    }
+
+
                                     $update = Transection::where('id', $checkTrnNo->id)->update([
                                         'status' => $status,
                                     ]);
@@ -2918,6 +2947,7 @@ class AdminController extends Controller
         $validatedata = $request->validate([
             'name' => 'required',
             'email' => 'required',
+            'payoutComission' => 'required',
             'password' => 'required| min:6|confirmed',
             'password_confirmation' => 'required| min:6',
         ]);
@@ -2932,6 +2962,7 @@ class AdminController extends Controller
             'password' => Hash::make($request->password),
             'plain_password' => $request->password,
             'comission' => $request->comission,
+            'payout_comission' => $request->payoutComission ?? '0.5',
         ]);
 
         if (!empty($warehouse_manager)) {
@@ -2977,6 +3008,7 @@ class AdminController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'comission' => $request->comission,
+            'payout_comission' => $request->payoutComission ?? '0.5',
         ]);
         return redirect()->route('wareHouManag_list')->with('success', 'Data Updated Sucessfully!');
     }
@@ -3040,7 +3072,11 @@ class AdminController extends Controller
     public function users_list()
     {
         $data = [];
-        $warehouse_manager = Agent::where('role', 'user')->get();
+        if (Auth::guard('user')->user()->role !== 'admin') {
+            $warehouse_manager = Agent::where('role', 'user')->where('user', Auth::guard('user')->user()->id)->get();
+        } else {
+            $warehouse_manager = Agent::where('role', 'user')->get();
+        }
         foreach ($warehouse_manager as $key => $val) {
             $warehouse_manager[$key]['company'] = Agent::where('id', $val->user)->first()->name;
         }
@@ -3055,7 +3091,11 @@ class AdminController extends Controller
         $warehouse = Warehouse::where('status', '1')->get();
 
         $data['warehouse'] = $warehouse;
-        $data['company'] = Agent::where('role', 'warehousemanager')->get();
+        if (Auth::guard('user')->user()->role !== 'admin') {
+            $data['company'] = Agent::where('role', 'warehousemanager')->where('id', Auth::guard('user')->user()->id)->get();
+        } else {
+            $data['company'] = Agent::where('role', 'warehousemanager')->get();
+        }
         return view('Admin.users.create', compact('data'));
     }
 
@@ -3093,7 +3133,11 @@ class AdminController extends Controller
     {
         $data = [];
         $warehouse = Warehouse::where('status', '1')->get();
-        $data['company'] = Agent::where('role', 'warehousemanager')->get();
+        if (Auth::guard('user')->user()->role !== 'admin') {
+            $data['company'] = Agent::where('role', 'warehousemanager')->where('id', Auth::guard('user')->user()->id)->get();
+        } else {
+            $data['company'] = Agent::where('role', 'warehousemanager')->get();
+        }
         $warehoue_data = Agent::where('id', $id)->first();
         $data['warehoue_data'] = $warehoue_data;
         $data['warehouse'] = $warehouse;

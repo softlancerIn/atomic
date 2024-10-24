@@ -65,9 +65,9 @@
                     <div class="card-body">
                     <!-- Logo -->
                         <div class="app-brand justify-content-center">
-                            <a href="index.html" class="app-brand-link gap-2">
-                                {{-- <img src="{{asset('public/logo.png')}}" class="logoipsum_logo"> --}}
-                                <h3>Atomic Gateway</h3>
+                            <a  class="app-brand-link gap-2">
+                                <img src="{{asset('public/logo.png')}}" class="logoipsum_logo" style="height:140px;width:165px;">
+                                {{-- <h3>Atomic Gateway</h3> --}}
                             </a>
                         </div>
                         <!-- /Logo -->

@@ -32,6 +32,7 @@ $active = 'warehouse_manager';
     .sm:justify-between div p {
         display: none;
     }
+
 </style>
 <div class="content-wrapper">
     <div class="container-xxl flex-grow-1 container-p-y">
@@ -60,6 +61,7 @@ $active = 'warehouse_manager';
                             <th>Sr No.</th>
                             <th>Name</th>
                             <th>Comission</th>
+                            <th>Payout Comission</th>
                             <th>Email</th>
                             <th>Password</th>
                             @if(Auth::guard('user')->user()->role !== 'user')
@@ -73,7 +75,8 @@ $active = 'warehouse_manager';
                         <tr>
                             <td>{{$key+1}}</td>
                             <td>{{$item->name ?? '--'}}</td>
-                            <td>{{$item->comission ?? '--'}}</td>
+                            <td>{{$item->comission ?? '--'}} %</td>
+                            <td>{{$item->payout_comission ?? '--'}} %</td>
                             <td>{{$item->email ?? '--'}}</td>
                             <td>{{$item->plain_password ?? '--'}}</td>
                             @if(Auth::guard('user')->user()->role !== 'user')
@@ -91,8 +94,8 @@ $active = 'warehouse_manager';
                                     Edit
                                 </a>
                                 {{-- <a class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')" href="{{route('global_delete',['type'=>'warehouse_manager','id'=>$item->id])}}"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
-                                        <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5" />
-                                    </svg>Delete</a> --}}
+                                    <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5" />
+                                </svg>Delete</a> --}}
                             </td>
                             @endif
                         </tr>
@@ -116,18 +119,18 @@ $active = 'warehouse_manager';
     function change_user_status(status, id, tableType) {
         var _token = '{{ csrf_token() }}';
         $.ajax({
-            url: "{{ route('globalStatusUpdate') }}",
-            type: "POST",
-            data: {
-                status: status,
-                id: id,
-                type: tableType,
-            },
-            dataType: "JSON",
-            headers: {
+            url: "{{ route('globalStatusUpdate') }}"
+            , type: "POST"
+            , data: {
+                status: status
+                , id: id
+                , type: tableType
+            , }
+            , dataType: "JSON"
+            , headers: {
                 'X-CSRF-TOKEN': _token
-            },
-            success: function(resp) {
+            }
+            , success: function(resp) {
                 console.log(resp);
                 if (resp.status == true) {
                     window.location.reload();
@@ -138,5 +141,6 @@ $active = 'warehouse_manager';
             }
         });
     }
+
 </script>
 @endsection
